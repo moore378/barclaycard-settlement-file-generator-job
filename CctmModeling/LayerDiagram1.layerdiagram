@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<layerModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/SimpleShapesModel" dslVersion="1.0.0.0" Id="1f21e216-5890-4d46-a73f-e2cb5f912622" xmlns="http://schemas.microsoft.com/VisualStudio/TeamArchitect/LayerDesigner">
+  <layers>
+    <layer Id="2689ab92-6798-4775-8521-1b34b3dbd1e3" name="TransactionManagementCommon">
+      <dependencyToLayers>
+        <dependencyFromLayerToLayer Id="513a162f-68cc-4a8b-bcbc-c020af53591d" direction="Forward">
+          <layerMoniker Id="c362b477-f20f-426b-bb74-3c6e4e67b816" />
+        </dependencyFromLayerToLayer>
+        <dependencyFromLayerToLayer Id="77e1aed9-2987-4a3b-8077-4faadb15f9bc" direction="Forward">
+          <layerMoniker Id="86ad3265-f6e1-45aa-9587-f4cdbcd6b16e" />
+        </dependencyFromLayerToLayer>
+      </dependencyToLayers>
+      <references>
+        <reference Id="293c5e9d-b0b6-46c8-acf8-efe183e4f517" name="TransactionManagementCommon">
+          <ArtifactNode Label="TransactionManagementCommon" Category="CodeSchema_Namespace" Id="(Namespace=TransactionManagementCommon)" />
+          <ExpandedNode Id="(Assembly=TransactionManagmentCommon)" Label="TransactionManagmentCommon.dll" Category="CodeSchema_Assembly">
+            <LinkCategory Ref="Dsl.NamespaceUsedInAssembly" />
+          </ExpandedNode>
+          <ExpandedNode Id="(Namespace=TransactionManagementCommon)" Label="TransactionManagementCommon" Category="CodeSchema_Namespace">
+            <LinkCategory Ref="Represents" />
+          </ExpandedNode>
+        </reference>
+      </references>
+    </layer>
+    <layer Id="d7bcafa5-74e7-4848-ba04-fb313eb2467e" name="Rtcc.Mediator">
+      <dependencyToLayers>
+        <dependencyFromLayerToLayer Id="7e36e88f-63bf-4736-80c3-d466c75e7c8a" direction="Forward">
+          <layerMoniker Id="2689ab92-6798-4775-8521-1b34b3dbd1e3" />
+        </dependencyFromLayerToLayer>
+        <dependencyFromLayerToLayer Id="53f13fdf-d25a-44ad-bded-67f6cee63c8f" direction="Forward">
+          <layerMoniker Id="86ad3265-f6e1-45aa-9587-f4cdbcd6b16e" />
+        </dependencyFromLayerToLayer>
+      </dependencyToLayers>
+      <references>
+        <reference Id="1a79ea98-1fc7-4294-9150-e793d66bc7f2" name="Rtcc.Mediator">
+          <ArtifactNode Label="Rtcc.Mediator" Category="CodeSchema_Namespace" Id="(Namespace=Rtcc.Mediator)" />
+          <ExpandedNode Id="(Assembly=RTCC)" Label="RTCC.exe" Category="CodeSchema_Assembly">
+            <LinkCategory Ref="Dsl.NamespaceUsedInAssembly" />
+          </ExpandedNode>
+          <ExpandedNode Id="(Namespace=Rtcc.Mediator)" Label="Rtcc.Mediator" Category="CodeSchema_Namespace">
+            <LinkCategory Ref="Represents" />
+          </ExpandedNode>
+        </reference>
+      </references>
+    </layer>
+    <layer Id="81aaf26f-63d6-4511-9bf0-06982b390fe1" name="Rtcc.ClientInterfacing">
+      <dependencyToLayers>
+        <dependencyFromLayerToLayer Id="5c64fb4c-a16c-4051-b3d7-c1845c95bee0" direction="Forward">
+          <layerMoniker Id="d7bcafa5-74e7-4848-ba04-fb313eb2467e" />
+        </dependencyFromLayerToLayer>
+        <dependencyFromLayerToLayer Id="96f7c5c9-fd31-419b-b8d6-d189792005dc" direction="Forward">
+          <layerMoniker Id="2689ab92-6798-4775-8521-1b34b3dbd1e3" />
+        </dependencyFromLayerToLayer>
+      </dependencyToLayers>
+      <references>
+        <reference Id="070b3387-948d-4568-810b-57e7f9142bd9" name="Rtcc.ClientInterfacing">
+          <ArtifactNode Label="Rtcc.ClientInterfacing" Category="CodeSchema_Namespace" Id="(Namespace=Rtcc.ClientInterfacing)" />
+          <ExpandedNode Id="(Assembly=RTCC)" Label="RTCC.exe" Category="CodeSchema_Assembly">
+            <LinkCategory Ref="Dsl.NamespaceUsedInAssembly" />
+          </ExpandedNode>
+          <ExpandedNode Id="(Namespace=Rtcc.ClientInterfacing)" Label="Rtcc.ClientInterfacing" Category="CodeSchema_Namespace">
+            <LinkCategory Ref="Represents" />
+          </ExpandedNode>
+        </reference>
+      </references>
+    </layer>
+    <layer Id="9d0a3702-25b5-488e-a631-494ae9846513" name="Rtcc.PayByCell">
+      <dependencyToLayers>
+        <dependencyFromLayerToLayer Id="ffb93afe-5fd4-419a-9927-33bc3c74b9c5" direction="Forward">
+          <layerMoniker Id="d7bcafa5-74e7-4848-ba04-fb313eb2467e" />
+        </dependencyFromLayerToLayer>
+      </dependencyToLayers>
+      <references>
+        <reference Id="8bd8cdd6-ad99-442f-a122-b62207daadc4" name="Rtcc.PayByCell">
+          <ArtifactNode Label="Rtcc.PayByCell" Category="CodeSchema_Namespace" Id="(Namespace=Rtcc.PayByCell)" />
+          <ExpandedNode Id="(Assembly=RTCC)" Label="RTCC.exe" Category="CodeSchema_Assembly">
+            <LinkCategory Ref="Dsl.NamespaceUsedInAssembly" />
+          </ExpandedNode>
+          <ExpandedNode Id="(Namespace=Rtcc.PayByCell)" Label="Rtcc.PayByCell" Category="CodeSchema_Namespace">
+            <LinkCategory Ref="Represents" />
+          </ExpandedNode>
+        </reference>
+      </references>
+    </layer>
+    <layer Id="d63f431f-1c6c-4758-9994-068b172d62ba" name="RTCC">
+      <dependencyToLayers>
+        <dependencyFromLayerToLayer Id="ebf4675c-6068-4357-b119-3cbc33a3d04c" direction="Forward">
+          <layerMoniker Id="9d0a3702-25b5-488e-a631-494ae9846513" />
+        </dependencyFromLayerToLayer>
+        <dependencyFromLayerToLayer Id="6c689316-8ee4-4451-a405-349e53ecbdf8" direction="Forward">
+          <layerMoniker Id="d7bcafa5-74e7-4848-ba04-fb313eb2467e" />
+        </dependencyFromLayerToLayer>
+        <dependencyFromLayerToLayer Id="0f4b1313-d57f-4add-92e8-3acd1b2b3f49" direction="Bidirectional">
+          <layerMoniker Id="81aaf26f-63d6-4511-9bf0-06982b390fe1" />
+        </dependencyFromLayerToLayer>
+        <dependencyFromLayerToLayer Id="83259d57-fca0-4aec-b78e-5a7f58b921da" direction="Forward">
+          <layerMoniker Id="86ad3265-f6e1-45aa-9587-f4cdbcd6b16e" />
+        </dependencyFromLayerToLayer>
+        <dependencyFromLayerToLayer Id="8514b79c-44df-49ae-9c4c-6a3f0cf4470c" direction="Forward">
+          <layerMoniker Id="2689ab92-6798-4775-8521-1b34b3dbd1e3" />
+        </dependencyFromLayerToLayer>
+      </dependencyToLayers>
+      <references>
+        <reference Id="0fa0ed3f-034b-4135-bda9-023d0622e02c" name="RTCC">
+          <ArtifactNode Label="RTCC" Category="CodeSchema_Project" Id="(Assembly=../RTCC/RTCC.csproj)">
+            <Category Ref="CodeSchema_SourceFile" />
+          </ArtifactNode>
+          <ExpandedNode Id="(Assembly=RTCC)" Label="RTCC.exe" Category="FileSystem.Category.FileOfType.exe">
+            <LinkCategory Ref="Produces" />
+            <LinkCategory Ref="Represents" />
+          </ExpandedNode>
+        </reference>
+      </references>
+    </layer>
+    <layer Id="86ad3265-f6e1-45aa-9587-f4cdbcd6b16e" name="AuthorizationClientPlatforms">
+      <references>
+        <reference Id="19f5f21a-7961-43c8-96a8-5314f4684d52" name="AuthorizationClientPlatforms">
+          <ArtifactNode Label="AuthorizationClientPlatforms" Category="CodeSchema_Namespace" Id="(Namespace=AuthorizationClientPlatforms)" />
+          <ExpandedNode Id="(Assembly=AuthorizationClientPlatforms)" Label="AuthorizationClientPlatforms.dll" Category="CodeSchema_Assembly">
+            <LinkCategory Ref="Dsl.NamespaceUsedInAssembly" />
+          </ExpandedNode>
+          <ExpandedNode Id="(Namespace=AuthorizationClientPlatforms)" Label="AuthorizationClientPlatforms" Category="CodeSchema_Namespace">
+            <LinkCategory Ref="Represents" />
+          </ExpandedNode>
+        </reference>
+      </references>
+    </layer>
+    <layer Id="c362b477-f20f-426b-bb74-3c6e4e67b816" name="CryptographicPlatforms">
+      <references>
+        <reference Id="e6209e4c-202c-4e16-91ed-b54ab306340a" name="CryptographicPlatforms">
+          <ArtifactNode Label="CryptographicPlatforms" Category="CodeSchema_Namespace" Id="(Namespace=CryptographicPlatforms)" />
+          <ExpandedNode Id="(Assembly=CryptographicPlatforms)" Label="CryptographicPlatforms.dll" Category="CodeSchema_Assembly">
+            <LinkCategory Ref="Dsl.NamespaceUsedInAssembly" />
+          </ExpandedNode>
+          <ExpandedNode Id="(Namespace=CryptographicPlatforms)" Label="CryptographicPlatforms" Category="CodeSchema_Namespace">
+            <LinkCategory Ref="Represents" />
+          </ExpandedNode>
+        </reference>
+      </references>
+    </layer>
+  </layers>
+</layerModel>

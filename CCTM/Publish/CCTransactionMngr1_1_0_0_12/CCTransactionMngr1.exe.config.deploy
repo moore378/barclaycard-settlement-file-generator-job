@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+    <configSections>
+    </configSections>
+    <connectionStrings>
+        <add name="CCTransactionMngr1.Properties.Settings.SSPM_DBConnectionString"
+            connectionString="Data Source=IPS-TESTSERVER\SSPMTEST;Initial Catalog=SSPM-DB;Persist Security Info=True;User ID=mjoubert;Password=mjoubert;Connect Timeout=100"
+            providerName="System.Data.SqlClient" />
+    </connectionStrings>
+</configuration>

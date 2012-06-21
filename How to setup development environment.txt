@@ -1,0 +1,18 @@
+If any of this doesnt work, please update this file.
+
+Register PCCOMLib:
+  Install PerthINS to register PCCOMLib. This requires you to install "j2re-1_4_2_18-windows-  i586-p.exe" and then "paymentclient_3.1.1.1.exe". "paymentclient_3.1.1.1.exe" is old, and   seems to be best run in compatibility mode for "Windows 2000". Install using "COM" configuration with a new payment client service. When asked for the JRE, if it doesnt show up do a search until it shows up.   Follow with all the defaults.
+
+Install AuthCtl.ocx:
+  AuthCtl.ocx can be found in the "AuthorizationClientPlatforms" folder. 
+  Run Cmd AS ADMINISTRATOR. 
+  Run RegSvr32.exe with AuthCtl.ocx as a parameter (eg "regsvr AuthCtl.ocx")
+
+Install RSA keys:
+  RsaUtils.ini (in the respective binary folders) points to where the keys need to be     stored.
+  The keys arent included with the source code for security reasons - speak to the system     administrator.
+
+
+Import "CCTransactionMngr1_1_TemporaryKey.pfx":
+  Double-click on the "CCTransactionMngr1_1_TemporaryKey.pfx" key in the CCTM folder to prompt importing the key for the current user.
+  The password is "T1m1stTC". 

@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" GroupingSetting="Access">
+  <Class Name="Rtcc.ClientInterfacing.RtccXMLRequestInterpreter" Collapsed="true">
+    <Position X="6.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAACAAAABACAgAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ClientInterfacing.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rtcc.ClientInterfacing.DummyMessageStreamSource" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ClientInterfacing.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rtcc.ClientInterfacing.TcpMessenger" Collapsed="true">
+    <Position X="2.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAAAAACCAggAAAAQAAAAAAABAAAAAA=</HashCode>
+      <FileName>ClientInterfacing.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rtcc.DataSet1" Collapsed="true">
+    <Position X="9" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAwAAAAJABAAAQgAAAAgCQhhAAAAAAAEABBA=</HashCode>
+      <FileName>DataSet1.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rtcc.Program" Collapsed="true">
+    <Position X="14.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rtcc.RtccForm" Collapsed="true">
+    <Position X="12.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAgCAQAABEAACACgASAAA4ACCAEHAKEAAAIEA=</HashCode>
+      <FileName>RtccForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rtcc.DataSet1TableAdapters.SEL_RTCC_PROCESSORTableAdapter" Collapsed="true">
+    <Position X="9" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EACAAGAAEAAAAAcAIAAAAAAAACAICAAAAAAAAAAABBA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rtcc.DataSet1TableAdapters.QueriesTableAdapter" Collapsed="true">
+    <Position X="9" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAAAAAAIAAAAAAAAABIAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rtcc.DataSet1TableAdapters.TableAdapterManager" Collapsed="true">
+    <Position X="12.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAACAAAABABAEBAAAAMAAgAAACgAAAAAQAAAAABAQ=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rtcc.Properties.Resources" Collapsed="true">
+    <Position X="10.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAABEAAAAQAAAAAAAAAAAAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rtcc.Properties.Settings" Collapsed="true">
+    <Position X="10.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAIAAAAAABAAAAACAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rtcc.Mediator.RtccMediator" Collapsed="true">
+    <Position X="14.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAwAAAABAAAMAAABAACAAEAIAQAAMCEAEAAAAAAAA=</HashCode>
+      <FileName>RtccMediator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rtcc.Mediator.RtccRequestInterpreter" Collapsed="true">
+    <Position X="6.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>RtccMediator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rtcc.Mediator.DummyDatabase" Collapsed="true">
+    <Position X="3.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAEAAAAgAAACAAAAAAAAAAAAAA=</HashCode>
+      <FileName>RtccMediator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rtcc.Mediator.RtccDatabase" Collapsed="true">
+    <Position X="3.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAEAAAAgAAACAAAAAAAAAAAAAA=</HashCode>
+      <FileName>RtccMediator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rtcc.Mediator.PayByCellClient" Collapsed="true">
+    <Position X="12.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAA=</HashCode>
+      <FileName>RtccMediator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Rtcc.Mediator.MessageStreamSource" Collapsed="true">
+    <Position X="1.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAgAAAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>RtccMediator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="Rtcc.Mediator.ClientAuthResponse" Collapsed="true">
+    <Position X="9" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAwAAAAAAAAAQAAAAAAAAAAQAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>RtccMediator.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="Rtcc.Mediator.RawDataMessage" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="10.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAA=</HashCode>
+      <FileName>RtccMediator.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

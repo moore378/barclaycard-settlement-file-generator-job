@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cctm", "Cctm.csproj", "{EB6FE2F9-897D-41B8-96EC-E3F1035DA4B6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A8DC7A1F-25AF-4935-9A23-96C610F4DE95} = {A8DC7A1F-25AF-4935-9A23-96C610F4DE95}
+		{5AE1B5BD-C0AE-46E2-8E55-6960FAF3A846} = {5AE1B5BD-C0AE-46E2-8E55-6960FAF3A846}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthorizationClientPlatforms", "..\AuthorizationClientPlatforms\AuthorizationClientPlatforms.csproj", "{5AE1B5BD-C0AE-46E2-8E55-6960FAF3A846}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TransactionManagementCommon", "..\TransactionManagmentCommon\TransactionManagementCommon.csproj", "{A8DC7A1F-25AF-4935-9A23-96C610F4DE95}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptographicPlatforms", "..\CryptographicPlatforms\CryptographicPlatforms.csproj", "{C57D09F3-983C-4508-8E34-FAD3B081B79F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EB6FE2F9-897D-41B8-96EC-E3F1035DA4B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB6FE2F9-897D-41B8-96EC-E3F1035DA4B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB6FE2F9-897D-41B8-96EC-E3F1035DA4B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB6FE2F9-897D-41B8-96EC-E3F1035DA4B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5AE1B5BD-C0AE-46E2-8E55-6960FAF3A846}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5AE1B5BD-C0AE-46E2-8E55-6960FAF3A846}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5AE1B5BD-C0AE-46E2-8E55-6960FAF3A846}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5AE1B5BD-C0AE-46E2-8E55-6960FAF3A846}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A8DC7A1F-25AF-4935-9A23-96C610F4DE95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8DC7A1F-25AF-4935-9A23-96C610F4DE95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8DC7A1F-25AF-4935-9A23-96C610F4DE95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8DC7A1F-25AF-4935-9A23-96C610F4DE95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C57D09F3-983C-4508-8E34-FAD3B081B79F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C57D09F3-983C-4508-8E34-FAD3B081B79F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C57D09F3-983C-4508-8E34-FAD3B081B79F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C57D09F3-983C-4508-8E34-FAD3B081B79F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

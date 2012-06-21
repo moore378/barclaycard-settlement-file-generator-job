@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<logicalClassDesignerModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm4="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm5="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/ModelStore" dslVersion="1.0.0.0" Id="96cda19d-84a5-4de4-947e-5f8414c28831" name="UMLClassDiagram1" linkedPackageId="c9a1a593-9f58-443e-8fd4-74ab1b3b5b1b" xmlns="http://schemas.microsoft.com/dsltools/LogicalClassDesigner">
+  <profileInstances>
+    <packageHasProfileInstances Id="4365c162-5320-4b3e-8b54-1e84cae7667a">
+      <profileInstance Id="1e282a53-8152-4c7c-a307-8296ea589dfc" name="StandardProfileL2">
+        <elementDefinition Id="e34d544e-0fea-4ed6-ac5e-1b74119ac791" />
+      </profileInstance>
+      <elementDefinition Id="0caec977-1f8c-4ba3-a7db-8cc9ad9cc73b" />
+    </packageHasProfileInstances>
+    <packageHasProfileInstances Id="379e7163-f4d3-498b-9da2-e2d4b9f1b9dc">
+      <profileInstance Id="fb7edddd-11bc-46b2-bdee-3471bc231b0f" name="StandardProfileL3">
+        <elementDefinition Id="532ea607-fb19-44b8-8502-3351b05452be" />
+      </profileInstance>
+      <elementDefinition Id="29349502-908c-4fda-9054-c48619c59ed0" />
+    </packageHasProfileInstances>
+  </profileInstances>
+  <packagedElements>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="421ce276-352f-439f-94cc-d21bebfedca2" name="CctmMediator" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="72eb38bb-a13f-4009-94d0-2efb17408ce1" />
+      </class>
+    </logicalClassDesignerModelHasTypes>
+    <logicalClassDesignerModelHasTypes>
+      <class Id="edbc2fec-35ec-4235-a9e0-346a36cb1fdc" name="Class1" isAbstract="false" isLeaf="false" isActiveClass="false">
+        <elementDefinition Id="eee8706e-c587-4220-b79d-8818f57b2714" />
+      </class>
+    </logicalClassDesignerModelHasTypes>
+  </packagedElements>
+  <package Id="c9a1a593-9f58-443e-8fd4-74ab1b3b5b1b" name="CctmModeling">
+    <elementDefinition Id="a463b7a2-dd47-48e2-9c70-7ec6aef8beb1" />
+  </package>
+</logicalClassDesignerModel>

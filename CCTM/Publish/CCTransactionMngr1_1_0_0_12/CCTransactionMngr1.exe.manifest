@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <asmv1:assemblyIdentity name="CCTransactionMngr1.exe" version="1.0.0.12" publicKeyToken="a975d5fa43843324" language="neutral" processorArchitecture="x86" type="win32" />
+  <description asmv2:iconFile="CC_MV.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
+  <application />
+  <entryPoint>
+    <assemblyIdentity name="CCTransactionMngr1" version="1.0.0.12" language="neutral" processorArchitecture="x86" />
+    <commandLine file="CCTransactionMngr1.exe" parameters="" />
+  </entryPoint>
+  <trustInfo>
+    <security>
+      <applicationRequestMinimum>
+        <PermissionSet Unrestricted="true" ID="Custom" SameSite="site" />
+        <defaultAssemblyRequest permissionSetReference="Custom" />
+      </applicationRequestMinimum>
+    </security>
+  </trustInfo>
+  <dependency>
+    <dependentOS>
+      <osVersionInfo>
+        <os majorVersion="4" minorVersion="10" buildNumber="0" servicePackMajor="0" />
+      </osVersionInfo>
+    </dependentOS>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="Microsoft.Windows.CommonLanguageRuntime" version="2.0.50727.0" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="AxInterop.AUTHCTLLib.dll" size="61440">
+      <assemblyIdentity name="AxInterop.AUTHCTLLib" version="1.2.0.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>BWxeEwFLB9QtlKc4whdBQz3/o8Q=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="CardEaseXMLClient.dll" size="53248">
+      <assemblyIdentity name="CardEaseXMLClient" version="1.1.0.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>eLrrB+CuEUQ0guMhwVYBWFo6msk=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="CCCrypto.dll" size="16384">
+      <assemblyIdentity name="CCCrypto" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>krfzc+svbU3OrUCRz/rFPzJpdPw=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="CCTransactionMngr1.exe" size="81920">
+      <assemblyIdentity name="CCTransactionMngr1" version="1.0.0.12" language="neutral" processorArchitecture="x86" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>OaNgt1GxwvCXJU4bmSjUhC+FzAc=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Interop.AUTHCTLLib.dll" size="61440">
+      <assemblyIdentity name="Interop.AUTHCTLLib" version="1.2.0.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>yQL2AgLyvA7yoCTn9kSCZvwVdYQ=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Interop.PCCOMLib.dll" size="13312">
+      <assemblyIdentity name="Interop.PCCOMLib" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>jV9MgHWOUWjj0moHqoI+vHhvDJc=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="RsaUtils.dll" size="20480">
+      <assemblyIdentity name="RsaUtils" version="1.0.0.5" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>AxJjXUe92VjapKctPMoP+PozfGM=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <file name="CC_MV.ico" size="2238">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>qh+i5AV8Wu7wSon9ImoP6mL2Sg0=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="CCTransactionMngr1.exe.config" size="481">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+      <dsig:DigestValue>IUVJxAwc4jo+eKyZZGZM8vTjqfg=</dsig:DigestValue>
+    </hash>
+  </file>
+<publisherIdentity name="CN=MJLaptop3\Malan" issuerKeyHash="3c46eeda209375fa6f31a2b372623fa1216ce528" /><Signature Id="StrongNameSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" /><DigestValue>JC8NVjb+reEMHSe9XEB1p3Mseb8=</DigestValue></Reference></SignedInfo><SignatureValue>erc3ty+5s50aM84dBc2qrPCwj4Y5QU/ayqStvdCfLHarq33uu+rsxeOrvFJ11Sw1R8aGnjxM5Es7vwgvILi7uBod0XIYUeMqTQxUAbpwMYMiQTeYnRqFol9EEsdL0DoDEWfRFg3t9AHXLHtzZUCMqk7Hw6RoVSIbfj3FkyWeYbs=</SignatureValue><KeyInfo Id="StrongNameKeyInfo"><KeyValue><RSAKeyValue><Modulus>+cumhqfoA7VjS0vNvTPcmXCrP7TGN5aaxYBZyTEfdWVTyFQcXMwIMVIaP2bVE++Py0Pg90SgK1nOfPCWPEGskDuMMsdPWi8asqbD5npBs2PZAC0tdPeW2T7Pu/t9Xqb9R+CcGVEapBhsG5fSEvguVgAMzDpX8sUEmw5gGAQX4Fs=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><msrel:RelData xmlns:msrel="http://schemas.microsoft.com/windows/rel/2005/reldata"><r:license xmlns:r="urn:mpeg:mpeg21:2003:01-REL-R-NS" xmlns:as="http://schemas.microsoft.com/windows/pki/2005/Authenticode"><r:grant><as:ManifestInformation Hash="bf792c73a775405cbd271d0ce1adfe36560d2f24" Description="" Url=""><as:assemblyIdentity name="CCTransactionMngr1.exe" version="1.0.0.12" publicKeyToken="a975d5fa43843324" language="neutral" processorArchitecture="x86" type="win32" /></as:ManifestInformation><as:SignedBy /><as:AuthenticodePublisher><as:X509SubjectName>CN=MJLaptop3\Malan</as:X509SubjectName></as:AuthenticodePublisher></r:grant><r:issuer><Signature Id="AuthenticodeSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" /><DigestValue>kSeb2TXmD1Jo7zgawW/SLRDqboY=</DigestValue></Reference></SignedInfo><SignatureValue>mKYpg6gDLJSrXsG2MWjDmyhs5Ypn6HKKpINcVNzK63FgG94hNDAkQ+g3ef9Uj54gz4x2xLTicxNNxnIc0pqapLLEHPt3jvzxtr03XP3V/QlF1AQbe1gOPjYH/Zy1t+Gy+OYM6b+D1/UTlqJlhHRlC9/dVVoxW9t/2ztM0Lqp3FQ=</SignatureValue><KeyInfo><KeyValue><RSAKeyValue><Modulus>+cumhqfoA7VjS0vNvTPcmXCrP7TGN5aaxYBZyTEfdWVTyFQcXMwIMVIaP2bVE++Py0Pg90SgK1nOfPCWPEGskDuMMsdPWi8asqbD5npBs2PZAC0tdPeW2T7Pu/t9Xqb9R+CcGVEapBhsG5fSEvguVgAMzDpX8sUEmw5gGAQX4Fs=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><X509Data><X509Certificate>MIIB1TCCAT6gAwIBAgIQF/zoh1utHZVIaPePUOQW1zANBgkqhkiG9w0BAQUFADApMScwJQYDVQQDHh4ATQBKAEwAYQBwAHQAbwBwADMAXABNAGEAbABhAG4wHhcNMDkxMjExMDEzMjI3WhcNMTAxMjExMDczMjI3WjApMScwJQYDVQQDHh4ATQBKAEwAYQBwAHQAbwBwADMAXABNAGEAbABhAG4wgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAPnLpoan6AO1Y0tLzb0z3Jlwqz+0xjeWmsWAWckxH3VlU8hUHFzMCDFSGj9m1RPvj8tD4PdEoCtZznzwljxBrJA7jDLHT1ovGrKmw+Z6QbNj2QAtLXT3ltk+z7v7fV6m/UfgnBlRGqQYbBuX0hL4LlYADMw6V/LFBJsOYBgEF+BbAgMBAAEwDQYJKoZIhvcNAQEFBQADgYEAN0pxIHidr9L3+GvVylxEwj7wae463XXpIjK9JI0Rjd91wuzmynt9mKTeilnzMCS4yNbUKGTNDjxJBrEMwT7twGZvx2Kohc9OyAw5fM0NnaE9VoN2wqGyEruj5Terh28Vxlq7NdmrrXYZMCqlp2COFZY72UbXHJtw+PCUoBnEAdM=</X509Certificate></X509Data></KeyInfo></Signature></r:issuer></r:license></msrel:RelData></KeyInfo></Signature></asmv1:assembly>
