@@ -204,6 +204,8 @@ namespace Cctm.Model
                     default: database.UpdateTransactionRecord(updatedRecord); break;
                 }*/
                 database.UpdateTransactionRecordCctm(transactionRecord, updatedRecord);
+                transactionRecord.Status = updatedRecord.Status;
+                UpdatedTransaction(transactionRecord);
  
                 processedRecord(updatedRecord);
 

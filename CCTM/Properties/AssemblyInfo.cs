@@ -29,8 +29,8 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("2.0.6.0")]
-[assembly: AssemblyFileVersion("2.0.6.0")]  // sent to Clearing Platform
+[assembly: AssemblyVersion("2.0.6.1")]
+[assembly: AssemblyFileVersion("2.0.6.1")]  // sent to Clearing Platform
 
 // Release History (Most Recent on top)
 // Note: Remember to update the following Version references.

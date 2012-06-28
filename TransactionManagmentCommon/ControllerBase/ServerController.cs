@@ -277,13 +277,13 @@ namespace TransactionManagementCommon.ControllerBase
         /// </param>
         /// <returns>The result of the operation</returns>
         /// <exception cref="Exception">May throw any exception that the operation throws</exception>
-        //[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         public ResultType Perform<ResultType>(Func<ServerType, ResultType> operation, ExceptionHandler exceptionHandler = null)
         {
             return _Perform<object, ResultType>((server, param) => operation(server), null, exceptionHandler);
         }
 
-        //[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         private ResultType _Perform<ParamType, ResultType>(Func<ServerType, ParamType, ResultType> operation, ParamType param, ExceptionHandler exceptionHandler = null)
         {
             int triedCount = 0;
@@ -350,14 +350,14 @@ namespace TransactionManagementCommon.ControllerBase
             throw new Exception("Unexpected branch"); // It should never get here
         }
 
-        //[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         public void Perform(Action<ServerType> operation, ExceptionHandler exceptionHandler = null)
         {
             // Suppress and ignore the result
             _Perform<object, object>((server, param) => { operation(server); return null; }, null, exceptionHandler);
         }
 
-        //[global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         public ResultType Perform<ParamType, ResultType>(Func<ServerType, ParamType, ResultType> operation, ParamType param, ExceptionHandler exceptionHandler = null)
         {
             // Suppress and ignore the result

@@ -4,7 +4,7 @@
   <description asmv2:iconFile="Forms\CC_MV.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <application />
   <entryPoint>
-    <assemblyIdentity name="CCTM" version="2.0.6.0" language="neutral" processorArchitecture="x86" />
+    <assemblyIdentity name="CCTM" version="2.0.6.1" language="neutral" processorArchitecture="x86" />
     <commandLine file="CCTM.exe" parameters="" />
   </entryPoint>
   <trustInfo>
@@ -80,13 +80,13 @@
   </dependency>
   <dependency>
     <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="CCTM.exe" size="123904">
-      <assemblyIdentity name="CCTM" version="2.0.6.0" language="neutral" processorArchitecture="x86" />
+      <assemblyIdentity name="CCTM" version="2.0.6.1" language="neutral" processorArchitecture="x86" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>SGHZ/7S4c24l2E+M2KyAzpVHXH4=</dsig:DigestValue>
+        <dsig:DigestValue>KU7M1CP157PuA2XYhTOh9v7OpyU=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -146,7 +146,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>uW6/m2GXsXfXNZQOAOZ4KaMBmp8=</dsig:DigestValue>
+        <dsig:DigestValue>YodM7I03YRfhqqVZW98H4uOWx2o=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
