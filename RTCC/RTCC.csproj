@@ -64,15 +64,18 @@
     <Reference Include="RsaUtils, Version=1.0.0.5, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.configuration" />
+    <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Management" />
     <Reference Include="System.Runtime.Serialization">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.ServiceModel">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -87,11 +90,24 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dummy\DummyRtsaConnection.cs" />
+    <Compile Include="RtccPerformanceCounters.cs" />
+    <Compile Include="ProjectInstaller.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ProjectInstaller.Designer.cs">
+      <DependentUpon>ProjectInstaller.cs</DependentUpon>
+    </Compile>
     <Compile Include="Main\LogFile.cs" />
     <Compile Include="Main\TransactionDoneEventArgs.cs" />
     <Compile Include="Main\RtccConfigs.cs" />
     <Compile Include="Main\RtccMain.cs" />
     <Compile Include="Main\PayByCellClient.cs" />
+    <Compile Include="RtccService.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RtccService.Designer.cs">
+      <DependentUpon>RtccService.cs</DependentUpon>
+    </Compile>
     <Compile Include="RtsaInterfacing\ClientAuthReplyXml.cs" />
     <Compile Include="RtsaInterfacing\ClientAuthRequest.cs" />
     <Compile Include="RtsaInterfacing\ClientAuthRequestXml.cs" />
@@ -121,6 +137,9 @@
     <Compile Include="Main\RtccMediator.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="ProjectInstaller.resx">
+      <DependentUpon>ProjectInstaller.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="RtccForm.resx">
       <DependentUpon>RtccForm.cs</DependentUpon>
       <SubType>Designer</SubType>

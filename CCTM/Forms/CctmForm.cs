@@ -48,6 +48,9 @@ namespace Cctm
         #region Establishing runtime configuration
 
         Configuration configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+        private static CctmPerformanceCounters performanceCounters = new CctmPerformanceCounters(); 
+        private bool hidden;
+        private static string logFolder = Properties.Settings.Default.LogFolder;
 
         /// <summary>
         /// Called when the form loads (beginning of application)
@@ -57,6 +60,15 @@ namespace Cctm
             tickWatchDog();
             prepareLog();
             prepareGUI();
+            loadSettings();
+            prepareEnvironment();
+            prepareCctmServers();
+        }
+
+        public void InitializeHidden()
+        {
+            hidden = true;
+            prepareLog();
             loadSettings();
             prepareEnvironment();
             prepareCctmServers();
@@ -148,7 +160,7 @@ namespace Cctm
                 () => 
                 {
                     // Create the mediator
-                    CctmMediator mediator = new CctmMediator(database.Value, authorizationSuite, statisticsChanged, generalLog, fileLog, (x) => tickWatchDog(), detailedLog, maxSimultaneous);
+                    CctmMediator mediator = new CctmMediator(database.Value, authorizationSuite, statisticsChanged, generalLog, fileLog, (x) => tickWatchDog(), detailedLog, maxSimultaneous, performanceCounters);
                     mediator.PollIntervalSeconds = PollIntervalSeconds;
                     // Set up the events for the mediator
                     mediator.StartingTransaction += StartingTransaction;
@@ -301,7 +313,8 @@ namespace Cctm
         /// </summary>
         public void generalLog(string message)
         {
-            eventLogForm.Value.log(message);
+            if (!hidden)
+                eventLogForm.Value.log(message);
         }
 
         /// <summary>
@@ -351,9 +364,10 @@ namespace Cctm
             fileLogLock.WaitOne();
             try
             {
-                string dateString = DateTime.Now.ToString("yyyy'_'MM'_'dd'_'HH");
-                string timeString = DateTime.Now.ToString("HH:mm:ss");
-                string fileName = "logs\\Transactions_" + dateString + ".txt";
+                var now = DateTime.Now;
+                string dateString = now.ToString("yyyy'_'MM'_'dd'_'HH");
+                string timeString = now.ToString("HH:mm:ss");
+                string fileName = Path.Combine(logFolder, "Transactions_" + dateString + ".txt");
                 if (!Directory.Exists("logs"))
                     Directory.CreateDirectory("logs");
                 File.AppendAllText(fileName, timeString + " :: " + msg + Environment.NewLine);
@@ -371,7 +385,8 @@ namespace Cctm
         /// <param name="text">The new text to use for the server's status</param>
         public void updateServerStatus(ListViewItem.ListViewSubItem item, string text)
         {
-            listView1.Invoke(new Action(() => { item.Text = text; }));
+            if (!hidden)
+                listView1.Invoke(new Action(() => { item.Text = text; }));
         }
 
         /// <summary>
@@ -380,121 +395,137 @@ namespace Cctm
         /// <param name="statistics"></param>
         private void statisticsChanged(CctmMediator.IStatistics statistics)
         {
-            listView2.Invoke(new Action(() =>
+            if (!hidden)
             {
-                queuedCountDisplay.Text = statistics.QueuedCount.ToString();
-                processingCountDisplay.Text = statistics.ProcessingCount.ToString();
-                successfulCountDisplay.Text = statistics.SuccessfulCount.ToString();
-                failedCountDisplay.Text = statistics.FailedCount.ToString();
-                queuedTimeDisplay.Text = statistics.AverageQueueTime.ToString("g");
-                processingTimeDisplay.Text = statistics.AverageTaskTime.ToString("g");
-            }));
+                listView2.Invoke(new Action(() =>
+                {
+                    queuedCountDisplay.Text = statistics.QueuedCount.ToString();
+                    processingCountDisplay.Text = statistics.ProcessingCount.ToString();
+                    successfulCountDisplay.Text = statistics.SuccessfulCount.ToString();
+                    failedCountDisplay.Text = statistics.FailedCount.ToString();
+                    queuedTimeDisplay.Text = statistics.AverageQueueTime.ToString("g");
+                    processingTimeDisplay.Text = statistics.AverageTaskTime.ToString("g");
+                }));
+            }
         }
 
         private void StartingTransaction(TransactionRecord transaction)
         {
-            listView3.Invoke(new Action(() =>
-                {
-                    ListViewItem transactionListItem;
-                    if (displayedTransactions.ContainsKey(transaction.ID))
+            if (!hidden)
+            {
+                listView3.Invoke(new Action(() =>
                     {
-                        transactionListItem = displayedTransactions[transaction.ID];
-                        transactionListItem.SubItems[1].Text = transaction.Status.ToText();
+                        ListViewItem transactionListItem;
+                        if (displayedTransactions.ContainsKey(transaction.ID))
+                        {
+                            transactionListItem = displayedTransactions[transaction.ID];
+                            transactionListItem.SubItems[1].Text = transaction.Status.ToText();
+                        }
+                        else
+                        {
+                            transactionListItem = listView3.Items.Add(transaction.ID.ToString());
+                            transactionListItem.SubItems.Add(transaction.Status.ToText());
+                        }
+                        transactionListItem.StateImageIndex = 0;
+                        displayedTransactions[transaction.ID] = transactionListItem;
                     }
-                    else
-                    {
-                        transactionListItem = listView3.Items.Add(transaction.ID.ToString());
-                        transactionListItem.SubItems.Add(transaction.Status.ToText());
-                    }
-                    transactionListItem.StateImageIndex = 0;
-                    displayedTransactions[transaction.ID] = transactionListItem;
-                }
-            ));
+                ));
+            }
         }
 
         private void UpdatingTransaction(TransactionRecord transaction)
         {
-            listView3.Invoke(new Action(() =>
-                {
-                    if (displayedTransactions.ContainsKey(transaction.ID))
-                    {
-                        displayedTransactions[transaction.ID].SubItems[1].Text = transaction.Status.ToText();
-                        displayedTransactions[transaction.ID].StateImageIndex = 0;
+            if (!hidden)
+            {
 
-                        listView3AutoScrollToItem(displayedTransactions[transaction.ID]);
+                listView3.Invoke(new Action(() =>
+                    {
+                        if (displayedTransactions.ContainsKey(transaction.ID))
+                        {
+                            displayedTransactions[transaction.ID].SubItems[1].Text = transaction.Status.ToText();
+                            displayedTransactions[transaction.ID].StateImageIndex = 0;
+
+                            listView3AutoScrollToItem(displayedTransactions[transaction.ID]);
+                        }
                     }
-                }
-            ));
+                ));
+            }
         }
 
         private void listView3AutoScrollToItem(ListViewItem item)
         {
-
-            listView3.Invoke(new Action(() =>
-                {
-                    // Check if the user has scrolled the listView - if so, then we disable auto-scrolling
-                    if (autoScrollTarget != null)
+            if (!hidden)
+            {
+                listView3.Invoke(new Action(() =>
                     {
-                        if ((autoScrollTarget.Bounds.Bottom < listView3.ClientRectangle.Top)
-                          || (autoScrollTarget.Bounds.Top > listView3.ClientRectangle.Bottom))
-                            listViewAutoScroll = false;
-                        else
-                            listViewAutoScroll = true;
-                    }
+                        // Check if the user has scrolled the listView - if so, then we disable auto-scrolling
+                        if (autoScrollTarget != null)
+                        {
+                            if ((autoScrollTarget.Bounds.Bottom < listView3.ClientRectangle.Top)
+                              || (autoScrollTarget.Bounds.Top > listView3.ClientRectangle.Bottom))
+                                listViewAutoScroll = false;
+                            else
+                                listViewAutoScroll = true;
+                        }
 
-                    // Scroll down if auto scrolling is enabled
-                    if ((listViewAutoScroll)&&(item.Bounds.Top > listView3.ClientRectangle.Top))
-                        listView3.EnsureVisible(item.Index);
+                        // Scroll down if auto scrolling is enabled
+                        if ((listViewAutoScroll) && (item.Bounds.Top > listView3.ClientRectangle.Top))
+                            listView3.EnsureVisible(item.Index);
 
-                    autoScrollTarget = item;
-                }));
+                        autoScrollTarget = item;
+                    }));
+            }
         }
 
         private void CompletedTransaction(TransactionRecord transaction, CctmMediator.TransactionProcessResult result)
         {
-            if (!displayedTransactions.ContainsKey(transaction.ID))
-                return;
-
-            listView3AutoScrollToItem(displayedTransactions[transaction.ID]);          
-            
-
-            if (result != CctmMediator.TransactionProcessResult.Error)
+            if (!hidden)
             {
-                if (result == CctmMediator.TransactionProcessResult.Successful)
+
+                if (!displayedTransactions.ContainsKey(transaction.ID))
+                    return;
+
+                listView3AutoScrollToItem(displayedTransactions[transaction.ID]);
+
+
+                if (result != CctmMediator.TransactionProcessResult.Error)
                 {
-                    listView3.Invoke(new Action(() =>
-                        displayedTransactions[transaction.ID].StateImageIndex = 1));
-                }
-                else if (result == CctmMediator.TransactionProcessResult.Cancelled)
-                {
-                    listView3.Invoke(new Action(() =>
-                    {
-                        if (displayedTransactions.ContainsKey(transaction.ID))
-                        {
-                            displayedTransactions[transaction.ID].SubItems[1].Text = "Cancelled";
-                            displayedTransactions[transaction.ID].StateImageIndex = 3;
-                        }
-                    }));
-                }
-                ListViewItem listItem = displayedTransactions[transaction.ID];
-                displayedTransactions.Remove(transaction.ID);
-                
-                DelayedDoer.DoLater(60, ()=>
+                    if (result == CctmMediator.TransactionProcessResult.Successful)
                     {
                         listView3.Invoke(new Action(() =>
-                            listView3.Items.Remove(listItem)
-                            ));
-                    });
-                
-            }
-            else
-            {
-                listView3.Invoke(new Action(() =>
-                    {
-                        displayedTransactions[transaction.ID].StateImageIndex = 2;
-                        displayedTransactions[transaction.ID].SubItems[1].Text = transaction.Status.ToText();
+                            displayedTransactions[transaction.ID].StateImageIndex = 1));
                     }
-                    ));
+                    else if (result == CctmMediator.TransactionProcessResult.Cancelled)
+                    {
+                        listView3.Invoke(new Action(() =>
+                        {
+                            if (displayedTransactions.ContainsKey(transaction.ID))
+                            {
+                                displayedTransactions[transaction.ID].SubItems[1].Text = "Cancelled";
+                                displayedTransactions[transaction.ID].StateImageIndex = 3;
+                            }
+                        }));
+                    }
+                    ListViewItem listItem = displayedTransactions[transaction.ID];
+                    displayedTransactions.Remove(transaction.ID);
+
+                    DelayedDoer.DoLater(60, () =>
+                        {
+                            listView3.Invoke(new Action(() =>
+                                listView3.Items.Remove(listItem)
+                                ));
+                        });
+
+                }
+                else
+                {
+                    listView3.Invoke(new Action(() =>
+                        {
+                            displayedTransactions[transaction.ID].StateImageIndex = 2;
+                            displayedTransactions[transaction.ID].SubItems[1].Text = transaction.Status.ToText();
+                        }
+                        ));
+                }
             }
         }
 
@@ -510,7 +541,7 @@ namespace Cctm
             aboutForm.Value.Show();
         }
 
-        private void CctmForm_FormClosing(object sender, FormClosingEventArgs e)
+        public void CctmForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             // Check if we need to wait for transactions to complete
             int waitCount = 0;
@@ -562,10 +593,13 @@ namespace Cctm
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            double processorTime = performanceCounter.NextValue();
-            CpuLoadState1 = (CpuLoadState1 * 0.9 + processorTime * 0.1);
-            CpuLoadState2 = (CpuLoadState2 * 0.9 + CpuLoadState1 * 0.1);
-            toolStripStatusLabel1.Text = "CPU Load: " + Math.Round(CpuLoadState2).ToString() + " %";
+            if (!hidden)
+            {
+                double processorTime = performanceCounter.NextValue();
+                CpuLoadState1 = (CpuLoadState1 * 0.9 + processorTime * 0.1);
+                CpuLoadState2 = (CpuLoadState2 * 0.9 + CpuLoadState1 * 0.1);
+                toolStripStatusLabel1.Text = "CPU Load: " + Math.Round(CpuLoadState2).ToString() + " %";
+            }
         }
         #endregion
 
@@ -610,19 +644,23 @@ namespace Cctm
                     
         #endregion
 
-        public CctmForm()
+        public CctmForm(bool initializeVisual)
         {
-            InitializeComponent();
+            if (initializeVisual)
+                InitializeComponent();
         }
 
         public void tickWatchDog()
         {
-            this.Invoke(new Action(()=>
-                {
-                    string fileName = "WatchDog.txt";
-                    File.WriteAllText(fileName, "Updated" + DateTime.Now.ToString() + Environment.NewLine);
-                }
-                ));
+            if (!hidden)
+            {
+                this.Invoke(new Action(() =>
+                    {
+                        string fileName = "WatchDog.txt";
+                        File.WriteAllText(fileName, "Updated" + DateTime.Now.ToString() + Environment.NewLine);
+                    }
+                    ));
+            }
         }
 
     } //  =====================  public partial class CctmForm   ======================  

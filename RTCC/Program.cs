@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 using System.IO;
 using System.Runtime.ExceptionServices;
 using System.Threading;
+using System.ServiceProcess;
 
 [assembly: InternalsVisibleTo("TransactionManagementUnitTests")]
 
@@ -15,6 +16,8 @@ namespace Rtcc
 {
     static class Program
     {
+        private static string logFolder = Properties.Settings.Default.LogFolder;
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -24,15 +27,24 @@ namespace Rtcc
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
             Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);
 
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-
             var configs = new RtccConfigs();
             configs.LoadFromFile();
             var rtccMain = new RtccMain(configs);
             rtccMain.Logged += RtccLogged;
-            var mainForm = new RtccForm(rtccMain, configs);
-            Application.Run(mainForm);
+
+            if (args.Length == 1 && args[0] == "gui")
+            {
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+
+                
+                var mainForm = new RtccForm(rtccMain, configs);
+                Application.Run(mainForm);
+            }
+            else
+            {
+                ServiceBase.Run(new RtccService(rtccMain, configs));
+            }
         }
 
         static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
@@ -71,7 +83,7 @@ namespace Rtcc
             }
         }
 
-        static LogFile exceptionLogFile = new LogFile("logs\\Exceptions_", ".txt");
-        static LogFile normalLogFile = new LogFile("logs\\Transactions_", ".txt");
+        static LogFile exceptionLogFile = new LogFile(Path.Combine(logFolder, "Exceptions_"), ".txt");
+        static LogFile normalLogFile = new LogFile(Path.Combine(logFolder, "Transactions_"), ".txt");
     }
 }

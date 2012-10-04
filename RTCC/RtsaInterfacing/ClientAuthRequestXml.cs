@@ -7,9 +7,7 @@ using System.Xml.Serialization;
 namespace Rtcc.RtsaInterfacing
 {
     /// <summary>
-    /// This object represents authorization request data from the client. This class does
-    /// some intelligent data extraction to read track2, PAN, etc (read-only) from the 
-    /// track string (read-write).
+    /// This object represents authorization request data from the client.
     /// </summary>
     [XmlRootAttribute("AuthRequest")]
     public class ClientAuthRequestXML

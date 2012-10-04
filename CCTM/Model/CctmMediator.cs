@@ -11,6 +11,7 @@ using Common;
 using System.Linq;
 using Cctm.Common;
 using Cctm.Database;
+using System.Diagnostics;
 
 namespace Cctm.Model
 {
@@ -29,6 +30,50 @@ namespace Cctm.Model
         public Semaphore throttle;
         private DetailedLogDelegate detailedLog;
         private static long totalStarted = 0;
+        private ICctmDatabase database;
+        private AuthorizationSuite authorizationSuite;
+        private CctmPerformanceCounters performanceCounters;
+        /// <summary>
+        /// List of running or queued transaction processing tasks
+        /// </summary>
+        private List<Task> runningTasks;
+
+        /// <summary>
+        /// List of transaction records IDs for records which are still "New" in the database but are queued for processing.
+        /// </summary>
+        private List<int> queuedRecords = new List<int>();
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="database"></param>
+        /// <param name="authorizationSuite"></param>
+        /// <param name="statisticsChanged">Delegate signalled when there is a change in the statistics record.</param>
+        public CctmMediator(ICctmDatabase database,
+            AuthorizationSuite authorizationSuite,
+            Action<IStatistics> statisticsChanged,
+            Action<string> log,
+            Action<string> fileLog,
+            Action<UpdatedTransactionRecord> processedRecord,
+            DetailedLogDelegate detailedLog,
+            int maxSimultaneous,
+            CctmPerformanceCounters performanceCounters)
+        {
+            this.performanceCounters = performanceCounters;
+            this.throttle = new Semaphore(maxSimultaneous, maxSimultaneous);
+            this.database = database;
+            this.authorizationSuite = authorizationSuite;
+            this.statistics = new CctmStatistics(statisticsChanged);
+            this.statistics.Changed += new Action<IStatistics>((stats) => { if (StatisticsChanged != null) StatisticsChanged(stats); });
+            this.runningTasks = new List<Task>();
+            this.processedRecord = processedRecord;
+            this.log = log;
+            this.fileLog = fileLog;
+            this.detailedLog = detailedLog;
+
+            // Create a background thread to cycle the mediator
+            CreateMediatorThread();
+        }
         
         public void ProcessTransaction(TransactionRecord transactionRecord, DateTime taskQueuedTime)
         {
@@ -49,218 +94,233 @@ namespace Cctm.Model
                 return;
             }
 
-            AuthorizeMode mode;
-            // What mode?
-            if (transactionRecord.PreauthStatus == TransactionStatus.ReadyToProcessNew)
-                mode = AuthorizeMode.Preauth;
-            else if (transactionRecord.PreauthStatus == TransactionStatus.Approved)
-                mode = AuthorizeMode.Finalize;
-            else
-                mode = AuthorizeMode.Normal;
-            bool isPreAuth = mode == AuthorizeMode.Preauth;
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
 
-            Interlocked.Increment(ref totalStarted);
-            //if (Interlocked.Read(ref totalStarted) > 4)
-            //    Stop(); // Stop future transactions if this is the 5th one
-
-            throttle.WaitOne();
-
-            TransactionProcessResult result = TransactionProcessResult.Error; // By default the transaction is unsuccessful... if it completes it will be set to successful
-            //string originalTransactionStatus = transactionRecord.Status; // Keep the status because it affects which processor to use
-
-            DateTime taskStart = DateTime.Now;
-            try
+            using (var tranasctionPerformanceCounters = performanceCounters.StartingTransaction())
             {
-                // Update the statistics
-                statistics.NewProcessing(new TimeSpan(DateTime.Now.Ticks - taskQueuedTime.Ticks));
+                AuthorizeMode mode;
+                // What mode?
+                if (transactionRecord.PreauthStatus == TransactionStatus.ReadyToProcessNew)
+                    mode = AuthorizeMode.Preauth;
+                else if (transactionRecord.PreauthStatus == TransactionStatus.Approved)
+                    mode = AuthorizeMode.Finalize;
+                else
+                    mode = AuthorizeMode.Normal;
+                bool isPreAuth = mode == AuthorizeMode.Preauth;
 
+                Interlocked.Increment(ref totalStarted);
+                //if (Interlocked.Read(ref totalStarted) > 4)
+                //    Stop(); // Stop future transactions if this is the 5th one
+
+                throttle.WaitOne();
+
+                TransactionProcessResult result = TransactionProcessResult.Error; // By default the transaction is unsuccessful... if it completes it will be set to successful
+                //string originalTransactionStatus = transactionRecord.Status; // Keep the status because it affects which processor to use
+
+                DateTime taskStart = DateTime.Now;
                 try
                 {
-                    // Update the record to be "processing"
-                    UpdateTransactionStatus(ref transactionRecord, TransactionStatus.Processing, isPreAuth);
-                }
-                finally
-                {
-                    // The transaction is no longer queued
-                    lock (queuedRecords)
-                        queuedRecords.Remove(transactionRecord.ID);
-                }
+                    // Update the statistics
+                    statistics.NewProcessing(new TimeSpan(DateTime.Now.Ticks - taskQueuedTime.Ticks));
 
-                CreditCardTracks tracks;
-
-                // Finalize doesnt have a track
-                if (mode != AuthorizeMode.Finalize)
-                {
-                    if (isPreAuth)
+                    try
                     {
-                        transactionRecord.TransactionIndex = transactionRecord.PreauthTransactionIndex ?? transactionRecord.TransactionIndex;
-                        if (transactionRecord.PreauthAmountDollars == null)
-                            throw new InvalidOperationException("Preauth amount is null");
-                        transactionRecord.AmountDollars = transactionRecord.PreauthAmountDollars.Value;
+                        // Update the record to be "processing"
+                        UpdateTransactionStatus(ref transactionRecord, TransactionStatus.Processing, isPreAuth);
                     }
-                    
-                    // Validate request 
-                    transactionRecord.Validate("Err: Invalid rec data");
+                    finally
+                    {
+                        // The transaction is no longer queued
+                        lock (queuedRecords)
+                            queuedRecords.Remove(transactionRecord.ID);
+                    }
 
-                    // Decrypt the request
-                    var decryptedStripe = DecryptStripe(transactionRecord, "Err: Decryption");
+                    CreditCardTracks tracks;
 
-                    // Special cases (E.g. RSA track data shifted, sentinels missing etc)
-                    var formattedStripe = TrackFormat.FormatSpecialStripeCases(decryptedStripe, transactionRecord.EncryptionMethod, "Err: Format Stripe");
+                    // Finalize doesnt have a track
+                    if (mode != AuthorizeMode.Finalize)
+                    {
+                        if (isPreAuth)
+                        {
+                            transactionRecord.TransactionIndex = transactionRecord.PreauthTransactionIndex ?? transactionRecord.TransactionIndex;
+                            if (transactionRecord.PreauthAmountDollars == null)
+                                throw new InvalidOperationException("Preauth amount is null");
+                            transactionRecord.AmountDollars = transactionRecord.PreauthAmountDollars.Value;
+                        }
 
-                    unencryptedStripe = new CreditCardStripe(formattedStripe);
+                        // Validate request 
+                        transactionRecord.Validate("Err: Invalid rec data");
 
-                    // Validate the credit card stripe
-                    unencryptedStripe.Validate("Err: Invalid Track Data");
+                        // Decrypt the request
+                        var decryptedStripe = DecryptStripe(transactionRecord, "Err: Decryption");
 
-                    // Split the stripe into tracks
-                    tracks = unencryptedStripe.SplitIntoTracks("Err: Stripe parse error");
+                        // Special cases (E.g. RSA track data shifted, sentinels missing etc)
+                        var formattedStripe = TrackFormat.FormatSpecialStripeCases(decryptedStripe, transactionRecord.EncryptionMethod, "Err: Format Stripe");
 
-                    // Validate the tracks
-                    tracks.Validate("Err: Invalid Track Data");
+                        unencryptedStripe = new CreditCardStripe(formattedStripe);
 
-                    // Split track two into fields
-                    creditCardFields = tracks.ParseTrackTwo("Err: Track parse error");
+                        // Validate the credit card stripe
+                        unencryptedStripe.Validate("Err: Invalid Track Data");
 
-                    // Validate the fields
-                    creditCardFields.Validate("Err: Invalid Track Fields");
+                        // Split the stripe into tracks
+                        tracks = unencryptedStripe.SplitIntoTracks("Err: Stripe parse error");
 
-                    // If this isn't a normal card, then we have an exceptional circumstance of this being a special card
-                    if (creditCardFields.CardType != CardType.Normal)
-                        throw new SpecialCardException();
-                }
-                else
-                    tracks = new CreditCardTracks();
+                        // Validate the tracks
+                        tracks.Validate("Err: Invalid Track Data");
 
-                // Choose the authorization platform
-                IAuthorizationPlatform authorizationPlatform = ChooseAuthorizationPlatform(transactionRecord, authorizationSuite, "Err: Clearing platform");
+                        // Split track two into fields
+                        creditCardFields = tracks.ParseTrackTwo("Err: Track parse error");
 
-                // Update the record to be authorizing
-                UpdateTransactionStatus(ref transactionRecord, TransactionStatus.Authorizing, isPreAuth);
+                        // Validate the fields
+                        creditCardFields.Validate("Err: Invalid Track Fields");
 
-                // Perform the authorization
-                authorizationResponse = AuthorizeRequest(transactionRecord, tracks, unencryptedStripe, creditCardFields, authorizationPlatform, transactionRecord.UniqueRecordNumber, mode, transactionRecord.PreauthTtid);
+                        // If this isn't a normal card, then we have an exceptional circumstance of this being a special card
+                        if (creditCardFields.CardType != CardType.Normal)
+                            throw new SpecialCardException();
+                    }
+                    else
+                        tracks = new CreditCardTracks();
 
-                // Decide the status according to the response and update the database
-                TransactionStatus newStatus = transactionRecord.Status;
-                switch (authorizationResponse.resultCode)
-                {
-                    case AuthorizationResultCode.Approved : newStatus = TransactionStatus.Approved; break;
-                    case AuthorizationResultCode.ConnectionError : newStatus = TransactionStatus.Processing; break;
-                    case AuthorizationResultCode.Declined : newStatus = TransactionStatus.Declined; break;
-                    case AuthorizationResultCode.UnknownError : newStatus = TransactionStatus.AuthError; break;
-                }
-                //UpdateTransactionStatus(ref transactionRecord, newStatus, isPreAuth);
+                    // Choose the authorization platform
+                    IAuthorizationPlatform authorizationPlatform = ChooseAuthorizationPlatform(transactionRecord, authorizationSuite, "Err: Clearing platform");
 
-                obscuredPan = new CreditCardPan();
+                    // Update the record to be authorizing
+                    UpdateTransactionStatus(ref transactionRecord, TransactionStatus.Authorizing, isPreAuth);
 
-                if (mode != AuthorizeMode.Finalize) // Pan is not valid in a finalization
-                {
-                    // Obscure the credit card PAN
+                    // Perform the authorization
+                    authorizationResponse = AuthorizeRequest(transactionRecord, tracks, unencryptedStripe, creditCardFields, authorizationPlatform, transactionRecord.UniqueRecordNumber, mode, transactionRecord.PreauthTtid);
+
+                    // Decide the status according to the response and update the database
+                    TransactionStatus newStatus = transactionRecord.Status;
+                    switch (authorizationResponse.resultCode)
+                    {
+                        case AuthorizationResultCode.Approved: newStatus = TransactionStatus.Approved; break;
+                        case AuthorizationResultCode.ConnectionError: newStatus = TransactionStatus.Processing; break;
+                        case AuthorizationResultCode.Declined: newStatus = TransactionStatus.Declined; break;
+                        case AuthorizationResultCode.UnknownError: newStatus = TransactionStatus.AuthError; break;
+                    }
+                    //UpdateTransactionStatus(ref transactionRecord, newStatus, isPreAuth);
+
+                    obscuredPan = new CreditCardPan();
+
+                    if (mode != AuthorizeMode.Finalize) // Pan is not valid in a finalization
+                    {
+                        // Obscure the credit card PAN
+                        switch (authorizationResponse.resultCode)
+                        {
+                            case AuthorizationResultCode.Approved:
+                                obscuredPan = creditCardFields.Pan.Obscure(CreditCardPan.ObscurationMethod.FirstSixLastFour);
+                                break;
+                            case AuthorizationResultCode.Declined:
+                                obscuredPan = creditCardFields.Pan.Obscure(CreditCardPan.ObscurationMethod.Hash);
+                                break;
+                            default:
+                                obscuredPan = creditCardFields.Pan.Obscure(CreditCardPan.ObscurationMethod.FirstSixLastFour);
+                                break;
+                        }
+                    }
+
+                    string newTrackText = null;
+                    // Update the track only if a definite response from authorizer
+                    if ((authorizationResponse.resultCode == AuthorizationResultCode.Approved) || (authorizationResponse.resultCode == AuthorizationResultCode.Declined))
+                    {
+                        newTrackText = "CCTM2 - " + authorizationResponse.note;
+                        //database.UpdateTrack(transactionRecord.ID, newTrackText);
+                    }
+
+                    // Send the updated record information to the database
+                    UpdatedTransactionRecord updatedRecord = new UpdatedTransactionRecord()
+                    {
+                        AuthorizationCode = authorizationResponse.authorizationCode,
+                        CardEaseReference = authorizationResponse.receiptReference,
+                        CardScheme = authorizationResponse.cardType,
+                        ExpiryDate = (mode != AuthorizeMode.Finalize) ? creditCardFields.ExpDateYYMM : "",
+                        FirstSix = (mode != AuthorizeMode.Finalize) ? creditCardFields.Pan.FirstSixDigits : "",
+                        LastFour = (mode != AuthorizeMode.Finalize) ? creditCardFields.Pan.LastFourDigits : "",
+                        PAN = obscuredPan.ToString(),
+                        TransactionRecordID = transactionRecord.ID,
+                        BatchNum = authorizationResponse.BatchNum,
+                        Ttid = authorizationResponse.Ttid,
+                        Status = newStatus, //isPreAuth ? (transactionRecord.PreauthStatus ?? transactionRecord.Status) : transactionRecord.Status,
+                        TrackText = newTrackText
+                    };
+
+                    // Record it into the database
+                    /*switch (mode)
+                    {
+                        case AuthorizeMode.Preauth: database.UpdatePreauthRecord(transactionRecord, updatedRecord); break;
+                        case AuthorizeMode.Finalize: database.UpdateFinalizeRecord(transactionRecord, updatedRecord); break;
+                        default: database.UpdateTransactionRecord(updatedRecord); break;
+                    }*/
+                    database.UpdateTransactionRecordCctm(transactionRecord, updatedRecord);
+                    transactionRecord.Status = updatedRecord.Status;
+                    UpdatedTransaction(transactionRecord);
+
+                    processedRecord(updatedRecord);
+
+                    fileLog(
+                        "ID: " + transactionRecord.ID
+                        + "; Result: " + authorizationResponse.resultCode.ToString()
+                        + "; Notes: " + authorizationResponse.note
+                        );
+
                     switch (authorizationResponse.resultCode)
                     {
                         case AuthorizationResultCode.Approved:
-                            obscuredPan = creditCardFields.Pan.Obscure(CreditCardPan.ObscurationMethod.FirstSixLastFour);
-                            break;
                         case AuthorizationResultCode.Declined:
-                            obscuredPan = creditCardFields.Pan.Obscure(CreditCardPan.ObscurationMethod.Hash);
+                            result = TransactionProcessResult.Successful;
+
                             break;
                         default:
-                            obscuredPan = creditCardFields.Pan.Obscure(CreditCardPan.ObscurationMethod.FirstSixLastFour);
+                            result = TransactionProcessResult.Error;
                             break;
                     }
+
+                    if (result == TransactionProcessResult.Error)
+                        tranasctionPerformanceCounters.FailedTransaction(stopwatch.ElapsedTicks);
+                    else
+                        tranasctionPerformanceCounters.SuccessfulTransaction(stopwatch.ElapsedTicks, authorizationResponse.resultCode == AuthorizationResultCode.Approved);
+
                 }
-
-                string newTrackText = null;
-                // Update the track only if a definite response from authorizer
-                if ((authorizationResponse.resultCode == AuthorizationResultCode.Approved) || (authorizationResponse.resultCode == AuthorizationResultCode.Declined))
+                catch (SpecialCardException exception)
                 {
-                    newTrackText = "CCTM2 - " + authorizationResponse.note;
-                    //database.UpdateTrack(transactionRecord.ID, newTrackText);
+                    fileLog(transactionRecord.ID + " " + exception.ToString());
+                    UpdateTransactionStatus(ref transactionRecord, TransactionStatus.StripeError, isPreAuth);
+                    tranasctionPerformanceCounters.FailedTransaction(stopwatch.ElapsedTicks);
                 }
-
-                // Send the updated record information to the database
-                UpdatedTransactionRecord updatedRecord = new UpdatedTransactionRecord()
+                catch (StripeErrorException exception)
                 {
-                    AuthorizationCode = authorizationResponse.authorizationCode,
-                    CardEaseReference = authorizationResponse.receiptReference,
-                    CardScheme = authorizationResponse.cardType,
-                    ExpiryDate = (mode != AuthorizeMode.Finalize) ? creditCardFields.ExpDateYYMM : "",
-                    FirstSix = (mode != AuthorizeMode.Finalize) ? creditCardFields.Pan.FirstSixDigits : "",
-                    LastFour = (mode != AuthorizeMode.Finalize) ? creditCardFields.Pan.LastFourDigits : "",
-                    PAN = obscuredPan.ToString(),
-                    TransactionRecordID = transactionRecord.ID,
-                    BatchNum = authorizationResponse.BatchNum,
-                    Ttid = authorizationResponse.Ttid,
-                    Status = newStatus, //isPreAuth ? (transactionRecord.PreauthStatus ?? transactionRecord.Status) : transactionRecord.Status,
-                    TrackText = newTrackText
-                };
+                    fileLog(transactionRecord.ID + " " + exception.ToString());
+                    // Update the fail status
+                    UpdateTransactionStatus(ref transactionRecord, TransactionStatus.StripeError, isPreAuth);
+                    tranasctionPerformanceCounters.FailedTransaction(stopwatch.ElapsedTicks);
 
-                // Record it into the database
-                /*switch (mode)
-                {
-                    case AuthorizeMode.Preauth: database.UpdatePreauthRecord(transactionRecord, updatedRecord); break;
-                    case AuthorizeMode.Finalize: database.UpdateFinalizeRecord(transactionRecord, updatedRecord); break;
-                    default: database.UpdateTransactionRecord(updatedRecord); break;
-                }*/
-                database.UpdateTransactionRecordCctm(transactionRecord, updatedRecord);
-                transactionRecord.Status = updatedRecord.Status;
-                UpdatedTransaction(transactionRecord);
- 
-                processedRecord(updatedRecord);
-
-                fileLog(
-                    "ID: " + transactionRecord.ID
-                    + "; Result: " + authorizationResponse.resultCode.ToString()
-                    + "; Notes: " + authorizationResponse.note
-                    );
-
-                switch (authorizationResponse.resultCode)
-                {
-                    case AuthorizationResultCode.Approved:
-                    case AuthorizationResultCode.Declined:
-                        result = TransactionProcessResult.Successful;
-
-                        break;
-                    default:
-                        result = TransactionProcessResult.Error;
-                        break;
                 }
+                catch (AuthorizerProcessingException exception)
+                {
+                    fileLog(transactionRecord.ID + " " + exception.ToString());
+                    UpdateTransactionStatus(ref transactionRecord, TransactionStatus.AuthError, isPreAuth);
+                    tranasctionPerformanceCounters.FailedTransaction(stopwatch.ElapsedTicks);
+                }
+                catch (Exception exception)
+                {
+                    fileLog(transactionRecord.ID + " " + exception.ToString());
+                    tranasctionPerformanceCounters.FailedTransaction(stopwatch.ElapsedTicks);
+                }
+                finally
+                {
+                    if (authorizationResponse.resultCode != AuthorizationResultCode.Approved)
+                        detailedLog(DateTime.Now.ToString(), transactionRecord.Status.ToText(), Convert.ToBase64String(transactionRecord.EncryptedStripe), unencryptedStripe.ToString(), creditCardFields.ExpDateMMYY, transactionRecord.StartDateTime.ToString(), obscuredPan.ToString(), transactionRecord.ID.ToString(), "", transactionRecord.EncryptionMethod.ToString(), transactionRecord.KeyVersion.ToString(), transactionRecord.AmountDollars.ToString(), transactionRecord.TransactionIndex.ToString(), transactionRecord.UniqueRecordNumber, transactionRecord.TerminalSerialNumber, authorizationResponse.note);
 
-            }
-            catch (SpecialCardException exception)
-            {
-                fileLog(transactionRecord.ID + " " + exception.ToString());
-                UpdateTransactionStatus(ref transactionRecord, TransactionStatus.StripeError, isPreAuth);
-            }
-            catch (StripeErrorException exception)
-            {
-                fileLog(transactionRecord.ID + " " + exception.ToString());
-                // Update the fail status
-                UpdateTransactionStatus(ref transactionRecord, TransactionStatus.StripeError, isPreAuth);
+                    if (result == TransactionProcessResult.Successful)
+                        statistics.NewSuccessful(new TimeSpan(DateTime.Now.Ticks - taskStart.Ticks));
+                    else
+                        statistics.NewFailure(new TimeSpan(DateTime.Now.Ticks - taskStart.Ticks));
+                    OnCompletedTransaction(ref transactionRecord, result);
 
-            }
-            catch (AuthorizerProcessingException exception)
-            {
-                fileLog(transactionRecord.ID + " " + exception.ToString());
-                UpdateTransactionStatus(ref transactionRecord, TransactionStatus.AuthError, isPreAuth);
-            }
-            catch (Exception exception)
-            {
-                fileLog(transactionRecord.ID + " " + exception.ToString());
-            }
-            finally
-            {
-                if (authorizationResponse.resultCode != AuthorizationResultCode.Approved)
-                    detailedLog(DateTime.Now.ToString(), transactionRecord.Status.ToText(), Convert.ToBase64String(transactionRecord.EncryptedStripe), unencryptedStripe.ToString(), creditCardFields.ExpDateMMYY, transactionRecord.StartDateTime.ToString(), obscuredPan.ToString(), transactionRecord.ID.ToString(), "", transactionRecord.EncryptionMethod.ToString(), transactionRecord.KeyVersion.ToString(), transactionRecord.AmountDollars.ToString(), transactionRecord.TransactionIndex.ToString(), transactionRecord.UniqueRecordNumber, transactionRecord.TerminalSerialNumber, authorizationResponse.note);
-
-                if (result == TransactionProcessResult.Successful)
-                    statistics.NewSuccessful(new TimeSpan(DateTime.Now.Ticks - taskStart.Ticks));
-                else
-                    statistics.NewFailure(new TimeSpan(DateTime.Now.Ticks - taskStart.Ticks));
-                OnCompletedTransaction(ref transactionRecord, result);
-
-                throttle.Release();
+                    throttle.Release();
+                }
             }
         }
 
@@ -269,35 +329,7 @@ namespace Cctm.Model
             string encVer, string keyVer, string ccAmount, string ccTransactionIndex, string uniqueRecordNum,
             string terminalserno, string note);
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="database"></param>
-        /// <param name="authorizationSuite"></param>
-        /// <param name="statisticsChanged">Delegate signalled when there is a change in the statistics record.</param>
-        public CctmMediator(ICctmDatabase database,
-            AuthorizationSuite authorizationSuite,
-            Action<IStatistics> statisticsChanged,
-            Action<string> log,
-            Action<string> fileLog,
-            Action<UpdatedTransactionRecord> processedRecord,
-            DetailedLogDelegate detailedLog,
-            int maxSimultaneous)
-        {
-            this.throttle = new Semaphore(maxSimultaneous, maxSimultaneous);
-            this.database = database;
-            this.authorizationSuite = authorizationSuite;
-            this.statistics = new CctmStatistics(statisticsChanged);
-            this.statistics.Changed += new Action<IStatistics>((stats) => { if (StatisticsChanged != null) StatisticsChanged(stats); });
-            this.runningTasks = new List<Task>();
-            this.processedRecord = processedRecord;
-            this.log = log;
-            this.fileLog = fileLog;
-            this.detailedLog = detailedLog;
-
-            // Create a background thread to cycle the mediator
-            CreateMediatorThread();
-        }
+        
 
         private void CreateMediatorThread()
         {
@@ -504,16 +536,7 @@ namespace Cctm.Model
                 cycleMutex.ReleaseMutex();
             }
         }
-        /// <summary>
-        /// List of running or queued transaction processing tasks
-        /// </summary>
-        private List<Task> runningTasks;
-
-        /// <summary>
-        /// List of transaction records IDs for records which are still "New" in the database but are queued for processing.
-        /// </summary>
-        private List<int> queuedRecords = new List<int>();
-
+        
         public void WaitForTransactionsToComplete()
         {
             Task.WaitAll(runningTasks.ToArray());
@@ -792,8 +815,5 @@ namespace Cctm.Model
             get { return completedTransaction; }
             set { completedTransaction = value; }
         }
-        
-        private ICctmDatabase database;
-        private AuthorizationSuite authorizationSuite;
     }
 }

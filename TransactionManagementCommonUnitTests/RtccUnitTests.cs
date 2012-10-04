@@ -270,9 +270,11 @@ namespace UnitTests
             AuthorizationClientPlatforms.IAuthorizationPlatform dummyPlatform = new DummyAuthorizationPlatform();
             // Create a dummy PayByCell
             PayByCellClient dummyPayByCell = new DummyPayByCell();
+            // Create dummy performance counters
+            var dummyPerformanceCounters = new DummyPerformanceCounters();
             
             // Create the mediator
-            RtccMediator mediator = new RtccMediator(dummyPlatform, rtsaConnection,
+            RtccMediator mediator = new RtccMediator(dummyPlatform, rtsaConnection, dummyPerformanceCounters,
                 dummyDatabase, interpreter, dummyPayByCell);
             mediator.Logged += Log;
 

@@ -12,7 +12,7 @@
     <AssemblyName>CCTM</AssemblyName>
     <ManifestCertificateThumbprint>AE487221F87FE78260048C56643AA55E7197AE09</ManifestCertificateThumbprint>
     <ManifestKeyFile>CCTransactionMngr1_1_TemporaryKey.pfx</ManifestKeyFile>
-    <GenerateManifests>true</GenerateManifests>
+    <GenerateManifests>false</GenerateManifests>
     <SignManifests>false</SignManifests>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <ApplicationIcon>Forms\CC_MV.ico</ApplicationIcon>
@@ -22,6 +22,7 @@
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
     <PublishUrl>D:\%24Michael\Temp\CCTM Deploy 1.1\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -38,7 +39,6 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -65,6 +65,12 @@
     <PlatformTarget>x86</PlatformTarget>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="CardEaseXMLClient, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="CCCrypto, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
@@ -74,6 +80,7 @@
     <Reference Include="RsaUtils, Version=1.0.0.5, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.configuration" />
+    <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -81,10 +88,20 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CctmPerformanceCounters.cs" />
+    <Compile Include="CctmService.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="CctmService.Designer.cs">
+      <DependentUpon>CctmService.cs</DependentUpon>
+    </Compile>
     <Compile Include="Common\DelayedDoer.cs" />
     <Compile Include="Common\SpecialCardException.cs" />
     <Compile Include="Database\CCTransactionsDataSet.cs">
@@ -127,6 +144,12 @@
       <DependentUpon>WaitForFinishForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
+    <Compile Include="ProjectInstaller.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ProjectInstaller.Designer.cs">
+      <DependentUpon>ProjectInstaller.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Forms\AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
@@ -137,6 +160,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\EventLogForm.resx">
       <DependentUpon>EventLogForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProjectInstaller.resx">
+      <DependentUpon>ProjectInstaller.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -163,6 +189,7 @@
     <None Include="Database\CCTransactionsDataSet.xss">
       <DependentUpon>CCTransactionsDataSet.xsd</DependentUpon>
     </None>
+    <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

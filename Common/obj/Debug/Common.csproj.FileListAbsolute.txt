@@ -13,3 +13,8 @@ D:\Projects\TransactionManagement VS2010\Common\bin\Debug\Common.pdb
 D:\Projects\TransactionManagement VS2010\Common\obj\Debug\Common.csprojResolveAssemblyReference.cache
 D:\Projects\TransactionManagement VS2010\Common\obj\Debug\Common.dll
 D:\Projects\TransactionManagement VS2010\Common\obj\Debug\Common.pdb
+D:\Projects\TransactionManagement\Common\bin\Debug\Common.dll
+D:\Projects\TransactionManagement\Common\bin\Debug\Common.pdb
+D:\Projects\TransactionManagement\Common\obj\Debug\Common.csprojResolveAssemblyReference.cache
+D:\Projects\TransactionManagement\Common\obj\Debug\Common.dll
+D:\Projects\TransactionManagement\Common\obj\Debug\Common.pdb

@@ -67,7 +67,10 @@ namespace Cctm.Database
         /// </summary>
         internal class DatabaseControllerWrapper : ControllerWrapper<ICctmDatabase>, ICctmDatabase
         {
-            public DatabaseControllerWrapper(ServerController<ICctmDatabase> controller):base(controller){}
+            public DatabaseControllerWrapper(ServerController<ICctmDatabase> controller)
+                :base(controller)
+            {
+            }
 
             public IEnumerable<TransactionRecord> SelectNewTransactionRecords()
             {
@@ -177,7 +180,8 @@ namespace Cctm.Database
             public CctmDatabaseAdapter(Func<UpdateTransactionRecordCC> updateTransactionRecordFactory,
                 Func<CCTransactionsDataSetTableAdapters.QueriesTableAdapter> updateTransactionStatusFactory,
                 Func<UpdateTransactionCCTracks> updateTransactionStripeFactory,
-                Func<CCTransactionsDataSetTableAdapters.SEL_NEW_TRANSACTIONRECORDSTableAdapter> selectNewTransactionRecordsFactory)
+                Func<CCTransactionsDataSetTableAdapters.SEL_NEW_TRANSACTIONRECORDSTableAdapter> selectNewTransactionRecordsFactory
+                )
             {
                 this.updateTransactionRecord = new ThreadLocal<UpdateTransactionRecordCC>(updateTransactionRecordFactory);
                 this.updateTransactionStatus = new ThreadLocal<CCTransactionsDataSetTableAdapters.QueriesTableAdapter>(updateTransactionStatusFactory);
@@ -190,7 +194,7 @@ namespace Cctm.Database
                 try
                 {
                     CCTransactionsDataSet.SEL_NEW_TRANSACTIONRECORDSDataTable data = selectNewTransactionRecords.Value.GetData();
-
+                    
                     List<TransactionRecord> result = new List<TransactionRecord>();
                     for (int i = 0; i < data.Rows.Count; i++)
                     {

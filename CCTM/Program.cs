@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ServiceProcess;
 using System.Windows.Forms;
 
 namespace Cctm
@@ -10,11 +11,18 @@ namespace Cctm
     /// The main entry point for the application.
     /// </summary>
     [STAThread]
-    static void Main()
+    static void Main(string[] args)
     {
-      Application.EnableVisualStyles();
-      Application.SetCompatibleTextRenderingDefault(false);
-      Application.Run(new CctmForm());
+        if (args.Length == 1 && args[0] == "gui")
+        {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new CctmForm(true));
+        }
+        else
+        {
+            ServiceBase.Run(new CctmService());
+        }
     }
   }
 }

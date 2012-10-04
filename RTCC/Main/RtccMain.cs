@@ -19,6 +19,7 @@ namespace Rtcc.Main
         private TcpListener tcpListener;
         private Thread listenThread;
         private RtccConfigs configs;
+        private RtccPerformanceCounters rtccPerformanceCounters;
 
         public RtccMain(RtccConfigs configs)
         {
@@ -27,6 +28,7 @@ namespace Rtcc.Main
 
         public void StartListening()
         {
+            this.rtccPerformanceCounters = new RtccPerformanceCounters();
             this.tcpListener = new TcpListener(IPAddress.Any, Rtcc.Properties.Settings.Default.ListenPort);
             this.listenThread = new Thread(new ThreadStart(ListeningThreadProc));
             this.listenThread.IsBackground = true;
@@ -94,7 +96,7 @@ namespace Rtcc.Main
                     rtsaConnection.Logged += ChildLogged;
 
                     // This ties everything together... reading from the interface and processing using the authorizer
-                    RtccMediator requestProcessor = new RtccMediator(monetraAuthorizer, rtsaConnection);
+                    RtccMediator requestProcessor = new RtccMediator(monetraAuthorizer, rtsaConnection, rtccPerformanceCounters);
                     requestProcessor.TransactionDone += TransactionDone;
                     requestProcessor.Logged += ChildLogged;
                     // Note: To see what happens next (when a request is received), go to RTCC.RtccMediator.ProcessRequest
@@ -123,6 +125,5 @@ namespace Rtcc.Main
             return DateTime.Now.ToString("HH:mm:ss.ffffff");
         }
 
-        
     }
 }

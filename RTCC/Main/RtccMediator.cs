@@ -12,6 +12,7 @@ using Common;
 using Rtcc.RtsaInterfacing;
 using Rtcc.Database;
 using Rtcc.PayByCell;
+using System.Diagnostics;
 
 namespace Rtcc.Main
 {
@@ -22,7 +23,7 @@ namespace Rtcc.Main
     /// </summary>
     // All logic is processed in this one mediator object, because it has access to everything 
     //  in the chain and the ability to log or record state changes from one unified position.
-    public class RtccMediator : LoggingObject
+    public class RtccMediator : LoggingObject, IDisposable
     {
         public event EventHandler<TransactionDoneEventArgs> TransactionDone;
 
@@ -31,14 +32,18 @@ namespace Rtcc.Main
         private RtccDatabase rtccDatabase;
         private IAuthorizationPlatform monetra;
         private PayByCellClient payByCell;
+        private RtccPerformanceCounters.SessionStats performanceCounterSession;
 
         public RtccMediator(IAuthorizationPlatform monetra,
             RtsaConnection rtsaConnection,
+            RtccPerformanceCounters performanceCounters,
             RtccDatabase database = null,
             RtccRequestInterpreter requestInterpreter = null,
             PayByCellClient payByCell = null)
         {
             this.monetra = monetra;
+
+            this.performanceCounterSession = performanceCounters.NewSession();
 
             this.rtsaConnection = rtsaConnection;
             this.rtccRequestInterpreter = requestInterpreter ?? SubscribeChild(new RtccRequestInterpreter());
@@ -54,6 +59,7 @@ namespace Rtcc.Main
         /// <param name="request">The request record to process</param>
         public bool ProcessRequest(RawDataMessage requestMessage)
         {
+            Stopwatch stopwatch = new Stopwatch();
             ClientAuthRequest request = null;
             UnencryptedStripe unencryptedUnformattedStripe = null;
             TransactionStatus? status = null;
@@ -61,6 +67,7 @@ namespace Rtcc.Main
 
             try
             {
+                stopwatch.Start();
                 LogDetail("Received message");
 
                 // Interpret request message
@@ -151,6 +158,12 @@ namespace Rtcc.Main
                 else
                     log("Not approved - Skipping Pay-by-Cell transaction", LogLevel.PerConnectionDebug);*/
 
+                if (authorizationResponse.resultCode == AuthorizationResultCode.Approved)
+                    performanceCounterSession.ApprovedTransaction();
+                else
+                    performanceCounterSession.DeclinedTransaction();
+
+                performanceCounterSession.SuccessfulSession(stopwatch.ElapsedTicks);
                 return true;
             }
             catch (ParseException exception) // If there is a problem parsing at one of the steps
@@ -158,11 +171,13 @@ namespace Rtcc.Main
                 LogError("Parse error: " + exception.Message, exception);
                 if (status != null && transactionRecordID != null)
                     rtccDatabase.UpdateTransactionStatus(transactionRecordID.Value, status.Value, TransactionStatus.StripeError, exception.FailStatus);
+                performanceCounterSession.FailedSession(stopwatch.ElapsedTicks);
                 return false;
             }
             catch (Exception exception)
             {
                 LogError("Unhandled error during real-time transaction: " + exception.Message, exception);
+                performanceCounterSession.FailedSession(stopwatch.ElapsedTicks);
                 return false;
             }
         }
@@ -388,6 +403,10 @@ namespace Rtcc.Main
 
             // Chop off the end
             return new UnencryptedStripe(result.Remove(128));
+        }
+
+        public void Dispose()
+        {
         }
     }
 }
