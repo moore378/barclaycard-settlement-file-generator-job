@@ -44,7 +44,7 @@ namespace TransactionManagementCommon
                     }
                     catch (Exception exception)
                     {
-                        throw new StripeErrorException("Error decrypting IPS-encrypted stripe", errorStatus, exception);
+                        throw new StripeErrorException("Error decrypting IPS-encrypted stripe: " + exception.Message, errorStatus, exception);
                     }
 
                 case EncryptionMethod.RsaEncryption:
