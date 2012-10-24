@@ -253,7 +253,10 @@ namespace Cctm.Model
                         case AuthorizeMode.Finalize: database.UpdateFinalizeRecord(transactionRecord, updatedRecord); break;
                         default: database.UpdateTransactionRecord(updatedRecord); break;
                     }*/
-                    database.UpdateTransactionRecordCctm(transactionRecord, updatedRecord);
+                    if (!isPreAuth)
+                        database.UpdateTransactionRecordCctm(transactionRecord, updatedRecord);
+                    else
+                        database.UpdatePreauthRecord(transactionRecord, updatedRecord);
                     transactionRecord.Status = updatedRecord.Status;
                     UpdatedTransaction(transactionRecord);
 
