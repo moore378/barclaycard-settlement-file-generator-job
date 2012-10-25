@@ -247,16 +247,16 @@ namespace Cctm.Model
                     };
 
                     // Record it into the database
-                    /*switch (mode)
+                    switch (mode)
                     {
                         case AuthorizeMode.Preauth: database.UpdatePreauthRecord(transactionRecord, updatedRecord); break;
                         case AuthorizeMode.Finalize: database.UpdateFinalizeRecord(transactionRecord, updatedRecord); break;
-                        default: database.UpdateTransactionRecord(updatedRecord); break;
-                    }*/
-                    if (!isPreAuth)
+                        default: database.UpdateTransactionRecordCctm(transactionRecord, updatedRecord); break;
+                    }
+                    /*if (!isPreAuth)
                         database.UpdateTransactionRecordCctm(transactionRecord, updatedRecord);
                     else
-                        database.UpdatePreauthRecord(transactionRecord, updatedRecord);
+                        database.UpdatePreauthRecord(transactionRecord, updatedRecord);*/
                     transactionRecord.Status = updatedRecord.Status;
                     UpdatedTransaction(transactionRecord);
 
