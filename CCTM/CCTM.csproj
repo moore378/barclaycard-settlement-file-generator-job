@@ -107,6 +107,7 @@
     </Compile>
     <Compile Include="Common\DelayedDoer.cs" />
     <Compile Include="Common\SpecialCardException.cs" />
+    <Compile Include="DatabaseTracker.cs" />
     <Compile Include="Database\CCTransactionsDataSet.cs">
       <DependentUpon>CCTransactionsDataSet.xsd</DependentUpon>
       <SubType>Component</SubType>

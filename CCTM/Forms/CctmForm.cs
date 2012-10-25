@@ -164,7 +164,8 @@ namespace Cctm
                 {
 
                     var connectionSource = new ConnectionSource(Properties.Settings.Default.SSPM_DBConnectionString);
-                    var duapAuthDatabase = dualAuthDatabaseBuilder.CreateInstance(connectionSource, fileLog);
+                    var databaseTracker = new DatabaseTracker(fileLog);
+                    var duapAuthDatabase = dualAuthDatabaseBuilder.CreateInstance(connectionSource, databaseTracker);
                     // Create the mediator
                     CctmMediator mediator = new CctmMediator(database.Value, duapAuthDatabase, authorizationSuite, statisticsChanged, generalLog, fileLog, (x) => tickWatchDog(), detailedLog, maxSimultaneous, performanceCounters);
                     mediator.PollIntervalSeconds = PollIntervalSeconds;
