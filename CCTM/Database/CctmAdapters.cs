@@ -349,6 +349,7 @@ namespace Cctm.Database
                     (short)record.Status);
             }
 
+
         }
 
         class UpdateTransactionCCTracks : CCTransactionsDataSetTableAdapters.QueriesTableAdapter

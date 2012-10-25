@@ -12,6 +12,7 @@ using System.Linq;
 using Cctm.Common;
 using Cctm.Database;
 using System.Diagnostics;
+using Cctm.DualAuth;
 
 namespace Cctm.Model
 {
@@ -50,6 +51,7 @@ namespace Cctm.Model
         /// <param name="authorizationSuite"></param>
         /// <param name="statisticsChanged">Delegate signalled when there is a change in the statistics record.</param>
         public CctmMediator(ICctmDatabase database,
+            ICctmDualAuthDatabase dualAuthDatabase,
             AuthorizationSuite authorizationSuite,
             Action<IStatistics> statisticsChanged,
             Action<string> log,
@@ -59,6 +61,7 @@ namespace Cctm.Model
             int maxSimultaneous,
             CctmPerformanceCounters performanceCounters)
         {
+            this.dualAuthDatabase = dualAuthDatabase;
             this.performanceCounters = performanceCounters;
             this.throttle = new Semaphore(maxSimultaneous, maxSimultaneous);
             this.database = database;
@@ -250,7 +253,22 @@ namespace Cctm.Model
                     switch (mode)
                     {
                         case AuthorizeMode.Preauth: database.UpdatePreauthRecord(transactionRecord, updatedRecord); break;
-                        case AuthorizeMode.Finalize: database.UpdateFinalizeRecord(transactionRecord, updatedRecord); break;
+                        case AuthorizeMode.Finalize: 
+                            database.UpdateFinalizeRecord(transactionRecord, updatedRecord);
+                            dualAuthDatabase.UpdTransactionrecordCctmFinalization(new DbUpdTransactionrecordcctmFinalizationParams
+                                {
+                                    BatNum = authorizationResponse.BatchNum,
+                                    CCTrackStatus = newTrackText,
+                                    CCTransactionStatus = newStatus.ToText(),
+                                    CreditCallAuthCode = authorizationResponse.authorizationCode,
+                                    CreditCallCardEaseReference = authorizationResponse.receiptReference,
+                                    OldStatus = (short)transactionRecord.Status, 
+                                    Status = (short)newStatus,
+                                    TransactionRecordID = transactionRecord.ID,
+                                    TTID = authorizationResponse.Ttid
+                                }).Wait();
+
+                            break;
                         default: database.UpdateTransactionRecordCctm(transactionRecord, updatedRecord); break;
                     }
                     /*if (!isPreAuth)
@@ -812,6 +830,7 @@ namespace Cctm.Model
         public delegate void CompletedTransactionEventHandler(TransactionRecord transaction, TransactionProcessResult success);
 
         private CompletedTransactionEventHandler completedTransaction;
+        private ICctmDualAuthDatabase dualAuthDatabase;
 
         public CompletedTransactionEventHandler CompletedTransaction
         {

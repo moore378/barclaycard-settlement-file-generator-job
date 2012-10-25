@@ -75,6 +75,9 @@
     <Reference Include="CardEaseXMLClient, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="CCCrypto, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="Interop.PCCOMLib, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.CompilerServices.AsyncTargetingPack.Net4">
+      <HintPath>..\packages\Microsoft.CompilerServices.AsyncTargetingPack.1.0.0\lib\net40\Microsoft.CompilerServices.AsyncTargetingPack.Net4.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="RsaUtils, Version=1.0.0.5, Culture=neutral, processorArchitecture=MSIL" />
@@ -115,6 +118,8 @@
     </Compile>
     <Compile Include="Database\CctmDatabase2.cs" />
     <Compile Include="Database\ICctmDatabase.cs" />
+    <Compile Include="DualAuth\DbUpdTransactionrecordcctmFinalizationParams.cs" />
+    <Compile Include="DualAuth\ICctmDualAuthDatabase.cs" />
     <Compile Include="Model\CctmMediator.cs" />
     <Compile Include="Forms\CctmForm.cs">
       <SubType>Form</SubType>
@@ -189,6 +194,7 @@
     <None Include="Database\CCTransactionsDataSet.xss">
       <DependentUpon>CCTransactionsDataSet.xsd</DependentUpon>
     </None>
+    <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -235,6 +241,10 @@
     <ProjectReference Include="..\AuthorizationClientPlatforms\AuthorizationClientPlatforms.csproj">
       <Project>{5AE1B5BD-C0AE-46E2-8E55-6960FAF3A846}</Project>
       <Name>AuthorizationClientPlatforms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AutoDatabase\AutoDatabase.csproj">
+      <Project>{dba89e62-338a-4693-871d-7dda97419ca2}</Project>
+      <Name>AutoDatabase</Name>
     </ProjectReference>
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{BA9EFA9B-8E6C-4680-AE58-37C8442E7DF0}</Project>

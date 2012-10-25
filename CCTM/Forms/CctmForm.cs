@@ -40,6 +40,8 @@ using System.Windows.Shell;
 using TransactionManagementCommon.ControllerBase;
 using Cctm.Database;
 using Cctm.Model;
+using Cctm.DualAuth;
+using AutoDatabase;
 
 namespace Cctm
 {
@@ -51,6 +53,7 @@ namespace Cctm
         private static CctmPerformanceCounters performanceCounters = new CctmPerformanceCounters(); 
         private bool hidden;
         private static string logFolder = Properties.Settings.Default.LogFolder;
+        private static AutoDatabaseBuilder<ICctmDualAuthDatabase> dualAuthDatabaseBuilder = new AutoDatabaseBuilder<ICctmDualAuthDatabase>();
 
         /// <summary>
         /// Called when the form loads (beginning of application)
@@ -159,8 +162,11 @@ namespace Cctm
                 "CctmMediatorFactory",
                 () => 
                 {
+
+                    var connectionSource = new ConnectionSource(Properties.Settings.Default.SSPM_DBConnectionString);
+                    var duapAuthDatabase = dualAuthDatabaseBuilder.CreateInstance(connectionSource, fileLog);
                     // Create the mediator
-                    CctmMediator mediator = new CctmMediator(database.Value, authorizationSuite, statisticsChanged, generalLog, fileLog, (x) => tickWatchDog(), detailedLog, maxSimultaneous, performanceCounters);
+                    CctmMediator mediator = new CctmMediator(database.Value, duapAuthDatabase, authorizationSuite, statisticsChanged, generalLog, fileLog, (x) => tickWatchDog(), detailedLog, maxSimultaneous, performanceCounters);
                     mediator.PollIntervalSeconds = PollIntervalSeconds;
                     // Set up the events for the mediator
                     mediator.StartingTransaction += StartingTransaction;
