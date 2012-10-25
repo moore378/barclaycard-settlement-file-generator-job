@@ -10,7 +10,7 @@ namespace Cctm.DualAuth
     [DatabaseInterface]
     public interface ICctmDualAuthDatabase
     {
-        [StoredProcedure]
+        [StoredProcedure(Name="UPD_TRANSACTIONRECORD_CCTM_FINALIZATION")]
         Task UpdTransactionrecordCctmFinalization(DbUpdTransactionrecordcctmFinalizationParams args);
     }
 }

@@ -260,7 +260,7 @@ namespace Cctm.Model
                                     BatNum = authorizationResponse.BatchNum,
                                     CCTrackStatus = newTrackText,
                                     CCTransactionStatus = newStatus.ToText(),
-                                    CreditCallAuthCode = authorizationResponse.authorizationCode,
+                                    CreditCallAuthCode = authorizationResponse.authorizationCode ?? "",
                                     CreditCallCardEaseReference = authorizationResponse.receiptReference,
                                     OldStatus = (short)transactionRecord.Status, 
                                     Status = (short)newStatus,
