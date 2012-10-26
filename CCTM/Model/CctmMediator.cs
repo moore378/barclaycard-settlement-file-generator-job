@@ -254,7 +254,7 @@ namespace Cctm.Model
                     {
                         case AuthorizeMode.Preauth: database.UpdatePreauthRecord(transactionRecord, updatedRecord); break;
                         case AuthorizeMode.Finalize: 
-                            database.UpdateFinalizeRecord(transactionRecord, updatedRecord);
+                            //database.UpdateFinalizeRecord(transactionRecord, updatedRecord);
                             dualAuthDatabase.UpdTransactionrecordCctmFinalization(new DbUpdTransactionrecordcctmFinalizationParams
                                 {
                                     BatNum = authorizationResponse.BatchNum,

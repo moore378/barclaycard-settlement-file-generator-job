@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ServiceProcess;
 using System.Windows.Forms;
+using System.Linq;
 
 namespace Cctm
 {
@@ -13,11 +14,11 @@ namespace Cctm
     [STAThread]
     static void Main(string[] args)
     {
-        if (args.Length == 1 && args[0] == "gui")
+        if (args.Contains("gui"))
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new CctmForm(true));
+            Application.Run(new CctmForm(true, args.Contains("extended_database_logging")));
         }
         else
         {

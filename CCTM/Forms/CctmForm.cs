@@ -162,9 +162,8 @@ namespace Cctm
                 "CctmMediatorFactory",
                 () => 
                 {
-
                     var connectionSource = new ConnectionSource(Properties.Settings.Default.SSPM_DBConnectionString);
-                    var databaseTracker = new DatabaseTracker(fileLog);
+                    var databaseTracker = new DatabaseTracker(fileLog, extendedDatabaseLogging);
                     var duapAuthDatabase = dualAuthDatabaseBuilder.CreateInstance(connectionSource, databaseTracker);
                     // Create the mediator
                     CctmMediator mediator = new CctmMediator(database.Value, duapAuthDatabase, authorizationSuite, statisticsChanged, generalLog, fileLog, (x) => tickWatchDog(), detailedLog, maxSimultaneous, performanceCounters);
@@ -648,13 +647,15 @@ namespace Cctm
         double CpuLoadState2 = 0;
         bool listViewAutoScroll = true;
         ListViewItem autoScrollTarget = null;
+        private bool extendedDatabaseLogging;
                     
         #endregion
 
-        public CctmForm(bool initializeVisual)
+        public CctmForm(bool initializeVisual, bool extendedDatabaseLogging)
         {
             if (initializeVisual)
                 InitializeComponent();
+            this.extendedDatabaseLogging = extendedDatabaseLogging;
         }
 
         public void tickWatchDog()

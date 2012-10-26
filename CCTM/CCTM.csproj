@@ -255,6 +255,10 @@
       <Project>{C57D09F3-983C-4508-8E34-FAD3B081B79F}</Project>
       <Name>CryptographicPlatforms</Name>
     </ProjectReference>
+    <ProjectReference Include="..\MjhGeneral\MjhGeneral.csproj">
+      <Project>{8681d9bc-c6aa-4feb-8121-6f3f0d2d292c}</Project>
+      <Name>MjhGeneral</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TransactionManagmentCommon\TransactionManagementCommon.csproj">
       <Project>{A8DC7A1F-25AF-4935-9A23-96C610F4DE95}</Project>
       <Name>TransactionManagementCommon</Name>

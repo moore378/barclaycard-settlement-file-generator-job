@@ -22,7 +22,7 @@ namespace Cctm
         protected override void OnStart(string[] args)
         {
             //Debugger.Launch();
-            hiddenForm = new CctmForm(false);
+            hiddenForm = new CctmForm(false, false);
             hiddenForm.InitializeHidden();
         }
 
