@@ -1,0 +1,8 @@
+UPD_TRANSACTIONAUTHORIZATION_STATUS(Decimal @TransactionRecordID, SmallInt @Status, SmallInt @OldStatus)
+Parameters:
+	// public Int32 RETURN_VALUE; // Int // (Return value)
+	public Decimal TransactionRecordID; // Decimal
+	public Int16 Status; // SmallInt
+	public Int16 OldStatus; // SmallInt
+Returns:
+	public Int16 ; // smallint

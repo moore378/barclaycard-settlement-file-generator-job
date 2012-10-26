@@ -118,7 +118,11 @@
       <DependentUpon>CCTransactionsDataSet.xsd</DependentUpon>
     </Compile>
     <Compile Include="Database\CctmDatabase2.cs" />
+    <Compile Include="Database\DbTransactionRecord.cs" />
+    <Compile Include="Database\DbUpdTransactionrecordCctmParams.cs" />
     <Compile Include="Database\ICctmDatabase.cs" />
+    <Compile Include="Database\ICctmDatabase2.cs" />
+    <Compile Include="DualAuth\DbUpdTransactionauthorizationParams.cs" />
     <Compile Include="DualAuth\DbUpdTransactionrecordcctmFinalizationParams.cs" />
     <Compile Include="DualAuth\ICctmDualAuthDatabase.cs" />
     <Compile Include="Model\CctmMediator.cs" />

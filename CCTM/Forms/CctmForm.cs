@@ -53,7 +53,7 @@ namespace Cctm
         private static CctmPerformanceCounters performanceCounters = new CctmPerformanceCounters(); 
         private bool hidden;
         private static string logFolder = Properties.Settings.Default.LogFolder;
-        private static AutoDatabaseBuilder<ICctmDualAuthDatabase> dualAuthDatabaseBuilder = new AutoDatabaseBuilder<ICctmDualAuthDatabase>();
+        private static AutoDatabaseBuilder<ICctmDatabase2> dualAuthDatabaseBuilder = new AutoDatabaseBuilder<ICctmDatabase2>();
 
         /// <summary>
         /// Called when the form loads (beginning of application)
@@ -164,9 +164,9 @@ namespace Cctm
                 {
                     var connectionSource = new ConnectionSource(Properties.Settings.Default.SSPM_DBConnectionString);
                     var databaseTracker = new DatabaseTracker(fileLog, extendedDatabaseLogging);
-                    var duapAuthDatabase = dualAuthDatabaseBuilder.CreateInstance(connectionSource, databaseTracker);
+                    var cctmDatabase2 = dualAuthDatabaseBuilder.CreateInstance(connectionSource, databaseTracker);
                     // Create the mediator
-                    CctmMediator mediator = new CctmMediator(database.Value, duapAuthDatabase, authorizationSuite, statisticsChanged, generalLog, fileLog, (x) => tickWatchDog(), detailedLog, maxSimultaneous, performanceCounters);
+                    CctmMediator mediator = new CctmMediator(database.Value, cctmDatabase2, authorizationSuite, statisticsChanged, generalLog, fileLog, (x) => tickWatchDog(), detailedLog, maxSimultaneous, performanceCounters);
                     mediator.PollIntervalSeconds = PollIntervalSeconds;
                     // Set up the events for the mediator
                     mediator.StartingTransaction += StartingTransaction;
@@ -415,43 +415,43 @@ namespace Cctm
             }
         }
 
-        private void StartingTransaction(TransactionRecord transaction)
+        private void StartingTransaction(DbTransactionRecord transaction)
         {
             if (!hidden)
             {
                 listView3.Invoke(new Action(() =>
                     {
                         ListViewItem transactionListItem;
-                        if (displayedTransactions.ContainsKey(transaction.ID))
+                        if (displayedTransactions.ContainsKey(transaction.TransactionRecordID))
                         {
-                            transactionListItem = displayedTransactions[transaction.ID];
-                            transactionListItem.SubItems[1].Text = transaction.Status.ToText();
+                            transactionListItem = displayedTransactions[transaction.TransactionRecordID];
+                            transactionListItem.SubItems[1].Text = ((TransactionStatus)transaction.Status).ToText();
                         }
                         else
                         {
-                            transactionListItem = listView3.Items.Add(transaction.ID.ToString());
-                            transactionListItem.SubItems.Add(transaction.Status.ToText());
+                            transactionListItem = listView3.Items.Add(transaction.TransactionRecordID.ToString());
+                            transactionListItem.SubItems.Add(((TransactionStatus)transaction.Status).ToText());
                         }
                         transactionListItem.StateImageIndex = 0;
-                        displayedTransactions[transaction.ID] = transactionListItem;
+                        displayedTransactions[transaction.TransactionRecordID] = transactionListItem;
                     }
                 ));
             }
         }
 
-        private void UpdatingTransaction(TransactionRecord transaction)
+        private void UpdatingTransaction(DbTransactionRecord transaction)
         {
             if (!hidden)
             {
 
                 listView3.Invoke(new Action(() =>
                     {
-                        if (displayedTransactions.ContainsKey(transaction.ID))
+                        if (displayedTransactions.ContainsKey(transaction.TransactionRecordID))
                         {
-                            displayedTransactions[transaction.ID].SubItems[1].Text = transaction.Status.ToText();
-                            displayedTransactions[transaction.ID].StateImageIndex = 0;
+                            displayedTransactions[transaction.TransactionRecordID].SubItems[1].Text = ((TransactionStatus)transaction.Status).ToText();
+                            displayedTransactions[transaction.TransactionRecordID].StateImageIndex = 0;
 
-                            listView3AutoScrollToItem(displayedTransactions[transaction.ID]);
+                            listView3AutoScrollToItem(displayedTransactions[transaction.TransactionRecordID]);
                         }
                     }
                 ));
@@ -483,15 +483,15 @@ namespace Cctm
             }
         }
 
-        private void CompletedTransaction(TransactionRecord transaction, CctmMediator.TransactionProcessResult result)
+        private void CompletedTransaction(DbTransactionRecord transaction, CctmMediator.TransactionProcessResult result)
         {
             if (!hidden)
             {
 
-                if (!displayedTransactions.ContainsKey(transaction.ID))
+                if (!displayedTransactions.ContainsKey(transaction.TransactionRecordID))
                     return;
 
-                listView3AutoScrollToItem(displayedTransactions[transaction.ID]);
+                listView3AutoScrollToItem(displayedTransactions[transaction.TransactionRecordID]);
 
 
                 if (result != CctmMediator.TransactionProcessResult.Error)
@@ -499,21 +499,21 @@ namespace Cctm
                     if (result == CctmMediator.TransactionProcessResult.Successful)
                     {
                         listView3.Invoke(new Action(() =>
-                            displayedTransactions[transaction.ID].StateImageIndex = 1));
+                            displayedTransactions[transaction.TransactionRecordID].StateImageIndex = 1));
                     }
                     else if (result == CctmMediator.TransactionProcessResult.Cancelled)
                     {
                         listView3.Invoke(new Action(() =>
                         {
-                            if (displayedTransactions.ContainsKey(transaction.ID))
+                            if (displayedTransactions.ContainsKey(transaction.TransactionRecordID))
                             {
-                                displayedTransactions[transaction.ID].SubItems[1].Text = "Cancelled";
-                                displayedTransactions[transaction.ID].StateImageIndex = 3;
+                                displayedTransactions[transaction.TransactionRecordID].SubItems[1].Text = "Cancelled";
+                                displayedTransactions[transaction.TransactionRecordID].StateImageIndex = 3;
                             }
                         }));
                     }
-                    ListViewItem listItem = displayedTransactions[transaction.ID];
-                    displayedTransactions.Remove(transaction.ID);
+                    ListViewItem listItem = displayedTransactions[transaction.TransactionRecordID];
+                    displayedTransactions.Remove(transaction.TransactionRecordID);
 
                     DelayedDoer.DoLater(60, () =>
                         {
@@ -527,8 +527,8 @@ namespace Cctm
                 {
                     listView3.Invoke(new Action(() =>
                         {
-                            displayedTransactions[transaction.ID].StateImageIndex = 2;
-                            displayedTransactions[transaction.ID].SubItems[1].Text = transaction.Status.ToText();
+                            displayedTransactions[transaction.TransactionRecordID].StateImageIndex = 2;
+                            displayedTransactions[transaction.TransactionRecordID].SubItems[1].Text = ((TransactionStatus)transaction.Status).ToText();
                         }
                         ));
                 }
@@ -638,7 +638,7 @@ namespace Cctm
         #region General Fields
         private ServerController<CctmMediator> mediator;
         private static string launchedAt = DateTime.Now.ToString();
-        private Dictionary<int,ListViewItem> displayedTransactions = new Dictionary<int,ListViewItem>();
+        private Dictionary<decimal, ListViewItem> displayedTransactions = new Dictionary<decimal, ListViewItem>();
         System.Diagnostics.PerformanceCounter performanceCounter = new System.Diagnostics.PerformanceCounter(
                 "Process",
                 "% Processor Time",

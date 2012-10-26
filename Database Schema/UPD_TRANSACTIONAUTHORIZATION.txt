@@ -1,0 +1,17 @@
+UPD_TRANSACTIONAUTHORIZATION(Decimal @TransactionRecordID, DateTime @SettlementDateTime, Char @CreditCallCardEaseReference, VarChar @CreditCallAuthCode, VarChar @CreditCallPAN, VarChar @CreditCallExpiryDate, VarChar @CreditCallCardScheme, Char @CCFirstSix, Char @CCLastFour, SmallInt @BatNum, Decimal @TTID, SmallInt @Status)
+Parameters:
+	// public Int32 RETURN_VALUE; // Int // (Return value)
+	public Decimal TransactionRecordID; // Decimal
+	public DateTime SettlementDateTime; // DateTime
+	[DatabaseParam(SqlDbType.Char)] public String CreditCallCardEaseReference; // Char
+	public String CreditCallAuthCode; // VarChar
+	public String CreditCallPAN; // VarChar
+	public String CreditCallExpiryDate; // VarChar
+	public String CreditCallCardScheme; // VarChar
+	[DatabaseParam(SqlDbType.Char)] public String CCFirstSix; // Char
+	[DatabaseParam(SqlDbType.Char)] public String CCLastFour; // Char
+	public Int16 BatNum; // SmallInt
+	public Decimal TTID; // Decimal
+	public Int16 Status; // SmallInt
+Returns:
+	// No return fields

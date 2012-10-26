@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,13 +24,19 @@ namespace Cctm
                 log("-> " + name + "(" + args.Select(ArgValue).JoinStr(", ") +")");
             else
                 log("-> " + name);
-            return new MethodTracker(log, name);
+            return new MethodTracker(log, name, logArgs);
         }
 
         private static string ArgValue(object arg)
         {
+            if (arg == null)
+                return "null";
             Type argType = arg.GetType();
-            if (argType.IsClass && !argType.IsPrimitive && argType != typeof(string))
+            if (arg is string)
+                return "\"" + (string)arg + "\"";
+            else if (arg is IEnumerable<object>)
+                return "[" + ((IEnumerable<object>)arg).Select(ArgValue).JoinStr("; ") + "]";
+            else if (argType.IsClass && !argType.IsPrimitive)
                 return "{" + ObjectEx.FieldsAndProps(arg).Select(k => k.Key + "=" + ArgValue(k.Value)).JoinStr(";") + "}";
             else
                 return arg.ToString();
@@ -39,16 +46,21 @@ namespace Cctm
         {
             private Action<string> log;
             private string name;
+            private bool logArgs;
 
-            public MethodTracker(Action<string> log, string name)
+            public MethodTracker(Action<string> log, string name, bool logArgs)
             {
                 this.log = log;
                 this.name = name;
+                this.logArgs = logArgs;
             }
 
-            public void Successful()
+            public void Successful(object result)
             {
-                log("<- " + name);
+                if (!logArgs || result == null || result.GetType() == typeof(object))
+                    log("<- " + name);
+                else
+                    log("<- " + name + ": " + ArgValue(result));
             }
 
             public void Failed()

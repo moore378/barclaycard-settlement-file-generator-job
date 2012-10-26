@@ -1,0 +1,19 @@
+UPD_TRANSACTIONRECORD_CCTM(Decimal @TransactionRecordID, Char @CreditCallCardEaseReference, VarChar @CCTrackStatus, VarChar @CreditCallAuthCode, VarChar @CreditCallPAN, VarChar @CreditCallExpiryDate, VarChar @CreditCallCardScheme, Char @CCFirstSix, Char @CCLastFour, VarChar @CCTransactionStatus, SmallInt @BatNum, Decimal @TTID, SmallInt @Status, SmallInt @OldStatus)
+Parameters:
+	// public Int32 RETURN_VALUE; // Int // (Return value)
+	public Decimal TransactionRecordID; // Decimal
+	[DatabaseParam(SqlDbType.Char)] public String CreditCallCardEaseReference; // Char
+	public String CCTrackStatus; // VarChar
+	public String CreditCallAuthCode; // VarChar
+	public String CreditCallPAN; // VarChar
+	public String CreditCallExpiryDate; // VarChar
+	public String CreditCallCardScheme; // VarChar
+	[DatabaseParam(SqlDbType.Char)] public String CCFirstSix; // Char
+	[DatabaseParam(SqlDbType.Char)] public String CCLastFour; // Char
+	public String CCTransactionStatus; // VarChar
+	public Int16 BatNum; // SmallInt
+	public Decimal TTID; // Decimal
+	public Int16 Status; // SmallInt
+	public Int16 OldStatus; // SmallInt
+Returns:
+	public Int16 ; // smallint

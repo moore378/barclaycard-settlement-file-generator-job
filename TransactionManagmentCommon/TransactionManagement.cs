@@ -39,7 +39,7 @@ namespace TransactionManagementCommon
                     try
                     {
                         return CryptographicPlatforms.IPSTrackCipher.Decrypt(encryptedTrack, info.RefDateTime??info.StartDateTime,
-                            info.TransactionIndex, Int32.Parse(info.MeterSerialNumber),
+                            (int)info.TransactionIndex, Int32.Parse(info.MeterSerialNumber),
                             keyVersion);
                     }
                     catch (Exception exception)
@@ -421,7 +421,7 @@ namespace TransactionManagementCommon
     public class TransactionInfo
     {
         public DateTime StartDateTime;
-        public int TransactionIndex;
+        public decimal TransactionIndex;
         public string MeterSerialNumber;
         public decimal AmountDollars;
         public DateTime? RefDateTime;

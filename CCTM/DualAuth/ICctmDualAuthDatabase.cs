@@ -7,10 +7,10 @@ using AutoDatabase;
 
 namespace Cctm.DualAuth
 {
-    [DatabaseInterface]
     public interface ICctmDualAuthDatabase
     {
-        [StoredProcedure(Name="UPD_TRANSACTIONRECORD_CCTM_FINALIZATION")]
         Task UpdTransactionrecordCctmFinalization(DbUpdTransactionrecordcctmFinalizationParams args);
+
+        Task UpdTransactionauthorization(DbUpdTransactionauthorizationParams args);
     }
 }

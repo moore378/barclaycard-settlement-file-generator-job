@@ -110,13 +110,13 @@ namespace UnitTests
 
         private byte[] ipsEncryptStripe(string stripe, TransactionManagementCommon.TransactionInfo info, int keyVersion)
         {
-            return CryptographicPlatforms.IPSTrackCipher.Encrypt(stripe, info.StartDateTime, info.TransactionIndex,
+            return CryptographicPlatforms.IPSTrackCipher.Encrypt(stripe, info.StartDateTime, (int)info.TransactionIndex,
                 Int32.Parse(info.MeterSerialNumber), keyVersion);
         }
 
         private UnencryptedStripe ipsDecryptStripe(EncryptedStripe stripe, TransactionManagementCommon.TransactionInfo info, int keyVersion)
         {
-            return CryptographicPlatforms.IPSTrackCipher.Decrypt(stripe, info.RefDateTime??info.StartDateTime, info.TransactionIndex,
+            return CryptographicPlatforms.IPSTrackCipher.Decrypt(stripe, info.RefDateTime??info.StartDateTime, (int)info.TransactionIndex,
                 Int32.Parse(info.MeterSerialNumber), keyVersion);
         }
 

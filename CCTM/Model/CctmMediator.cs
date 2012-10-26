@@ -42,7 +42,7 @@ namespace Cctm.Model
         /// <summary>
         /// List of transaction records IDs for records which are still "New" in the database but are queued for processing.
         /// </summary>
-        private List<int> queuedRecords = new List<int>();
+        private List<decimal> queuedRecords = new List<decimal>();
 
         /// <summary>
         /// 
@@ -51,7 +51,7 @@ namespace Cctm.Model
         /// <param name="authorizationSuite"></param>
         /// <param name="statisticsChanged">Delegate signalled when there is a change in the statistics record.</param>
         public CctmMediator(ICctmDatabase database,
-            ICctmDualAuthDatabase dualAuthDatabase,
+            ICctmDatabase2 cctmDatabase2,
             AuthorizationSuite authorizationSuite,
             Action<IStatistics> statisticsChanged,
             Action<string> log,
@@ -61,7 +61,7 @@ namespace Cctm.Model
             int maxSimultaneous,
             CctmPerformanceCounters performanceCounters)
         {
-            this.dualAuthDatabase = dualAuthDatabase;
+            this.database2 = cctmDatabase2;
             this.performanceCounters = performanceCounters;
             this.throttle = new Semaphore(maxSimultaneous, maxSimultaneous);
             this.database = database;
@@ -78,8 +78,10 @@ namespace Cctm.Model
             CreateMediatorThread();
         }
         
-        public void ProcessTransaction(TransactionRecord transactionRecord, DateTime taskQueuedTime)
+        public void ProcessTransaction(DbTransactionRecord dbTransactionRecord, DateTime taskQueuedTime)
         {
+            //TransactionRecord transactionRecord = DbTransactionRecordToTransactionRecord(dbTransactionRecord);
+
             AuthorizationResponseFields authorizationResponse = new AuthorizationResponseFields(AuthorizationResultCode.UnknownError, "Not processed", "Not processed", "Not processed", "Not processed", 0, 0);
             CreditCardTrackFields creditCardFields = new CreditCardTrackFields() { ExpDateYYMM = "????", Pan = new CreditCardPan() { }, ServiceCode = ""};
             CreditCardStripe unencryptedStripe = new CreditCardStripe("");
@@ -91,9 +93,9 @@ namespace Cctm.Model
                 statistics.AbortQueued();
                 // The transaction is no longer queued
                 lock(queuedRecords)
-                    queuedRecords.Remove(transactionRecord.ID);
+                    queuedRecords.Remove(dbTransactionRecord.TransactionRecordID);
                 // Raise event that it was cancelled
-                OnCompletedTransaction(ref transactionRecord, TransactionProcessResult.Cancelled);
+                OnCompletedTransaction(ref dbTransactionRecord, TransactionProcessResult.Cancelled);
                 return;
             }
 
@@ -104,9 +106,9 @@ namespace Cctm.Model
             {
                 AuthorizeMode mode;
                 // What mode?
-                if (transactionRecord.PreauthStatus == TransactionStatus.ReadyToProcessNew)
+                if (dbTransactionRecord.AuthStatus == (short)TransactionStatus.ReadyToProcessNew)
                     mode = AuthorizeMode.Preauth;
-                else if (transactionRecord.PreauthStatus == TransactionStatus.Approved)
+                else if (dbTransactionRecord.AuthStatus == (short)TransactionStatus.Approved)
                     mode = AuthorizeMode.Finalize;
                 else
                     mode = AuthorizeMode.Normal;
@@ -130,13 +132,13 @@ namespace Cctm.Model
                     try
                     {
                         // Update the record to be "processing"
-                        UpdateTransactionStatus(ref transactionRecord, TransactionStatus.Processing, isPreAuth);
+                        UpdateTransactionStatus(ref dbTransactionRecord, TransactionStatus.Processing, isPreAuth);
                     }
                     finally
                     {
                         // The transaction is no longer queued
                         lock (queuedRecords)
-                            queuedRecords.Remove(transactionRecord.ID);
+                            queuedRecords.Remove(dbTransactionRecord.TransactionRecordID);
                     }
 
                     CreditCardTracks tracks;
@@ -146,20 +148,32 @@ namespace Cctm.Model
                     {
                         if (isPreAuth)
                         {
-                            transactionRecord.TransactionIndex = transactionRecord.PreauthTransactionIndex ?? transactionRecord.TransactionIndex;
-                            if (transactionRecord.PreauthAmountDollars == null)
+                            dbTransactionRecord.CCTransactionIndex = dbTransactionRecord.AuthCCTransactionIndex ?? dbTransactionRecord.CCTransactionIndex;
+                            //dbTransactionRecord.ReferenceDateTime = dbTransactionRecord.
+                            if (dbTransactionRecord.AuthCCAmount == null)
                                 throw new InvalidOperationException("Preauth amount is null");
-                            transactionRecord.AmountDollars = transactionRecord.PreauthAmountDollars.Value;
+                            dbTransactionRecord.CCAmount = dbTransactionRecord.AuthCCAmount.Value;
                         }
 
-                        // Validate request 
-                        transactionRecord.Validate("Err: Invalid rec data");
+                        EncryptedStripe encryptedDecodedStripe;
+                        try
+                        {
+                            string s = dbTransactionRecord.CCTracks;
+                            if (s.Contains("Processing") | s.Contains("CCTM"))
+                                encryptedDecodedStripe = new EncryptedStripe(new byte[0]);
+                            else
+                                encryptedDecodedStripe = DatabaseFormats.DecodeDatabaseStripe(s);
+                        }
+                        catch
+                        {
+                            encryptedDecodedStripe = new EncryptedStripe(new byte[0]);
+                        }
 
                         // Decrypt the request
-                        var decryptedStripe = DecryptStripe(transactionRecord, "Err: Decryption");
+                        var decryptedStripe = DecryptStripe(dbTransactionRecord, encryptedDecodedStripe, "Err: Decryption");
 
                         // Special cases (E.g. RSA track data shifted, sentinels missing etc)
-                        var formattedStripe = TrackFormat.FormatSpecialStripeCases(decryptedStripe, transactionRecord.EncryptionMethod, "Err: Format Stripe");
+                        var formattedStripe = TrackFormat.FormatSpecialStripeCases(decryptedStripe, (EncryptionMethod)dbTransactionRecord.EncryptionVer, "Err: Format Stripe");
 
                         unencryptedStripe = new CreditCardStripe(formattedStripe);
 
@@ -186,16 +200,16 @@ namespace Cctm.Model
                         tracks = new CreditCardTracks();
 
                     // Choose the authorization platform
-                    IAuthorizationPlatform authorizationPlatform = ChooseAuthorizationPlatform(transactionRecord, authorizationSuite, "Err: Clearing platform");
+                    IAuthorizationPlatform authorizationPlatform = ChooseAuthorizationPlatform(dbTransactionRecord, authorizationSuite, "Err: Clearing platform");
 
                     // Update the record to be authorizing
-                    UpdateTransactionStatus(ref transactionRecord, TransactionStatus.Authorizing, isPreAuth);
+                    UpdateTransactionStatus(ref dbTransactionRecord, TransactionStatus.Authorizing, isPreAuth);
 
                     // Perform the authorization
-                    authorizationResponse = AuthorizeRequest(transactionRecord, tracks, unencryptedStripe, creditCardFields, authorizationPlatform, transactionRecord.UniqueRecordNumber, mode, transactionRecord.PreauthTtid);
+                    authorizationResponse = AuthorizeRequest(dbTransactionRecord, tracks, unencryptedStripe, creditCardFields, authorizationPlatform, dbTransactionRecord.UniqueRecordNumber, mode, dbTransactionRecord.AuthTTID.Transform(a => (int?)a));
 
                     // Decide the status according to the response and update the database
-                    TransactionStatus newStatus = transactionRecord.Status;
+                    TransactionStatus newStatus = (TransactionStatus)dbTransactionRecord.Status;
                     switch (authorizationResponse.resultCode)
                     {
                         case AuthorizationResultCode.Approved: newStatus = TransactionStatus.Approved; break;
@@ -242,7 +256,7 @@ namespace Cctm.Model
                         FirstSix = (mode != AuthorizeMode.Finalize) ? creditCardFields.Pan.FirstSixDigits : "",
                         LastFour = (mode != AuthorizeMode.Finalize) ? creditCardFields.Pan.LastFourDigits : "",
                         PAN = obscuredPan.ToString(),
-                        TransactionRecordID = transactionRecord.ID,
+                        TransactionRecordID = (int)dbTransactionRecord.TransactionRecordID,
                         BatchNum = authorizationResponse.BatchNum,
                         Ttid = authorizationResponse.Ttid,
                         Status = newStatus, //isPreAuth ? (transactionRecord.PreauthStatus ?? transactionRecord.Status) : transactionRecord.Status,
@@ -252,36 +266,70 @@ namespace Cctm.Model
                     // Record it into the database
                     switch (mode)
                     {
-                        case AuthorizeMode.Preauth: database.UpdatePreauthRecord(transactionRecord, updatedRecord); break;
+                        case AuthorizeMode.Preauth:
+                            database2.UpdTransactionauthorization(new DbUpdTransactionauthorizationParams
+                                {
+                                    TransactionRecordID = dbTransactionRecord.TransactionRecordID,
+	                                SettlementDateTime = DateTime.Now,
+	                                CreditCallCardEaseReference = updatedRecord.CardEaseReference,
+	                                CreditCallAuthCode = updatedRecord.AuthorizationCode,
+	                                CreditCallPAN = updatedRecord.PAN,
+	                                CreditCallExpiryDate = updatedRecord.ExpiryDate,
+	                                CreditCallCardScheme = updatedRecord.CardScheme,
+	                                CCFirstSix = updatedRecord.FirstSix,
+	                                CCLastFour = updatedRecord.LastFour,
+	                                BatNum = updatedRecord.BatchNum,
+	                                TTID = updatedRecord.Ttid,
+	                                Status = (short)updatedRecord.Status
+                                }); 
+                            break;
                         case AuthorizeMode.Finalize: 
                             //database.UpdateFinalizeRecord(transactionRecord, updatedRecord);
-                            dualAuthDatabase.UpdTransactionrecordCctmFinalization(new DbUpdTransactionrecordcctmFinalizationParams
+                            database2.UpdTransactionrecordCctmFinalization(new DbUpdTransactionrecordcctmFinalizationParams
                                 {
                                     BatNum = authorizationResponse.BatchNum,
                                     CCTrackStatus = newTrackText,
                                     CCTransactionStatus = newStatus.ToText(),
                                     CreditCallAuthCode = authorizationResponse.authorizationCode ?? "",
                                     CreditCallCardEaseReference = authorizationResponse.receiptReference,
-                                    OldStatus = (short)transactionRecord.Status, 
+                                    OldStatus = (short)dbTransactionRecord.Status, 
                                     Status = (short)newStatus,
-                                    TransactionRecordID = transactionRecord.ID,
+                                    TransactionRecordID = dbTransactionRecord.TransactionRecordID,
                                     TTID = authorizationResponse.Ttid
                                 }).Wait();
 
                             break;
-                        default: database.UpdateTransactionRecordCctm(transactionRecord, updatedRecord); break;
+                        default:
+                            database2.UpdTransactionrecordCctm(new DbUpdTransactionrecordCctmParams
+                            {
+                                TransactionRecordID = dbTransactionRecord.TransactionRecordID,
+                                CreditCallCardEaseReference = updatedRecord.CardEaseReference,
+                                CCTrackStatus = updatedRecord.TrackText,
+                                CreditCallAuthCode = updatedRecord.AuthorizationCode,
+	                            CreditCallPAN = updatedRecord.PAN,
+	                            CreditCallExpiryDate = updatedRecord.ExpiryDate,
+	                            CreditCallCardScheme = updatedRecord.CardScheme,
+	                            CCFirstSix = updatedRecord.FirstSix,
+	                            CCLastFour = updatedRecord.LastFour,
+	                            CCTransactionStatus = updatedRecord.Status.ToText(),
+	                            BatNum = updatedRecord.BatchNum,
+	                            TTID = updatedRecord.Ttid,
+	                            Status = (short)updatedRecord.Status,
+	                            OldStatus = dbTransactionRecord.Status
+                            }); 
+                            break;
                     }
                     /*if (!isPreAuth)
                         database.UpdateTransactionRecordCctm(transactionRecord, updatedRecord);
                     else
                         database.UpdatePreauthRecord(transactionRecord, updatedRecord);*/
-                    transactionRecord.Status = updatedRecord.Status;
-                    UpdatedTransaction(transactionRecord);
+                    dbTransactionRecord.Status = (short)updatedRecord.Status;
+                    UpdatedTransaction(dbTransactionRecord);
 
                     processedRecord(updatedRecord);
 
                     fileLog(
-                        "ID: " + transactionRecord.ID
+                        "ID: " + dbTransactionRecord.TransactionRecordID
                         + "; Result: " + authorizationResponse.resultCode.ToString()
                         + "; Notes: " + authorizationResponse.note
                         );
@@ -306,43 +354,90 @@ namespace Cctm.Model
                 }
                 catch (SpecialCardException exception)
                 {
-                    fileLog(transactionRecord.ID + " " + exception.ToString());
-                    UpdateTransactionStatus(ref transactionRecord, TransactionStatus.StripeError, isPreAuth);
+                    fileLog(dbTransactionRecord.TransactionRecordID + " " + exception.ToString());
+                    UpdateTransactionStatus(ref dbTransactionRecord, TransactionStatus.StripeError, isPreAuth);
                     tranasctionPerformanceCounters.FailedTransaction(stopwatch.ElapsedTicks);
                 }
                 catch (StripeErrorException exception)
                 {
-                    fileLog(transactionRecord.ID + " " + exception.ToString());
+                    fileLog(dbTransactionRecord.TransactionRecordID + " " + exception.ToString());
                     // Update the fail status
-                    UpdateTransactionStatus(ref transactionRecord, TransactionStatus.StripeError, isPreAuth);
+                    UpdateTransactionStatus(ref dbTransactionRecord, TransactionStatus.StripeError, isPreAuth);
                     tranasctionPerformanceCounters.FailedTransaction(stopwatch.ElapsedTicks);
 
                 }
                 catch (AuthorizerProcessingException exception)
                 {
-                    fileLog(transactionRecord.ID + " " + exception.ToString());
-                    UpdateTransactionStatus(ref transactionRecord, TransactionStatus.AuthError, isPreAuth);
+                    fileLog(dbTransactionRecord.TransactionRecordID + " " + exception.ToString());
+                    UpdateTransactionStatus(ref dbTransactionRecord, TransactionStatus.AuthError, isPreAuth);
                     tranasctionPerformanceCounters.FailedTransaction(stopwatch.ElapsedTicks);
                 }
                 catch (Exception exception)
                 {
-                    fileLog(transactionRecord.ID + " " + exception.ToString());
+                    fileLog(dbTransactionRecord.TransactionRecordID + " " + exception.ToString());
                     tranasctionPerformanceCounters.FailedTransaction(stopwatch.ElapsedTicks);
                 }
                 finally
                 {
                     if (authorizationResponse.resultCode != AuthorizationResultCode.Approved)
-                        detailedLog(DateTime.Now.ToString(), transactionRecord.Status.ToText(), Convert.ToBase64String(transactionRecord.EncryptedStripe), unencryptedStripe.ToString(), creditCardFields.ExpDateMMYY, transactionRecord.StartDateTime.ToString(), obscuredPan.ToString(), transactionRecord.ID.ToString(), "", transactionRecord.EncryptionMethod.ToString(), transactionRecord.KeyVersion.ToString(), transactionRecord.AmountDollars.ToString(), transactionRecord.TransactionIndex.ToString(), transactionRecord.UniqueRecordNumber, transactionRecord.TerminalSerialNumber, authorizationResponse.note);
+                        detailedLog(DateTime.Now.ToString(), ((TransactionStatus)dbTransactionRecord.Status).ToText(), dbTransactionRecord.CCTracks, unencryptedStripe.ToString(), creditCardFields.ExpDateMMYY, dbTransactionRecord.StartDateTime.ToString(), obscuredPan.ToString(), dbTransactionRecord.TransactionRecordID.ToString(), "", dbTransactionRecord.EncryptionVer.ToString(), dbTransactionRecord.KeyVer.ToString(), dbTransactionRecord.CCAmount.ToString(), dbTransactionRecord.CCTransactionIndex.ToString(), dbTransactionRecord.UniqueRecordNumber, dbTransactionRecord.TerminalSerNo, authorizationResponse.note);
 
                     if (result == TransactionProcessResult.Successful)
                         statistics.NewSuccessful(new TimeSpan(DateTime.Now.Ticks - taskStart.Ticks));
                     else
                         statistics.NewFailure(new TimeSpan(DateTime.Now.Ticks - taskStart.Ticks));
-                    OnCompletedTransaction(ref transactionRecord, result);
+                    OnCompletedTransaction(ref dbTransactionRecord, result);
 
                     throttle.Release();
                 }
             }
+        }
+
+        private TransactionRecord DbTransactionRecordToTransactionRecord(DbTransactionRecord dbTransactionRecord)
+        {
+            EncryptedStripe encryptedDecodedStripe;
+            try
+            {
+                string s = dbTransactionRecord.CCTracks;
+                if (s.Contains("Processing") | s.Contains("CCTM"))
+                    encryptedDecodedStripe = new EncryptedStripe(new byte[0]);
+                else
+                    encryptedDecodedStripe = DatabaseFormats.DecodeDatabaseStripe(s);
+            }
+            catch
+            {
+                encryptedDecodedStripe = new EncryptedStripe(new byte[0]);
+            }
+
+            return new TransactionRecord()
+            {
+                AmountDollars = dbTransactionRecord.CCAmount,
+                ClearingPlatform = dbTransactionRecord.CCClearingPlatform,
+                DateTimeCreated = dbTransactionRecord.DateTimeCreated,
+                EncryptedStripe = encryptedDecodedStripe,
+                EncryptionMethod = DatabaseFormats.decodeDatabaseEncryptionMethod(dbTransactionRecord.EncryptionVer),
+                ID = decimal.ToInt32(dbTransactionRecord.TransactionRecordID),
+                KeyVersion = decimal.ToInt32(dbTransactionRecord.KeyVer),
+                MerchantID = dbTransactionRecord.CCTerminalID,
+                MerchantPassword = dbTransactionRecord.CCTransactionKey,
+                PoleID = decimal.ToInt32(dbTransactionRecord.PoleID),
+                StartDateTime = dbTransactionRecord.StartDateTime,
+                StatusString = dbTransactionRecord.CCTransactionStatus,
+                TerminalID = decimal.ToInt32(dbTransactionRecord.TerminalID),
+                TerminalSerialNumber = dbTransactionRecord.TerminalSerNo,
+                TimePurchased = dbTransactionRecord.TimePurchased,
+                TotalCredit = dbTransactionRecord.TotalCredit,
+                TotalParkingTime = dbTransactionRecord.TotalParkingTime,
+                TransactionIndex = decimal.ToInt32(dbTransactionRecord.CCTransactionIndex),
+                UniqueRecordNumber = dbTransactionRecord.UniqueRecordNumber,
+                Status = (TransactionStatus)dbTransactionRecord.Status,
+                Mode = (TransactionMode)dbTransactionRecord.Mode,
+                PreauthStatus = dbTransactionRecord.AuthStatus.Transform(s => (TransactionStatus?)s),
+                PreauthTtid = dbTransactionRecord.AuthTTID.Transform(i => (int?)i),
+                RefDateTime = dbTransactionRecord.ReferenceDateTime.Transform(d => (DateTime?)d),
+                PreauthTransactionIndex = dbTransactionRecord.AuthCCTransactionIndex.Transform(a => (int?)a),
+                PreauthAmountDollars = dbTransactionRecord.AuthCCAmount.Transform(a => (int?)a),
+            };
         }
 
         public delegate void DetailedLogDelegate(string datetime, string status, string encryptedTrack,
@@ -408,26 +503,26 @@ namespace Cctm.Model
             LoadSettings();
         }
 
-        protected virtual void OnStartingTransaction(ref TransactionRecord record)
+        protected virtual void OnStartingTransaction(ref DbTransactionRecord record)
         {
             if (StartingTransaction != null)
                 StartingTransaction(record);
         }
 
-        protected virtual void OnCompletedTransaction(ref TransactionRecord record, TransactionProcessResult successful)
+        protected virtual void OnCompletedTransaction(ref DbTransactionRecord record, TransactionProcessResult successful)
         {
             if (CompletedTransaction != null)
                 CompletedTransaction(record, successful);
         }
 
-        private void UpdateTransactionStatus(ref TransactionRecord record, TransactionStatus newStatus, bool preAuth)
+        private void UpdateTransactionStatus(ref DbTransactionRecord record, TransactionStatus newStatus, bool preAuth)
         {
             if (!preAuth)
             {
                 // Update the database
-                if (database.UpdateRecordStatus(record.ID, record.Status, newStatus) == record.Status)
+                if (database2.UpdTransactionrecordStatus(record.TransactionRecordID,  newStatus.ToText(), (short)newStatus, (short)record.Status).Result == (short)record.Status)
                 {
-                    record.Status = newStatus;
+                    record.Status = (short)newStatus;
                     // Raise the event
                     if (UpdatedTransaction != null)
                         UpdatedTransaction(record);
@@ -438,9 +533,9 @@ namespace Cctm.Model
             else
             {
                 // Update the database
-                if (database.UpdatePreauthStatus(record.ID, record.PreauthStatus, newStatus) == record.PreauthStatus)
+                if (database2.UpdTransactionauthorizationStatus(record.TransactionRecordID, (short)newStatus, record.AuthStatus??0).Result == record.AuthStatus)
                 {
-                    record.PreauthStatus = newStatus;
+                    record.AuthStatus = (short)newStatus;
                     // Raise the event
                     if (UpdatedTransaction != null)
                         UpdatedTransaction(record);
@@ -496,23 +591,23 @@ namespace Cctm.Model
             cycleMutex.WaitOne();
             try
             {
-                List<TransactionRecord> newRecords;
+                List<DbTransactionRecord> newRecords;
 
-                List<int> previouslyQueuedRecords = new List<int>(queuedRecords.Count); // List of queued records from before SelectNewTransactionRecords starts
+                List<decimal> previouslyQueuedRecords = new List<decimal>(queuedRecords.Count); // List of queued records from before SelectNewTransactionRecords starts
                 lock (queuedRecords)
                     previouslyQueuedRecords.AddRange(queuedRecords);
 
-                IEnumerable<TransactionRecord> transactionRecords = database.SelectNewTransactionRecords();
+                IEnumerable<DbTransactionRecord> transactionRecords = database2.SelNewTransactionrecords().Result;
                 lock (queuedRecords)
                 {
                     // List of transactions that are actually "new" (not in queue already)
                     newRecords = (from transaction in transactionRecords
-                                  where (previouslyQueuedRecords.IndexOf(transaction.ID) == -1)
-                                    && (queuedRecords.IndexOf(transaction.ID) == -1)
+                                  where (previouslyQueuedRecords.IndexOf(transaction.TransactionRecordID) == -1)
+                                    && (queuedRecords.IndexOf(transaction.TransactionRecordID) == -1)
                                   select transaction).ToList();
                     if (newRecords.Count() > 0)
                         // Add the IDs of all the new transactions
-                        queuedRecords.AddRange(from r in newRecords select r.ID);
+                        queuedRecords.AddRange(from r in newRecords select r.TransactionRecordID);
                 }
 
                 // For each transaction that isn't already queued
@@ -566,13 +661,13 @@ namespace Cctm.Model
         }
 
         private static IAuthorizationPlatform ChooseAuthorizationPlatform(
-            TransactionRecord transaction,
+            DbTransactionRecord transaction,
             AuthorizationSuite authorizationSuite,
             string failStatus)
         {
             IAuthorizationPlatform authorizationPlatform = null;
 
-            switch (transaction.ClearingPlatform.ToUpper())
+            switch (transaction.CCClearingPlatform.ToUpper())
             {
                 case "LIVE":
                     throw new StripeErrorException("Credit-Call no longer supported");
@@ -601,29 +696,29 @@ namespace Cctm.Model
             }
 
             if (authorizationPlatform == null)
-                throw new StripeErrorException("Clearing platform not supported: \"" + transaction.ClearingPlatform + "\"", failStatus);
+                throw new StripeErrorException("Clearing platform not supported: \"" + transaction.CCClearingPlatform + "\"", failStatus);
 
             return authorizationPlatform;
         }
 
-        private AuthorizationResponseFields AuthorizeRequest(TransactionRecord transaction, CreditCardTracks tracks, CreditCardStripe unencryptedStripe, CreditCardTrackFields creditCardFields,
+        private AuthorizationResponseFields AuthorizeRequest(DbTransactionRecord transaction, CreditCardTracks tracks, CreditCardStripe unencryptedStripe, CreditCardTrackFields creditCardFields,
             IAuthorizationPlatform authorizationPlatform, string orderNumber, AuthorizeMode mode, int? preauthTtid)
         {
             
             AuthorizationRequest authorizationRequest = new AuthorizationRequest(
-                transaction.TerminalSerialNumber,
+                transaction.TerminalSerNo,
                 transaction.StartDateTime,
-                transaction.MerchantID,
-                transaction.MerchantPassword,
+                transaction.CCTerminalID,
+                transaction.CCTransactionKey,
                 creditCardFields.Pan.ToString(),
                 creditCardFields.ExpDateMMYY,
-                transaction.AmountDollars,
+                transaction.CCAmount,
                 "",
-                transaction.ID.ToString(),
-                transaction.ID.ToString(),
+                transaction.TransactionRecordID.ToString(),
+                transaction.TransactionRecordID.ToString(),
                 tracks.TrackTwo.ToString(),
                 unencryptedStripe.Data,
-                transaction.ID.ToString(),
+                transaction.TransactionRecordID.ToString(),
                 orderNumber,
                 preauthTtid);
 
@@ -640,19 +735,19 @@ namespace Cctm.Model
         /// <param name="errorStatus"></param>
         /// <returns></returns>
         /// <exception cref="StripeErrorException"></exception>
-        private UnencryptedStripe DecryptStripe(TransactionRecord transaction, string errorStatus)
+        private UnencryptedStripe DecryptStripe(DbTransactionRecord transaction, EncryptedStripe stripe, string errorStatus)
         {
             StripeDecryptor decryptor = new StripeDecryptor();
             TransactionInfo info = new TransactionInfo
             (
-                amountDollars: transaction.AmountDollars,
-                meterSerialNumber: transaction.TerminalSerialNumber,
+                amountDollars: transaction.CCAmount,
+                meterSerialNumber: transaction.TerminalSerNo,
                 startDateTime: transaction.StartDateTime,
-                transactionIndex: transaction.TransactionIndex,
-                refDateTime: transaction.RefDateTime
+                transactionIndex: (int)transaction.CCTransactionIndex,
+                refDateTime: transaction.ReferenceDateTime
             );
 
-            string decryptedStripe = decryptor.decryptStripe(transaction.EncryptedStripe, transaction.EncryptionMethod, transaction.KeyVersion, info, errorStatus);
+            string decryptedStripe = decryptor.decryptStripe(stripe, (EncryptionMethod)transaction.EncryptionVer, (int)transaction.KeyVer, info, errorStatus);
             return new UnencryptedStripe(decryptedStripe);
         }
 
@@ -809,7 +904,7 @@ namespace Cctm.Model
            
         }
 
-        public delegate void TransactionEventHandler(TransactionRecord record);
+        public delegate void TransactionEventHandler(DbTransactionRecord record);
 
         private TransactionEventHandler updatedTransaction;
 
@@ -827,10 +922,10 @@ namespace Cctm.Model
             set { startingTransaction = value; }
         }
 
-        public delegate void CompletedTransactionEventHandler(TransactionRecord transaction, TransactionProcessResult success);
+        public delegate void CompletedTransactionEventHandler(DbTransactionRecord transaction, TransactionProcessResult success);
 
         private CompletedTransactionEventHandler completedTransaction;
-        private ICctmDualAuthDatabase dualAuthDatabase;
+        private ICctmDatabase2 database2;
 
         public CompletedTransactionEventHandler CompletedTransaction
         {
