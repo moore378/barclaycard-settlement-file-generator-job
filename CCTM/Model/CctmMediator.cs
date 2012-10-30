@@ -261,7 +261,7 @@ namespace Cctm.Model
                         BatchNum = authorizationResponse.BatchNum,
                         Ttid = authorizationResponse.Ttid,
                         Status = newStatus, //isPreAuth ? (transactionRecord.PreauthStatus ?? transactionRecord.Status) : transactionRecord.Status,
-                        TrackText = newTrackText
+                        TrackText = newTrackText ?? dbTransactionRecord.CCTracks
                     };
 
                     // Record it into the database
@@ -356,21 +356,21 @@ namespace Cctm.Model
                 catch (SpecialCardException exception)
                 {
                     fileLog(dbTransactionRecord.TransactionRecordID + " " + exception.ToString());
-                    var dummy = UpdateTransactionStatus(dbTransactionRecord, TransactionStatus.StripeError, isPreAuth);
+                    UpdateTransactionStatus(dbTransactionRecord, TransactionStatus.StripeError, isPreAuth).Wait();
                     tranasctionPerformanceCounters.FailedTransaction(stopwatch.ElapsedTicks);
                 }
                 catch (StripeErrorException exception)
                 {
                     fileLog(dbTransactionRecord.TransactionRecordID + " " + exception.ToString());
                     // Update the fail status
-                    var dummy = UpdateTransactionStatus(dbTransactionRecord, TransactionStatus.StripeError, isPreAuth);
+                    UpdateTransactionStatus(dbTransactionRecord, TransactionStatus.StripeError, isPreAuth).Wait();
                     tranasctionPerformanceCounters.FailedTransaction(stopwatch.ElapsedTicks);
 
                 }
                 catch (AuthorizerProcessingException exception)
                 {
                     fileLog(dbTransactionRecord.TransactionRecordID + " " + exception.ToString());
-                    var dummy = UpdateTransactionStatus(dbTransactionRecord, TransactionStatus.AuthError, isPreAuth);
+                    UpdateTransactionStatus(dbTransactionRecord, TransactionStatus.AuthError, isPreAuth).Wait();
                     tranasctionPerformanceCounters.FailedTransaction(stopwatch.ElapsedTicks);
                 }
                 catch (Exception exception)

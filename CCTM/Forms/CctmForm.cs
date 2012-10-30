@@ -487,7 +487,6 @@ namespace Cctm
         {
             if (!hidden)
             {
-
                 if (!displayedTransactions.ContainsKey(transaction.TransactionRecordID))
                     return;
 
