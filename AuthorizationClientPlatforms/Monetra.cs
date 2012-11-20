@@ -92,6 +92,7 @@ namespace AuthorizationClientPlatforms
                     // Assign transaction fields
                     transaction.username = request.MerchantID;
                     transaction.password = request.MerchantPassword;
+                    transaction.nsf = "no";
                     switch (mode)
                     {
                         case AuthorizeMode.Normal: transaction.action = "sale"; log("Monetra: Sale"); break;
@@ -271,6 +272,10 @@ namespace AuthorizationClientPlatforms
             /// Password associated with user/subuser
             /// </summary>
             public abstract string password { set; }
+            /// <summary>
+            /// Boolean. If true, will attempt to perform a partial authorization if insufficient funds remain on card
+            /// </summary>
+            public abstract string nsf { set; }
             /// <summary>
             /// appropriate 'Key Value' for General User Request.
             /// </summary>
@@ -683,6 +688,11 @@ namespace AuthorizationClientPlatforms
             public override string ordernum
             {
                 set { _client.M_TransKeyVal(_transactionID, "ordernum", value); }
+            }
+
+            public override string nsf
+            {
+                set { _client.M_TransKeyVal(_transactionID, "nsf", value); }
             }
         }
 
@@ -1426,6 +1436,11 @@ namespace AuthorizationClientPlatforms
             public override string ordernum
             {
                 set { monetra.TransKeyVal(transactionID, "ordernum", value); }
+            }
+
+            public override string nsf
+            {
+                set { monetra.TransKeyVal(transactionID, "nsf", value); }
             }
         }
 

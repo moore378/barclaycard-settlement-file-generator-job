@@ -351,7 +351,6 @@ namespace Cctm.Model
                         tranasctionPerformanceCounters.FailedTransaction(stopwatch.ElapsedTicks);
                     else
                         tranasctionPerformanceCounters.SuccessfulTransaction(stopwatch.ElapsedTicks, authorizationResponse.resultCode == AuthorizationResultCode.Approved);
-
                 }
                 catch (SpecialCardException exception)
                 {
