@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="e8484251-5b3f-4575-9ec2-f68845982103" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://receipt.ipsmetersystems.com/validatecard.svc?wsdl" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="ValidateCard3.xsd" MetadataType="Schema" ID="7b266d27-422d-4f46-af54-61595adeaa4b" SourceId="1" SourceUrl="http://receipt.ipsmetersystems.com/ValidateCard.svc?xsd=xsd0" />
+    <MetadataFile FileName="ValidateCard1.wsdl" MetadataType="Wsdl" ID="8ba855f1-3166-48b1-b991-1420f0dbc1da" SourceId="1" SourceUrl="http://receipt.ipsmetersystems.com/validatecard.svc?wsdl" />
+    <MetadataFile FileName="ValidateCard31.xsd" MetadataType="Schema" ID="6a7b9532-4f3d-4346-8cee-55aa2413635c" SourceId="1" SourceUrl="http://receipt.ipsmetersystems.com/ValidateCard.svc?xsd=xsd1" />
+    <MetadataFile FileName="ValidateCard32.xsd" MetadataType="Schema" ID="ba21d135-5126-4ae9-947a-17bd12dcd725" SourceId="1" SourceUrl="http://receipt.ipsmetersystems.com/ValidateCard.svc?xsd=xsd2" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

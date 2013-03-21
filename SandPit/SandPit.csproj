@@ -23,6 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -47,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CCTracksSeparater.cs" />
+    <Compile Include="libmonetra.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -54,6 +56,10 @@
     <ProjectReference Include="..\AuthorizationClientPlatforms\AuthorizationClientPlatforms.csproj">
       <Project>{5AE1B5BD-C0AE-46E2-8E55-6960FAF3A846}</Project>
       <Name>AuthorizationClientPlatforms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AutoDatabase\AutoDatabase.csproj">
+      <Project>{dba89e62-338a-4693-871d-7dda97419ca2}</Project>
+      <Name>AutoDatabase</Name>
     </ProjectReference>
     <ProjectReference Include="..\CryptographicPlatforms\CryptographicPlatforms.csproj">
       <Project>{C57D09F3-983C-4508-8E34-FAD3B081B79F}</Project>

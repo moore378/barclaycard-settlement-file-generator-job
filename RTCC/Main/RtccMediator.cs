@@ -13,6 +13,7 @@ using Rtcc.RtsaInterfacing;
 using Rtcc.Database;
 using Rtcc.PayByCell;
 using System.Diagnostics;
+using System.Net;
 
 namespace Rtcc.Main
 {
@@ -33,6 +34,7 @@ namespace Rtcc.Main
         private IAuthorizationPlatform monetra;
         private PayByCellClient payByCell;
         private RtccPerformanceCounters.SessionStats performanceCounterSession;
+        private static System.Security.Cryptography.MD5 hasher = System.Security.Cryptography.MD5.Create();
 
         public RtccMediator(IAuthorizationPlatform monetra,
             RtsaConnection rtsaConnection,
@@ -141,7 +143,23 @@ namespace Rtcc.Main
                     rtccDatabase.UpdatePreauth(transactionRecordID.Value, DateTime.Now, authorizationResponse.receiptReference, authorizationResponse.authorizationCode, obscuredPan.ToString(), creditCardFields.ExpDateMMYY, authorizationResponse.cardType, creditCardFields.Pan.FirstSixDigits, creditCardFields.Pan.LastFourDigits, authorizationResponse.BatchNum, authorizationResponse.Ttid, (short)status.Value);
                 else
                     rtccDatabase.UpdateLiveTransactionRecord(transactionRecordID.Value, "Processed_Live", newStatus.ToString(), authorizationResponse.authorizationCode, authorizationResponse.cardType, obscuredPan.ToString(), authorizationResponse.BatchNum, authorizationResponse.Ttid, (short)status.Value);
-                
+
+                try
+                {
+                    //ReceiptService.Transaction objTrans = new ReceiptService.Transaction();
+                    //ReceiptService.ValidateCardClient objClient = new ReceiptService.ValidateCardClient();
+                    //objTrans.CCHash = ;
+                    //objTrans.TransactionRecordID = transactionRecordID.GetValueOrDefault().ToString();
+                    //objClient.SubmitReqest(objTrans);
+
+                    string hash = String.Concat(hasher.ComputeHash(Encoding.ASCII.GetBytes(";" + creditCardFields.Pan + "=" + creditCardFields.ExpDateYYMM + "?")).Select(b => b.ToString("X2")));
+                    SendToReceiptServer(hash, transactionRecordID.GetValueOrDefault().ToString(), "1");
+                }
+                catch (Exception e)
+                {
+                    LogError(e.Message, e);
+                }
+
                 // Register the terminal with the Pay-by-cell system if the transaction was approved
                 /*if (authorizationResponse.resultCode == AuthorizationResultCode.Approved)
                 {
@@ -180,6 +198,55 @@ namespace Rtcc.Main
                 performanceCounterSession.FailedSession(stopwatch.ElapsedTicks);
                 return false;
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="hash"></param>
+        /// <param name="transactionRecordID"></param>
+        /// <param name="mode">1 for RTCC, 2 for CCTM</param>
+        private static void SendToReceiptServer(string hash, string transactionRecordID, string mode)
+        {
+            string url = Rtcc.Properties.Settings.Default.ReceiptServer;
+            //string url = "http://receipt.ipsmetersystems.com/ValidateCard.svc/SubmitRequest";
+
+            var req = (HttpWebRequest)WebRequest.Create(url);
+
+            req.Method = "POST";
+
+            req.ContentType = "application/xml; charset=utf-8";
+
+            req.Timeout = 30000;
+
+            req.Headers.Add("SOAPAction", url);
+
+
+
+            string sXML = "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
+
+            sXML += "<Transaction xmlns=\"http://www.ipsmetersystems.com/ReceiptingSystem\">";
+
+            sXML += "<CCHash>" + hash + "</CCHash>";
+            //sXML += "<Mode>" + mode + "</Mode>";
+
+            sXML += "<TransactionRecordID>" + transactionRecordID + "</TransactionRecordID>";
+
+            sXML += "</Transaction>";
+
+
+
+            req.ContentLength = sXML.Length;
+
+            System.IO.StreamWriter sw = new System.IO.StreamWriter(req.GetRequestStream());
+
+            sw.Write(sXML);
+
+            sw.Close();
+
+            HttpWebResponse webResponse = (HttpWebResponse)req.GetResponse();
+
+            Stream str = webResponse.GetResponseStream();
         }
 
         private static TransactionStatus StatusFromRespose(AuthorizationResponseFields authorizationResponse)

@@ -39,7 +39,7 @@ using System.Diagnostics;
 using System.Windows.Shell;
 using TransactionManagementCommon.ControllerBase;
 using Cctm.Database;
-using Cctm.Model;
+using Cctm.Behavior;
 using Cctm.DualAuth;
 using AutoDatabase;
 
@@ -49,7 +49,7 @@ namespace Cctm
     {
         #region Establishing runtime configuration
 
-        Configuration configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+        public static Configuration configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
         private static CctmPerformanceCounters performanceCounters = new CctmPerformanceCounters(); 
         private bool hidden;
         private static string logFolder = Properties.Settings.Default.LogFolder;

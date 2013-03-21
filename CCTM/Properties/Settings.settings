@@ -16,5 +16,11 @@
     <Setting Name="LogFolder" Type="System.String" Scope="User">
       <Value Profile="(Default)">Logs</Value>
     </Setting>
+    <Setting Name="ReceiptServer" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Setting" Type="System.String" Scope="User">
+      <Value Profile="(Default)">http://db5:1111/ValidateCard.svc/SubmitRequest</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

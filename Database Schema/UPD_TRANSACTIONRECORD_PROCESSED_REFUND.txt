@@ -1,0 +1,10 @@
+UPD_TRANSACTIONRECORD_PROCESSED_REFUND(Decimal @TransactionRecordID, Decimal @TTID, SmallInt @BatNum, SmallInt @Status, DateTime @SettlementDateTime)
+Parameters:
+	// public Int32 RETURN_VALUE; // Int // (Return value)
+	public Decimal TransactionRecordID; // Decimal
+	public Decimal TTID; // Decimal
+	public Int16 BatNum; // SmallInt
+	public Int16 Status; // SmallInt
+	public DateTime SettlementDateTime; // DateTime
+Returns:
+	// No return fields

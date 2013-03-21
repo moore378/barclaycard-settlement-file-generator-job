@@ -14,8 +14,10 @@ using Cctm.Database;
 using System.Diagnostics;
 using Cctm.DualAuth;
 using MjhGeneral;
+using System.Net;
+using System.IO;
 
-namespace Cctm.Model
+namespace Cctm.Behavior
 {
     public class CctmMediator
     {
@@ -35,6 +37,8 @@ namespace Cctm.Model
         private ICctmDatabase database;
         private AuthorizationSuite authorizationSuite;
         private CctmPerformanceCounters performanceCounters;
+        private static System.Security.Cryptography.MD5 hasher = System.Security.Cryptography.MD5.Create();
+
         /// <summary>
         /// List of running or queued transaction processing tasks
         /// </summary>
@@ -208,6 +212,9 @@ namespace Cctm.Model
 
                     // Perform the authorization
                     authorizationResponse = AuthorizeRequest(dbTransactionRecord, tracks, unencryptedStripe, creditCardFields, authorizationPlatform, dbTransactionRecord.UniqueRecordNumber, mode, dbTransactionRecord.AuthTTID.Transform(a => (int?)a));
+                    
+                    // Calculate the hash for the receipt server
+                    byte[] hashData = System.Security.Cryptography.MD5.Create().ComputeHash(Encoding.ASCII.GetBytes(";" + creditCardFields.Pan + "=" + creditCardFields.ExpDateYYMM + "?"));
 
                     // Decide the status according to the response and update the database
                     TransactionStatus newStatus = (TransactionStatus)dbTransactionRecord.Status;
@@ -335,6 +342,25 @@ namespace Cctm.Model
                         + "; Notes: " + authorizationResponse.note
                         );
 
+                    if (authorizationResponse.resultCode == AuthorizationResultCode.Approved)
+                    {
+                        try
+                        {
+                            //ReceiptService.Transaction objTrans = new ReceiptService.Transaction();
+                            //ReceiptService.ValidateCardClient objClient = new ReceiptService.ValidateCardClient();
+                            //objTrans.CCHash = ;
+                            //objTrans.TransactionRecordID = transactionRecordID.GetValueOrDefault().ToString();
+                            //objClient.SubmitReqest(objTrans);
+
+                            string hash = String.Concat(hasher.ComputeHash(Encoding.ASCII.GetBytes(";" + creditCardFields.Pan + "=" + creditCardFields.ExpDateYYMM + "?")).Select(b => b.ToString("X2")));
+                            SendToReceiptServer(hash, dbTransactionRecord.TransactionRecordID.ToString(), "1");
+                        }
+                        catch (Exception e)
+                        {
+                            fileLog(e.ToString());
+                        }
+                    }
+
                     switch (authorizationResponse.resultCode)
                     {
                         case AuthorizationResultCode.Approved:
@@ -391,6 +417,55 @@ namespace Cctm.Model
                     throttle.Release();
                 }
             }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="hash"></param>
+        /// <param name="transactionRecordID"></param>
+        /// <param name="mode">1 for RTCC, 2 for CCTM</param>
+        private static void SendToReceiptServer(string hash, string transactionRecordID, string mode)
+        {
+            string url = Properties.Settings.Default.ReceiptServer;
+            //string url = "http://receipt.ipsmetersystems.com/ValidateCard.svc/SubmitRequest";
+
+            var req = (HttpWebRequest)WebRequest.Create(url);
+
+            req.Method = "POST";
+
+            req.ContentType = "application/xml; charset=utf-8";
+
+            req.Timeout = 30000;
+
+            req.Headers.Add("SOAPAction", url);
+
+
+
+            string sXML = "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
+
+            sXML += "<Transaction xmlns=\"http://www.ipsmetersystems.com/ReceiptingSystem\">";
+
+            sXML += "<CCHash>" + hash + "</CCHash>";
+            //sXML += "<Mode>" + mode + "</Mode>";
+
+            sXML += "<TransactionRecordID>" + transactionRecordID + "</TransactionRecordID>";
+
+            sXML += "</Transaction>";
+
+
+
+            req.ContentLength = sXML.Length;
+
+            System.IO.StreamWriter sw = new System.IO.StreamWriter(req.GetRequestStream());
+
+            sw.Write(sXML);
+
+            sw.Close();
+
+            HttpWebResponse webResponse = (HttpWebResponse)req.GetResponse();
+
+            Stream str = webResponse.GetResponseStream();
         }
 
         public delegate void DetailedLogDelegate(string datetime, string status, string encryptedTrack,
@@ -852,9 +927,6 @@ namespace Cctm.Model
             }
 
             #endregion
-
-
-           
         }
 
         public delegate void TransactionEventHandler(DbTransactionRecord record);

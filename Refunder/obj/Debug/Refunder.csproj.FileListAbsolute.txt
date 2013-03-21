@@ -1,0 +1,14 @@
+D:\Projects\TransactionManagement\Refunder\obj\Debug\Refunder.csprojResolveAssemblyReference.cache
+D:\Projects\TransactionManagement\Refunder\bin\Debug\Refunder.exe.config
+D:\Projects\TransactionManagement\Refunder\bin\Debug\Refunder.exe
+D:\Projects\TransactionManagement\Refunder\bin\Debug\Refunder.pdb
+D:\Projects\TransactionManagement\Refunder\bin\Debug\AutoDatabase.dll
+D:\Projects\TransactionManagement\Refunder\bin\Debug\MjhGeneral.dll
+D:\Projects\TransactionManagement\Refunder\bin\Debug\EasyIL.dll
+D:\Projects\TransactionManagement\Refunder\bin\Debug\Microsoft.CompilerServices.AsyncTargetingPack.Net4.dll
+D:\Projects\TransactionManagement\Refunder\bin\Debug\AutoDatabase.pdb
+D:\Projects\TransactionManagement\Refunder\bin\Debug\MjhGeneral.pdb
+D:\Projects\TransactionManagement\Refunder\bin\Debug\EasyIL.pdb
+D:\Projects\TransactionManagement\Refunder\bin\Debug\Microsoft.CompilerServices.AsyncTargetingPack.Net4.xml
+D:\Projects\TransactionManagement\Refunder\obj\Debug\Refunder.exe
+D:\Projects\TransactionManagement\Refunder\obj\Debug\Refunder.pdb

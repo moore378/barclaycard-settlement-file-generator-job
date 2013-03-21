@@ -1,0 +1,15 @@
+SEL_PENDING_REFUNDS_CCTM()
+Parameters:
+	// public Int32 RETURN_VALUE; // Int // (Return value)
+Returns:
+	public Decimal TransactionRecordID; // decimal
+	public Decimal Credit; // money
+	public String CreditCallPAN; // varchar
+	public String CreditCallCardEaseReference; // char
+	public Decimal CCAmount; // money
+	public DateTime StartDateTime; // datetime
+	public String CCTerminalID; // char
+	public String CCTransactionKey; // varchar
+	public String CCClearingPlatform; // varchar
+	public Decimal TTID; // decimal
+	public Int16 BatNum; // smallint

@@ -54,3 +54,6 @@ C:\Work\TransactionManagement VS2010\CctmForBlacklisted\obj\x86\Debug\CctmForBla
 C:\Work\TransactionManagement VS2010\CctmForBlacklisted\obj\x86\Debug\CctmForBlacklisted.pdb
 C:\Work\TransactionManagement VS2010\CctmForBlacklisted\obj\x86\Debug\CctmForBlacklisted.csprojResolveAssemblyReference.cache
 C:\Work\TransactionManagement VS2010\CctmForBlacklisted\obj\x86\Debug\CctmForBlacklisted.csproj.GenerateResource.Cache
+D:\Projects\TransactionManagement\CctmForBlacklisted\bin\Debug\CctmForBlacklisted.exe.config
+D:\Projects\TransactionManagement\CctmForBlacklisted\obj\x86\Debug\CctmForBlacklisted.exe
+D:\Projects\TransactionManagement\CctmForBlacklisted\obj\x86\Debug\CctmForBlacklisted.pdb
