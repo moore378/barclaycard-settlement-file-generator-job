@@ -718,6 +718,9 @@ namespace Cctm.Behavior
                 case "TEST-MIGS":
                     //authorizationPlatform = authorizationSuite.MigsTest.Value; Break;
                     throw new StripeErrorException("MIGS no longer supported");
+                case "ISRAEL-PREMIUM":
+                    authorizationPlatform = authorizationSuite.IsraelPremium.Value; 
+                    break;
                 default:
                     authorizationPlatform = null;
                     break;

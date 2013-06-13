@@ -14,21 +14,27 @@ namespace Refunder
         {
             try
             {
-                var hostname = args[0];
-                var port = Int32.Parse(args[1]);
-                var connectionString = "Data";// args[2];
+                Options options = new Options();
+
+                if (!CommandLine.Parser.Default.ParseArguments(args, options))
+                {
+                    //Console.WriteLine(options.GetUsage());
+                    return;
+                }
+                
+                //var connectionString = "Data";// args[2];
 
                 var monetra = new libmonetra.Monetra();
 
-                monetra.SetSSL(hostname, port);
+                monetra.SetSSL(options.MonetraHost, options.MonetraPort);
                 monetra.SetBlocking(true);
                 var connected = monetra.Connect();
 
                 if (!connected)
-                    throw new Exception("Could not connect to Monetra at " + hostname + ":" + port);
+                    throw new Exception("Could not connect to Monetra at " + options.MonetraHost + ":" + options.MonetraPort);
 
-                IDatabase database = AutoDatabaseBuilder.CreateInstance<IDatabase>(new ConnectionSource(connectionString), new Tracker(Log));
-                Run(database, monetra).Wait();
+                IDatabase database = AutoDatabaseBuilder.CreateInstance<IDatabase>(new ConnectionSource(options.ConnectionString), new Tracker(Log));
+                Run(database, monetra, !options.NonInteractive).Wait();
 
                 monetra.DestroyConn();
             }
@@ -36,21 +42,19 @@ namespace Refunder
             {
                 Console.WriteLine(e.ToString());
                 Console.WriteLine();
-                Console.WriteLine("Params: <monetra> <port> <connection string>");
             }
         }
 
-        private async static Task Run(IDatabase database, libmonetra.Monetra monetra)
+        private async static Task Run(IDatabase database, libmonetra.Monetra monetra, bool interactive)
         {
             var pendingRefunds = await database.SelPendingRefundsCctm();
-            bool all = false;
-
+            
             foreach (var pendingRefund in pendingRefunds)
             {
                 if (!pendingRefund.TTID.HasValue)
                     continue;
 
-                if (!all)
+                if (interactive)
                 {
                     Console.WriteLine("Do you want to refund TTID=" + pendingRefund.TTID + " for " + pendingRefund.CCAmount + "? (y/n/a/x)");
                     switch (Char.ToUpper(Console.ReadKey().KeyChar))
@@ -58,7 +62,7 @@ namespace Refunder
                         case 'N': continue;
                         case 'X': return;
                         case 'Y': break;
-                        case 'A': all = true; break;
+                        case 'A': interactive = false; break;
                     }
                 }
 

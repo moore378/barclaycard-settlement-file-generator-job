@@ -15,8 +15,8 @@ namespace Cctm.Common
     /// </summary>
     public struct AuthorizationSuite
     {
-        public Lazy<IAuthorizationPlatform>
-            Monetra;
+        public Lazy<IAuthorizationPlatform> Monetra;
+        public Lazy<IAuthorizationPlatform> IsraelPremium;
             //CreditCallLive,
             //CreditCallTest,
             //ICVerifyLive,

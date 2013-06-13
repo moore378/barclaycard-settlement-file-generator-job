@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="AuthCreditCardFull">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="premiumUserName" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="premiumPassword" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="premiumCashierNum" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="merchantNumber" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="transactionDate_yyyyMMdd" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="transactionTime_HHmm" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="uniqueTransactionNumber_SixDigits" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="track2" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="cardNum" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="expDate_YYMM" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="amount" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="cochavAmount" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="transactionType" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="creditTerms" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="currency" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="authNum" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="code" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="firstAmount" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="nonFirstAmount" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="numOfPayment" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="sapakMutav" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="sapakMutavNo" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="uniqNum" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="clubCode" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="paramJ" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="addData" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="eci" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="cvv2" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="id" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="cavvUcaf" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="last4Digits" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="transactionCurrency" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="transactionAmount" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AuthCreditCardFullResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="AuthCreditCardFullResult" type="xs:int" />
+        <xs:element minOccurs="0" name="TransactionRecord" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="ResultRecord" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

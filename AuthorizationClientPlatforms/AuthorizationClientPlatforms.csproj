@@ -70,6 +70,8 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -84,10 +86,16 @@
     <Compile Include="Authorizer.cs" />
     <Compile Include="CreditCall.cs" />
     <Compile Include="ICVerify.cs" />
+    <Compile Include="IsraelPremium.cs" />
     <Compile Include="libmonetra.cs" />
     <Compile Include="MigsAustralia.cs" />
     <Compile Include="Monetra.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service References\IsraelProcessor\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -110,7 +118,33 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="Service References\IsraelProcessor\israelprocessor.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\IsraelProcessor\israelprocessor1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\IsraelProcessor\IsraelProcessorService.wsdl" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\IsraelProcessor\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\IsraelProcessor\israelprocessor.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\IsraelProcessor\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\IsraelProcessor\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\IsraelProcessor\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

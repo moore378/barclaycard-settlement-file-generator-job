@@ -53,6 +53,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyIL", "EasyIL\EasyIL.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Refunder", "Refunder\Refunder.csproj", "{E0665E24-9379-4821-8985-078515B5CAE1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IsraelProcessor", "IsraelProcessor\IsraelProcessor.csproj", "{74FF0F22-9497-434C-8AED-099B73650E1C}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = TransactionManagement.vsmdi
@@ -206,6 +208,16 @@ Global
 		{E0665E24-9379-4821-8985-078515B5CAE1}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{E0665E24-9379-4821-8985-078515B5CAE1}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{E0665E24-9379-4821-8985-078515B5CAE1}.Release|x86.ActiveCfg = Release|Any CPU
+		{74FF0F22-9497-434C-8AED-099B73650E1C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74FF0F22-9497-434C-8AED-099B73650E1C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74FF0F22-9497-434C-8AED-099B73650E1C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{74FF0F22-9497-434C-8AED-099B73650E1C}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{74FF0F22-9497-434C-8AED-099B73650E1C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{74FF0F22-9497-434C-8AED-099B73650E1C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74FF0F22-9497-434C-8AED-099B73650E1C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74FF0F22-9497-434C-8AED-099B73650E1C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{74FF0F22-9497-434C-8AED-099B73650E1C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{74FF0F22-9497-434C-8AED-099B73650E1C}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

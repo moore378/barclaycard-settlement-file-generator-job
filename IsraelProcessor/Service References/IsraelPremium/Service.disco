@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<discovery xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/disco/">
+  <contractRef ref="https://online2.premiumfs.co.il/premium/Service.asmx?wsdl" docRef="https://online2.premiumfs.co.il/premium/Service.asmx" xmlns="http://schemas.xmlsoap.org/disco/scl/" />
+  <soap address="https://online2.premiumfs.co.il/premium/Service.asmx" xmlns:q1="http://PremiumFinancicalServices.com/" binding="q1:PremiumServiceSoap" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+  <soap address="https://online2.premiumfs.co.il/premium/Service.asmx" xmlns:q2="http://PremiumFinancicalServices.com/" binding="q2:PremiumServiceSoap12" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+</discovery>

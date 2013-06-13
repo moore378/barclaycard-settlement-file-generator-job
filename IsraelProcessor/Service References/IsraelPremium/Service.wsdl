@@ -1,0 +1,1135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://PremiumFinancicalServices.com/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://PremiumFinancicalServices.com/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://PremiumFinancicalServices.com/">
+      <s:element name="AuthCreditCardFull">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="premiumUserName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="premiumPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="premiumCashierNum" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="merchantNumber" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionDate_yyyyMMdd" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionTime_HHmm" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="uniqueTransactionNumber_SixDigits" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="track2" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="cardNum" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="expDate_YYMM" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="amount" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="cochavAmount" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="creditTerms" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="currency" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authNum" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="code" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="firstAmount" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="nonFirstAmount" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="numOfPayment" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sapakMutav" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sapakMutavNo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="uniqNum" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="clubCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="paramJ" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="addData" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="eci" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="cvv2" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="id" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="cavvUcaf" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="last4Digits" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionCurrency" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionAmount" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AuthCreditCardFullResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AuthCreditCardFullResult" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="TransactionRecord" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ResultRecord" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RetryAuthCreditCardFull">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="premiumUserName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="premiumPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="premiumCashierNum" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="merchantNumber" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionDate_yyyyMMdd" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionTime_HHmm" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="uniqueTransactionNumber_SixDigits" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="track2" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="cardNum" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="expDate_YYMM" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="amount" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="cochavAmount" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="creditTerms" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="currency" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authNum" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="code" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="firstAmount" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="nonFirstAmount" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="numOfPayment" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sapakMutav" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sapakMutavNo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="uniqNum" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="clubCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="paramJ" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="addData" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="eci" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="cvv2" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="id" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="cavvUcaf" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="last4Digits" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionCurrency" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionAmount" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RetryAuthCreditCardFullResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="RetryAuthCreditCardFullResult" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="TransactionRecord" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ResultRecord" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AuthCreditCardFullEx">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="isUseRetry" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="premiumUserName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="premiumPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="premiumCashierNum" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="merchantNumber" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionDate_yyyyMMdd" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionTime_HHmm" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="uniqueTransactionNumber_SixDigits" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="track2" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="cardNum" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="expDate_YYMM" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="amount" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="cochavAmount" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="creditTerms" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="currency" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authNum" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="code" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="firstAmount" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="nonFirstAmount" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="numOfPayment" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sapakMutav" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="sapakMutavNo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="uniqNum" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="clubCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="paramJ" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="addData" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="eci" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="cvv2" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="id" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="cavvUcaf" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="last4Digits" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionCurrency" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionAmount" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AuthCreditCardFullExResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AuthCreditCardFullExResult" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="TransactionRecord" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ResultRecord" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ValueEx1" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ValueEx2" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ValueEx3" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ValueEx4" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ValueEx5" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RestoreAuthCreditCardFullResultByVoucherId">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="premiumUserName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="premiumPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="premiumCashierNum" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="merchantNumber" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="voucherId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RestoreAuthCreditCardFullResultByVoucherIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="RestoreAuthCreditCardFullResultByVoucherIdResult" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="ResultRecord" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DepositTransactionsEx">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="premiumUserName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="premiumPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="MerchantNumber" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DepositTransactionsExResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="DepositTransactionsExResult" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="ReferenceNumber" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="TotalDebit" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="TotalCredit" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="TotalNumber" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AuthCreditCardGas">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="premiumUserName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="premiumPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="premiumCashierNum" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="merchantNumber" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionDate_yyyyMMdd" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionTime_HHmm" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="uniqueTransactionNumber_SixDigits" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="track2" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="cardNum" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="expDate_YYMM" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="amount" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="cochavAmount" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="creditTerms" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="currency" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authNum" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="code" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="gasolinType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="gasolinLiter" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="oilLiter" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="oilAmount" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="speedometer" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="carNo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="uniqNum" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="clubCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="paramJ" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="addData" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="eci" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="cvv2" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="id" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="cavvUcaf" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="last4Digits" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AuthCreditCardGasResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="AuthCreditCardGasResult" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="TransactionRecord" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ResultRecord" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveLastTransaction">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="premiumUserName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="premiumPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="premiumCashierNum" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="merchantNumber" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveLastTransactionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="RemoveLastTransactionResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveTransactionByVoucherIds">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="premiumUserName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="premiumPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="premiumCashierNum" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="merchantNumber" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="voucherIds" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RemoveTransactionByVoucherIdsResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RemoveTransactionByVoucherIdsResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetDepositData">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="premiumUserName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="premiumPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="premiumCashierNum" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="merchantNumber" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionDate_yyyyMMdd" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetDepositDataResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetDepositDataResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetDateAndTime">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetDateAndTimeResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetDateAndTimeResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetMerchantCashierInfo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="premiumUserName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="premiumPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="premiumCashierNum" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="merchantNumber" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetMerchantCashierInfoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetMerchantCashierInfoResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RetainerCreditCardStorage">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="premiumUserName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="premiumPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="premiumCashierNum" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="merchantNumber" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="actionType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="cardOrKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="expDate_MMYY" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RetainerCreditCardStorageResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="RetainerCreditCardStorageResult" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="ResultKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ResultCard" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ResultExpDate" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ValueEx1" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ValueEx2" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ValueEx3" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="isUserExistInPremiumUsers">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="merchantId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="cashier" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="userPassword" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="isUserExistInPremiumUsersResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="isUserExistInPremiumUsersResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="HKeva_ManageCustomer">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="premiumUserName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="premiumPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="premiumCashierNum" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="merchantNumber" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="actionType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="customerNumber" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="registerDate_DDMMYYYY" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="identity" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="firstName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="lastName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="tel" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="mobile" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="city" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="address" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="zipcode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="email" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="customerNote" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="customerMoreInfo" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="status" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="paramEx1" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="paramEx2" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="paramEx3" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="HKeva_ManageCustomerResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="HKeva_ManageCustomerResult" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="ResultMsg" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ValueEx1" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ValueEx2" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ValueEx3" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="HKeva_ManageTrans">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="premiumUserName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="premiumPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="premiumCashierNum" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="merchantNumber" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="actionType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="customerNumber" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="cardNumber" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="expDate_YYMM" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="identity" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="amount" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="uniqNum" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="cardOwnerName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authNum" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="authNumExp_DDMMYYYY" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionType" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="paramJ" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="currency" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="currency_iso" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="startDate_DDMMYYYY" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="endDate_DDMMYYYY" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transactionDay_DD" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transMonth_1" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transMonth_2" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transMonth_3" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transMonth_4" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transMonth_5" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transMonth_6" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transMonth_7" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transMonth_8" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transMonth_9" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transMonth_10" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transMonth_11" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transMonth_12" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="status" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="paramEx1" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="paramEx2" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="paramEx3" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="HKeva_ManageTransResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="HKeva_ManageTransResult" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="ResultMsg" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ValueEx1" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ValueEx2" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ValueEx3" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GAMA_TransTitle">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="premiumUserName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="premiumPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="merchantNumber" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="adjFileType" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="adjDate_mmyyyy" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GAMA_TransTitleResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GAMA_TransTitleResult" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="ResultRec" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GAMA_TransData">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="premiumUserName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="premiumPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="merchantNumber" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="adjFileFormat" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="adjDate_mmyyyy" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="recStartAt" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GAMA_TransDataResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GAMA_TransDataResult" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="RecStartNext" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="ResultRec" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GAMA_TransTotal">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="premiumUserName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="premiumPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="merchantNumber" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="adjDate_mmyyyy" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GAMA_TransTotalResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GAMA_TransTotalResult" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="ResultRec" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GAMA_DepositData">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="premiumUserName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="premiumPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="merchantNumber" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="adjDate_mmyyyy" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GAMA_DepositDataResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GAMA_DepositDataResult" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="ResultRec" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GAMA_DepositTotal">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="premiumUserName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="premiumPassword" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="merchantNumber" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="adjDate_mmyyyy" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GAMA_DepositTotalResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GAMA_DepositTotalResult" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="ResultRec" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="AuthCreditCardFullSoapIn">
+    <wsdl:part name="parameters" element="tns:AuthCreditCardFull" />
+  </wsdl:message>
+  <wsdl:message name="AuthCreditCardFullSoapOut">
+    <wsdl:part name="parameters" element="tns:AuthCreditCardFullResponse" />
+  </wsdl:message>
+  <wsdl:message name="RetryAuthCreditCardFullSoapIn">
+    <wsdl:part name="parameters" element="tns:RetryAuthCreditCardFull" />
+  </wsdl:message>
+  <wsdl:message name="RetryAuthCreditCardFullSoapOut">
+    <wsdl:part name="parameters" element="tns:RetryAuthCreditCardFullResponse" />
+  </wsdl:message>
+  <wsdl:message name="AuthCreditCardFullExSoapIn">
+    <wsdl:part name="parameters" element="tns:AuthCreditCardFullEx" />
+  </wsdl:message>
+  <wsdl:message name="AuthCreditCardFullExSoapOut">
+    <wsdl:part name="parameters" element="tns:AuthCreditCardFullExResponse" />
+  </wsdl:message>
+  <wsdl:message name="RestoreAuthCreditCardFullResultByVoucherIdSoapIn">
+    <wsdl:part name="parameters" element="tns:RestoreAuthCreditCardFullResultByVoucherId" />
+  </wsdl:message>
+  <wsdl:message name="RestoreAuthCreditCardFullResultByVoucherIdSoapOut">
+    <wsdl:part name="parameters" element="tns:RestoreAuthCreditCardFullResultByVoucherIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="DepositTransactionsExSoapIn">
+    <wsdl:part name="parameters" element="tns:DepositTransactionsEx" />
+  </wsdl:message>
+  <wsdl:message name="DepositTransactionsExSoapOut">
+    <wsdl:part name="parameters" element="tns:DepositTransactionsExResponse" />
+  </wsdl:message>
+  <wsdl:message name="AuthCreditCardGasSoapIn">
+    <wsdl:part name="parameters" element="tns:AuthCreditCardGas" />
+  </wsdl:message>
+  <wsdl:message name="AuthCreditCardGasSoapOut">
+    <wsdl:part name="parameters" element="tns:AuthCreditCardGasResponse" />
+  </wsdl:message>
+  <wsdl:message name="RemoveLastTransactionSoapIn">
+    <wsdl:part name="parameters" element="tns:RemoveLastTransaction" />
+  </wsdl:message>
+  <wsdl:message name="RemoveLastTransactionSoapOut">
+    <wsdl:part name="parameters" element="tns:RemoveLastTransactionResponse" />
+  </wsdl:message>
+  <wsdl:message name="RemoveTransactionByVoucherIdsSoapIn">
+    <wsdl:part name="parameters" element="tns:RemoveTransactionByVoucherIds" />
+  </wsdl:message>
+  <wsdl:message name="RemoveTransactionByVoucherIdsSoapOut">
+    <wsdl:part name="parameters" element="tns:RemoveTransactionByVoucherIdsResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetDepositDataSoapIn">
+    <wsdl:part name="parameters" element="tns:GetDepositData" />
+  </wsdl:message>
+  <wsdl:message name="GetDepositDataSoapOut">
+    <wsdl:part name="parameters" element="tns:GetDepositDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetDateAndTimeSoapIn">
+    <wsdl:part name="parameters" element="tns:GetDateAndTime" />
+  </wsdl:message>
+  <wsdl:message name="GetDateAndTimeSoapOut">
+    <wsdl:part name="parameters" element="tns:GetDateAndTimeResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetMerchantCashierInfoSoapIn">
+    <wsdl:part name="parameters" element="tns:GetMerchantCashierInfo" />
+  </wsdl:message>
+  <wsdl:message name="GetMerchantCashierInfoSoapOut">
+    <wsdl:part name="parameters" element="tns:GetMerchantCashierInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="RetainerCreditCardStorageSoapIn">
+    <wsdl:part name="parameters" element="tns:RetainerCreditCardStorage" />
+  </wsdl:message>
+  <wsdl:message name="RetainerCreditCardStorageSoapOut">
+    <wsdl:part name="parameters" element="tns:RetainerCreditCardStorageResponse" />
+  </wsdl:message>
+  <wsdl:message name="isUserExistInPremiumUsersSoapIn">
+    <wsdl:part name="parameters" element="tns:isUserExistInPremiumUsers" />
+  </wsdl:message>
+  <wsdl:message name="isUserExistInPremiumUsersSoapOut">
+    <wsdl:part name="parameters" element="tns:isUserExistInPremiumUsersResponse" />
+  </wsdl:message>
+  <wsdl:message name="HKeva_ManageCustomerSoapIn">
+    <wsdl:part name="parameters" element="tns:HKeva_ManageCustomer" />
+  </wsdl:message>
+  <wsdl:message name="HKeva_ManageCustomerSoapOut">
+    <wsdl:part name="parameters" element="tns:HKeva_ManageCustomerResponse" />
+  </wsdl:message>
+  <wsdl:message name="HKeva_ManageTransSoapIn">
+    <wsdl:part name="parameters" element="tns:HKeva_ManageTrans" />
+  </wsdl:message>
+  <wsdl:message name="HKeva_ManageTransSoapOut">
+    <wsdl:part name="parameters" element="tns:HKeva_ManageTransResponse" />
+  </wsdl:message>
+  <wsdl:message name="GAMA_TransTitleSoapIn">
+    <wsdl:part name="parameters" element="tns:GAMA_TransTitle" />
+  </wsdl:message>
+  <wsdl:message name="GAMA_TransTitleSoapOut">
+    <wsdl:part name="parameters" element="tns:GAMA_TransTitleResponse" />
+  </wsdl:message>
+  <wsdl:message name="GAMA_TransDataSoapIn">
+    <wsdl:part name="parameters" element="tns:GAMA_TransData" />
+  </wsdl:message>
+  <wsdl:message name="GAMA_TransDataSoapOut">
+    <wsdl:part name="parameters" element="tns:GAMA_TransDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="GAMA_TransTotalSoapIn">
+    <wsdl:part name="parameters" element="tns:GAMA_TransTotal" />
+  </wsdl:message>
+  <wsdl:message name="GAMA_TransTotalSoapOut">
+    <wsdl:part name="parameters" element="tns:GAMA_TransTotalResponse" />
+  </wsdl:message>
+  <wsdl:message name="GAMA_DepositDataSoapIn">
+    <wsdl:part name="parameters" element="tns:GAMA_DepositData" />
+  </wsdl:message>
+  <wsdl:message name="GAMA_DepositDataSoapOut">
+    <wsdl:part name="parameters" element="tns:GAMA_DepositDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="GAMA_DepositTotalSoapIn">
+    <wsdl:part name="parameters" element="tns:GAMA_DepositTotal" />
+  </wsdl:message>
+  <wsdl:message name="GAMA_DepositTotalSoapOut">
+    <wsdl:part name="parameters" element="tns:GAMA_DepositTotalResponse" />
+  </wsdl:message>
+  <wsdl:portType name="PremiumServiceSoap">
+    <wsdl:operation name="AuthCreditCardFull">
+      <wsdl:input message="tns:AuthCreditCardFullSoapIn" />
+      <wsdl:output message="tns:AuthCreditCardFullSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RetryAuthCreditCardFull">
+      <wsdl:input message="tns:RetryAuthCreditCardFullSoapIn" />
+      <wsdl:output message="tns:RetryAuthCreditCardFullSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AuthCreditCardFullEx">
+      <wsdl:input message="tns:AuthCreditCardFullExSoapIn" />
+      <wsdl:output message="tns:AuthCreditCardFullExSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RestoreAuthCreditCardFullResultByVoucherId">
+      <wsdl:input message="tns:RestoreAuthCreditCardFullResultByVoucherIdSoapIn" />
+      <wsdl:output message="tns:RestoreAuthCreditCardFullResultByVoucherIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DepositTransactionsEx">
+      <wsdl:input message="tns:DepositTransactionsExSoapIn" />
+      <wsdl:output message="tns:DepositTransactionsExSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AuthCreditCardGas">
+      <wsdl:input message="tns:AuthCreditCardGasSoapIn" />
+      <wsdl:output message="tns:AuthCreditCardGasSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveLastTransaction">
+      <wsdl:input message="tns:RemoveLastTransactionSoapIn" />
+      <wsdl:output message="tns:RemoveLastTransactionSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveTransactionByVoucherIds">
+      <wsdl:input message="tns:RemoveTransactionByVoucherIdsSoapIn" />
+      <wsdl:output message="tns:RemoveTransactionByVoucherIdsSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDepositData">
+      <wsdl:input message="tns:GetDepositDataSoapIn" />
+      <wsdl:output message="tns:GetDepositDataSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDateAndTime">
+      <wsdl:input message="tns:GetDateAndTimeSoapIn" />
+      <wsdl:output message="tns:GetDateAndTimeSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMerchantCashierInfo">
+      <wsdl:input message="tns:GetMerchantCashierInfoSoapIn" />
+      <wsdl:output message="tns:GetMerchantCashierInfoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RetainerCreditCardStorage">
+      <wsdl:input message="tns:RetainerCreditCardStorageSoapIn" />
+      <wsdl:output message="tns:RetainerCreditCardStorageSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="isUserExistInPremiumUsers">
+      <wsdl:input message="tns:isUserExistInPremiumUsersSoapIn" />
+      <wsdl:output message="tns:isUserExistInPremiumUsersSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="HKeva_ManageCustomer">
+      <wsdl:input message="tns:HKeva_ManageCustomerSoapIn" />
+      <wsdl:output message="tns:HKeva_ManageCustomerSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="HKeva_ManageTrans">
+      <wsdl:input message="tns:HKeva_ManageTransSoapIn" />
+      <wsdl:output message="tns:HKeva_ManageTransSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GAMA_TransTitle">
+      <wsdl:input message="tns:GAMA_TransTitleSoapIn" />
+      <wsdl:output message="tns:GAMA_TransTitleSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GAMA_TransData">
+      <wsdl:input message="tns:GAMA_TransDataSoapIn" />
+      <wsdl:output message="tns:GAMA_TransDataSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GAMA_TransTotal">
+      <wsdl:input message="tns:GAMA_TransTotalSoapIn" />
+      <wsdl:output message="tns:GAMA_TransTotalSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GAMA_DepositData">
+      <wsdl:input message="tns:GAMA_DepositDataSoapIn" />
+      <wsdl:output message="tns:GAMA_DepositDataSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GAMA_DepositTotal">
+      <wsdl:input message="tns:GAMA_DepositTotalSoapIn" />
+      <wsdl:output message="tns:GAMA_DepositTotalSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="PremiumServiceSoap" type="tns:PremiumServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="AuthCreditCardFull">
+      <soap:operation soapAction="http://PremiumFinancicalServices.com/AuthCreditCardFull" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RetryAuthCreditCardFull">
+      <soap:operation soapAction="http://PremiumFinancicalServices.com/RetryAuthCreditCardFull" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AuthCreditCardFullEx">
+      <soap:operation soapAction="http://PremiumFinancicalServices.com/AuthCreditCardFullEx" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RestoreAuthCreditCardFullResultByVoucherId">
+      <soap:operation soapAction="http://PremiumFinancicalServices.com/RestoreAuthCreditCardFullResultByVoucherId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DepositTransactionsEx">
+      <soap:operation soapAction="http://PremiumFinancicalServices.com/DepositTransactionsEx" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AuthCreditCardGas">
+      <soap:operation soapAction="http://PremiumFinancicalServices.com/AuthCreditCardGas" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveLastTransaction">
+      <soap:operation soapAction="http://PremiumFinancicalServices.com/RemoveLastTransaction" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveTransactionByVoucherIds">
+      <soap:operation soapAction="http://PremiumFinancicalServices.com/RemoveTransactionByVoucherIds" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDepositData">
+      <soap:operation soapAction="http://PremiumFinancicalServices.com/GetDepositData" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDateAndTime">
+      <soap:operation soapAction="http://PremiumFinancicalServices.com/GetDateAndTime" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMerchantCashierInfo">
+      <soap:operation soapAction="http://PremiumFinancicalServices.com/GetMerchantCashierInfo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RetainerCreditCardStorage">
+      <soap:operation soapAction="http://PremiumFinancicalServices.com/RetainerCreditCardStorage" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="isUserExistInPremiumUsers">
+      <soap:operation soapAction="http://PremiumFinancicalServices.com/isUserExistInPremiumUsers" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="HKeva_ManageCustomer">
+      <soap:operation soapAction="http://PremiumFinancicalServices.com/HKeva_ManageCustomer" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="HKeva_ManageTrans">
+      <soap:operation soapAction="http://PremiumFinancicalServices.com/HKeva_ManageTrans" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GAMA_TransTitle">
+      <soap:operation soapAction="http://PremiumFinancicalServices.com/GAMA_TransTitle" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GAMA_TransData">
+      <soap:operation soapAction="http://PremiumFinancicalServices.com/GAMA_TransData" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GAMA_TransTotal">
+      <soap:operation soapAction="http://PremiumFinancicalServices.com/GAMA_TransTotal" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GAMA_DepositData">
+      <soap:operation soapAction="http://PremiumFinancicalServices.com/GAMA_DepositData" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GAMA_DepositTotal">
+      <soap:operation soapAction="http://PremiumFinancicalServices.com/GAMA_DepositTotal" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="PremiumServiceSoap12" type="tns:PremiumServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="AuthCreditCardFull">
+      <soap12:operation soapAction="http://PremiumFinancicalServices.com/AuthCreditCardFull" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RetryAuthCreditCardFull">
+      <soap12:operation soapAction="http://PremiumFinancicalServices.com/RetryAuthCreditCardFull" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AuthCreditCardFullEx">
+      <soap12:operation soapAction="http://PremiumFinancicalServices.com/AuthCreditCardFullEx" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RestoreAuthCreditCardFullResultByVoucherId">
+      <soap12:operation soapAction="http://PremiumFinancicalServices.com/RestoreAuthCreditCardFullResultByVoucherId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DepositTransactionsEx">
+      <soap12:operation soapAction="http://PremiumFinancicalServices.com/DepositTransactionsEx" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AuthCreditCardGas">
+      <soap12:operation soapAction="http://PremiumFinancicalServices.com/AuthCreditCardGas" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveLastTransaction">
+      <soap12:operation soapAction="http://PremiumFinancicalServices.com/RemoveLastTransaction" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveTransactionByVoucherIds">
+      <soap12:operation soapAction="http://PremiumFinancicalServices.com/RemoveTransactionByVoucherIds" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDepositData">
+      <soap12:operation soapAction="http://PremiumFinancicalServices.com/GetDepositData" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDateAndTime">
+      <soap12:operation soapAction="http://PremiumFinancicalServices.com/GetDateAndTime" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMerchantCashierInfo">
+      <soap12:operation soapAction="http://PremiumFinancicalServices.com/GetMerchantCashierInfo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RetainerCreditCardStorage">
+      <soap12:operation soapAction="http://PremiumFinancicalServices.com/RetainerCreditCardStorage" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="isUserExistInPremiumUsers">
+      <soap12:operation soapAction="http://PremiumFinancicalServices.com/isUserExistInPremiumUsers" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="HKeva_ManageCustomer">
+      <soap12:operation soapAction="http://PremiumFinancicalServices.com/HKeva_ManageCustomer" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="HKeva_ManageTrans">
+      <soap12:operation soapAction="http://PremiumFinancicalServices.com/HKeva_ManageTrans" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GAMA_TransTitle">
+      <soap12:operation soapAction="http://PremiumFinancicalServices.com/GAMA_TransTitle" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GAMA_TransData">
+      <soap12:operation soapAction="http://PremiumFinancicalServices.com/GAMA_TransData" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GAMA_TransTotal">
+      <soap12:operation soapAction="http://PremiumFinancicalServices.com/GAMA_TransTotal" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GAMA_DepositData">
+      <soap12:operation soapAction="http://PremiumFinancicalServices.com/GAMA_DepositData" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GAMA_DepositTotal">
+      <soap12:operation soapAction="http://PremiumFinancicalServices.com/GAMA_DepositTotal" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="PremiumService">
+    <wsdl:port name="PremiumServiceSoap" binding="tns:PremiumServiceSoap">
+      <soap:address location="https://online2.premiumfs.co.il/premium/Service.asmx" />
+    </wsdl:port>
+    <wsdl:port name="PremiumServiceSoap12" binding="tns:PremiumServiceSoap12">
+      <soap12:address location="https://online2.premiumfs.co.il/premium/Service.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

@@ -11,7 +11,7 @@
       <Value Profile="(Default)">Data Source=DB5;Initial Catalog=SSPM-DB;Persist Security Info=True;User ID=mike;Password=mike</Value>
     </Setting>
     <Setting Name="MaxSimultaneous" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">10</Value>
+      <Value Profile="(Default)">1</Value>
     </Setting>
     <Setting Name="LogFolder" Type="System.String" Scope="User">
       <Value Profile="(Default)">Logs</Value>

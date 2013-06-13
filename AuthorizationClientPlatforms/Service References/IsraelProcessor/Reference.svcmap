@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="57a18472-3b82-4f91-839c-4468599b40fc" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost:56341/israelprocessor" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="IsraelProcessorService.wsdl" MetadataType="Wsdl" ID="5ad773fe-4893-42d2-ad20-6d8694ea658f" SourceId="1" SourceUrl="http://localhost:56341/israelprocessor?wsdl" />
+    <MetadataFile FileName="israelprocessor.disco" MetadataType="Disco" ID="fb26ab62-a17d-424b-a526-05d865dd84f6" SourceId="1" SourceUrl="http://localhost:56341/israelprocessor?disco" />
+    <MetadataFile FileName="israelprocessor.xsd" MetadataType="Schema" ID="bf6e9f21-b974-4fa5-a2b1-4b14b82102b0" SourceId="1" SourceUrl="http://localhost:56341/israelprocessor?xsd=xsd1" />
+    <MetadataFile FileName="israelprocessor1.xsd" MetadataType="Schema" ID="998533e5-6a2c-40c8-b75e-0e0368e3ff3a" SourceId="1" SourceUrl="http://localhost:56341/israelprocessor?xsd=xsd0" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

@@ -94,6 +94,7 @@ namespace Cctm
             mediatorStatus = listView1.Items.Add("CCTM Main").SubItems.Add("-");
             databaseStatus = listView1.Items.Add("Database").SubItems.Add("-");
             monetraStatus = listView1.Items.Add("Monetra").SubItems.Add("-");
+            israelPremiumStatus = listView1.Items.Add("Israel Premium").SubItems.Add("-");
             creditCallLiveStatus = listView1.Items.Add("Credit Call Live").SubItems.Add("-");
             creditCallTestStatus = listView1.Items.Add("Credit Call Test").SubItems.Add("-");
             migsLiveStatus = listView1.Items.Add("MIGS Live").SubItems.Add("-");
@@ -198,6 +199,11 @@ namespace Cctm
             return monetra;
         }
 
+        private IAuthorizationPlatform prepareIsraelServer(bool testMode)
+        {
+            return new IsraelPremium();
+        }
+
         private Lazy<ICctmDatabase> prepareDatabase()
         {
             /* Create a factory for the database - here we decide the specific type of database object to 
@@ -258,6 +264,15 @@ namespace Cctm
                 // What does it use to update the monetra server status?
                 statusUpdate: (status) => updateServerStatus(monetraStatus, status)
                 );
+
+            // Israel Premium
+            suite.IsraelPremium = authorizationPlatformFactory.CreateControllerWrapper(
+                "IsraelPreium",
+                // How do we create the Israel premium server?
+                factoryMethod: () => prepareIsraelServer(testMode),
+                // What does it use to update the server status?
+                statusUpdate: (status) => updateServerStatus(israelPremiumStatus, status)
+                    );
 
             // Credit Call live server
             /*suite.CreditCallLive =
@@ -619,6 +634,7 @@ namespace Cctm
             mediatorStatus,
             databaseStatus,
             monetraStatus,
+            israelPremiumStatus,
             creditCallLiveStatus,
             creditCallTestStatus,
             migsLiveStatus,

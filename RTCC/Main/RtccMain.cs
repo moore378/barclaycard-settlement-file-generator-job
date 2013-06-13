@@ -79,6 +79,25 @@ namespace Rtcc.Main
                         authorizationFailAction
                         ));
 
+                var israelPremiumFactory = new SimpleServerFactory<IAuthorizationPlatform>(() =>
+                    {
+                        LogImportant("Starting new connection to Israel Premium. " + GetTimeWithMiliseconds());
+                        return new AuthorizationClientPlatforms.IsraelPremium();
+                    });
+
+                var israelController = new ServerController<IAuthorizationPlatform>(
+                    serverFactory: israelPremiumFactory, 
+                    updatedStatus: (status) => { },
+                    failedRestart: (error, tries) => { Thread.Sleep(5000); return RestartFailAction.Retry; }
+                );
+
+
+                IAuthorizationPlatform israelPremium = new DynamicAuthorizationPlatform(
+                    (request, preAuth) => israelController.Perform(
+                        (platform) => platform.Authorize(request, preAuth),
+                        authorizationFailAction
+                        ));
+
                 // Open the port to listen for connections
                 this.tcpListener.Start();
 
@@ -96,7 +115,7 @@ namespace Rtcc.Main
                     rtsaConnection.Logged += ChildLogged;
 
                     // This ties everything together... reading from the interface and processing using the authorizer
-                    RtccMediator requestProcessor = new RtccMediator(monetraAuthorizer, rtsaConnection, rtccPerformanceCounters);
+                    RtccMediator requestProcessor = new RtccMediator(monetraAuthorizer, israelPremium, rtsaConnection, rtccPerformanceCounters);
                     requestProcessor.TransactionDone += TransactionDone;
                     requestProcessor.Logged += ChildLogged;
                     // Note: To see what happens next (when a request is received), go to RTCC.RtccMediator.ProcessRequest

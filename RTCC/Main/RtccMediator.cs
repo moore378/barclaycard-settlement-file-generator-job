@@ -35,8 +35,9 @@ namespace Rtcc.Main
         private PayByCellClient payByCell;
         private RtccPerformanceCounters.SessionStats performanceCounterSession;
         private static System.Security.Cryptography.MD5 hasher = System.Security.Cryptography.MD5.Create();
+        private IAuthorizationPlatform israelPremium;
 
-        public RtccMediator(IAuthorizationPlatform monetra,
+        public RtccMediator(IAuthorizationPlatform monetra, IAuthorizationPlatform israelPremium,
             RtsaConnection rtsaConnection,
             RtccPerformanceCounters performanceCounters,
             RtccDatabase database = null,
@@ -44,6 +45,7 @@ namespace Rtcc.Main
             PayByCellClient payByCell = null)
         {
             this.monetra = monetra;
+            this.israelPremium = israelPremium;
 
             this.performanceCounterSession = performanceCounters.NewSession();
 
@@ -123,8 +125,9 @@ namespace Rtcc.Main
 
                 LogDetail("Sending transaction " + transactionRecordID.ToString() + " to Monetra");
 
+                IAuthorizationPlatform platform = processorInfo.ClearingPlatform == "ISRAEL-PREMIUM" ? israelPremium : monetra;
                 // Perform the authorization
-                AuthorizationResponseFields authorizationResponse = AuthorizeRequest(transactionRecordID.Value, request, tracks, unencryptedStripe, creditCardFields, processorInfo, request.UniqueRecordNumber, isPreauth);
+                AuthorizationResponseFields authorizationResponse = AuthorizeRequest(transactionRecordID.Value, request, tracks, unencryptedStripe, creditCardFields, processorInfo, request.UniqueRecordNumber, isPreauth, platform);
 
                 LogImportant("Sending response result for " + transactionRecordID.ToString() + ": " + authorizationResponse.resultCode.ToString());
 
@@ -346,7 +349,8 @@ namespace Rtcc.Main
             CreditCardTrackFields creditCardFields,
             CCProcessorInfo processorInfo,
             string orderNumber,
-            bool isPreauth)
+            bool isPreauth,
+            IAuthorizationPlatform platform)
         {
             AuthorizationRequest authorizationRequest = new AuthorizationRequest(
                 request.TerminalSerialNumber,
@@ -365,11 +369,8 @@ namespace Rtcc.Main
                 orderNumber,
                 null);
 
-            // Choose monetra as the authorization platform
-            IAuthorizationPlatform authorizationPlatform = monetra;
-
             // Perform the authorization and get a response
-            AuthorizationResponseFields authorizationResponse = monetra.Authorize(authorizationRequest, isPreauth ? AuthorizeMode.Preauth : AuthorizeMode.Normal);
+            AuthorizationResponseFields authorizationResponse = platform.Authorize(authorizationRequest, isPreauth ? AuthorizeMode.Preauth : AuthorizeMode.Normal);
 
             return authorizationResponse;
         }

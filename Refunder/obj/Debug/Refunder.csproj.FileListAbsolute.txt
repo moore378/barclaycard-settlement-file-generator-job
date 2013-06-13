@@ -12,3 +12,5 @@ D:\Projects\TransactionManagement\Refunder\bin\Debug\EasyIL.pdb
 D:\Projects\TransactionManagement\Refunder\bin\Debug\Microsoft.CompilerServices.AsyncTargetingPack.Net4.xml
 D:\Projects\TransactionManagement\Refunder\obj\Debug\Refunder.exe
 D:\Projects\TransactionManagement\Refunder\obj\Debug\Refunder.pdb
+D:\Projects\TransactionManagement\Refunder\bin\Debug\CommandLine.dll
+D:\Projects\TransactionManagement\Refunder\bin\Debug\CommandLine.xml

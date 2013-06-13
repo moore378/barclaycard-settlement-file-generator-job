@@ -274,7 +274,7 @@ namespace UnitTests
             var dummyPerformanceCounters = new DummyPerformanceCounters();
             
             // Create the mediator
-            RtccMediator mediator = new RtccMediator(dummyPlatform, rtsaConnection, dummyPerformanceCounters,
+            RtccMediator mediator = new RtccMediator(dummyPlatform, dummyPlatform, rtsaConnection, dummyPerformanceCounters,
                 dummyDatabase, interpreter, dummyPayByCell);
             mediator.Logged += Log;
 
