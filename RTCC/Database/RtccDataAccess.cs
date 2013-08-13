@@ -30,5 +30,8 @@ namespace Rtcc.Database
     
     
     public partial class DataSet1 {
+        partial class SEL_RTCC_PROCESSORDataTable
+        {
+        }
     }
 }

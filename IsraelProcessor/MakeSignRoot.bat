@@ -1,0 +1,1 @@
+"C:\Program Files (x86)\Microsoft SDKs\Windows\v7.1A\Bin\x64\makecert.exe" -sv SignRoot.pvk -cy authority -r signroot.cer -a sha1 -n "CN=Dev Certification Authority" -ss my -sr localmachine

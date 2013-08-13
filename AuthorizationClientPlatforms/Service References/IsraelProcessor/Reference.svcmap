@@ -5,7 +5,7 @@
     <EnableDataBinding>true</EnableDataBinding>
     <ExcludedTypes />
     <ImportXmlTypes>false</ImportXmlTypes>
-    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateInternalTypes>true</GenerateInternalTypes>
     <GenerateMessageContracts>false</GenerateMessageContracts>
     <NamespaceMappings />
     <CollectionMappings />
@@ -18,13 +18,13 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://localhost:56341/israelprocessor" Protocol="http" SourceId="1" />
+    <MetadataSource Address="https://localhost:56341/israelprocessor" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="IsraelProcessorService.wsdl" MetadataType="Wsdl" ID="5ad773fe-4893-42d2-ad20-6d8694ea658f" SourceId="1" SourceUrl="http://localhost:56341/israelprocessor?wsdl" />
-    <MetadataFile FileName="israelprocessor.disco" MetadataType="Disco" ID="fb26ab62-a17d-424b-a526-05d865dd84f6" SourceId="1" SourceUrl="http://localhost:56341/israelprocessor?disco" />
-    <MetadataFile FileName="israelprocessor.xsd" MetadataType="Schema" ID="bf6e9f21-b974-4fa5-a2b1-4b14b82102b0" SourceId="1" SourceUrl="http://localhost:56341/israelprocessor?xsd=xsd1" />
-    <MetadataFile FileName="israelprocessor1.xsd" MetadataType="Schema" ID="998533e5-6a2c-40c8-b75e-0e0368e3ff3a" SourceId="1" SourceUrl="http://localhost:56341/israelprocessor?xsd=xsd0" />
+    <MetadataFile FileName="israelprocessor1.disco" MetadataType="Disco" ID="b45c49c7-235c-4d08-9975-575c82a78c06" SourceId="1" SourceUrl="https://localhost:56341/israelprocessor?disco" />
+    <MetadataFile FileName="IsraelProcessorService1.wsdl" MetadataType="Wsdl" ID="8300d6a4-472d-4f90-96d7-414f7b70022e" SourceId="1" SourceUrl="https://localhost:56341/israelprocessor?wsdl" />
+    <MetadataFile FileName="israelprocessor2.xsd" MetadataType="Schema" ID="50c74a6f-e306-4f42-9b3c-3bb0e763e723" SourceId="1" SourceUrl="https://localhost:56341/israelprocessor?xsd=xsd1" />
+    <MetadataFile FileName="israelprocessor21.xsd" MetadataType="Schema" ID="9dcdfe54-f609-4f8d-9774-23e4da8925e4" SourceId="1" SourceUrl="https://localhost:56341/israelprocessor?xsd=xsd0" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

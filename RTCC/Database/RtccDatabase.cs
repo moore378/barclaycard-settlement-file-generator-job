@@ -145,7 +145,8 @@ namespace Rtcc.Database
                 data[0].TimeZoneOffset,
                 data[0].DST_Adjust,
                 "",//data[0].PhoneNumber,
-                "");//data[0].IP);
+                "",
+                data[0].CCFee);//data[0].IP);
         }
 
         public virtual void UpdatePreauth(

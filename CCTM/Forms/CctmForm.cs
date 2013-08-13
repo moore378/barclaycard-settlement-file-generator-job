@@ -201,7 +201,7 @@ namespace Cctm
 
         private IAuthorizationPlatform prepareIsraelServer(bool testMode)
         {
-            return new IsraelPremium();
+            return new IsraelPremium(Properties.Settings.Default.IsraelMerchantNumber, Properties.Settings.Default.IsraelCashierNumber); 
         }
 
         private Lazy<ICctmDatabase> prepareDatabase()

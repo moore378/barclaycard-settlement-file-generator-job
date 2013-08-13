@@ -55,6 +55,10 @@ namespace Rtcc.Database
         /// IP address of that phone #
         /// </summary>
         public string IP;
+        /// <summary>
+        /// 
+        /// </summary>
+        public decimal CCFee;
 
         public CCProcessorInfo(
             int terminalID,
@@ -68,7 +72,8 @@ namespace Rtcc.Database
             decimal timeZoneOffset,
             decimal dstAdjust,
             string phoneNumber,
-            string ip)
+            string ip,
+            decimal ccfee)
         {
             this.TerminalID = terminalID;
             this.TerminalSerialNumber = terminalSerialNumber;
@@ -82,6 +87,7 @@ namespace Rtcc.Database
             this.DstAdjust = dstAdjust;
             this.PhoneNumber = phoneNumber;
             this.IP = ip;
+            this.CCFee = ccfee;
         }
     }
 }

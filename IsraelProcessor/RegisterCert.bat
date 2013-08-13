@@ -1,0 +1,1 @@
+netsh http add sslcert ipport=0.0.0.0:56341 certhash=b546a7907f7b5e3c78bf955b5186de308aa65163 appid={27de3452-f331-4486-b4bd-0d606b3009f2}

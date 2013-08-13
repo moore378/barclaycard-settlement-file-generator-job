@@ -123,9 +123,13 @@ namespace Rtcc.Main
                 status = TransactionStatus.Authorizing;
                 transactionRecordID = (int)InsertTransactionRecord("Processing_Live", request, creditCardFields, "RTCC Processing", isPreauth ? TransactionMode.RealtimeDualAuth : TransactionMode.RealtimeNormal, status.Value);
 
-                LogDetail("Sending transaction " + transactionRecordID.ToString() + " to Monetra");
+                LogDetail("Sending transaction " + transactionRecordID.ToString() + " to processor");
 
                 IAuthorizationPlatform platform = processorInfo.ClearingPlatform == "ISRAEL-PREMIUM" ? israelPremium : monetra;
+
+                // Add the convenience fee
+                request.AmountDollars += processorInfo.CCFee;
+
                 // Perform the authorization
                 AuthorizationResponseFields authorizationResponse = AuthorizeRequest(transactionRecordID.Value, request, tracks, unencryptedStripe, creditCardFields, processorInfo, request.UniqueRecordNumber, isPreauth, platform);
 
@@ -209,47 +213,54 @@ namespace Rtcc.Main
         /// <param name="hash"></param>
         /// <param name="transactionRecordID"></param>
         /// <param name="mode">1 for RTCC, 2 for CCTM</param>
-        private static void SendToReceiptServer(string hash, string transactionRecordID, string mode)
+        private void SendToReceiptServer(string hash, string transactionRecordID, string mode)
         {
             string url = Rtcc.Properties.Settings.Default.ReceiptServer;
-            //string url = "http://receipt.ipsmetersystems.com/ValidateCard.svc/SubmitRequest";
+            try
+            {
+                //string url = "http://receipt.ipsmetersystems.com/ValidateCard.svc/SubmitRequest";
 
-            var req = (HttpWebRequest)WebRequest.Create(url);
+                var req = (HttpWebRequest)WebRequest.Create(url);
 
-            req.Method = "POST";
+                req.Method = "POST";
 
-            req.ContentType = "application/xml; charset=utf-8";
+                req.ContentType = "application/xml; charset=utf-8";
 
-            req.Timeout = 30000;
+                req.Timeout = 30000;
 
-            req.Headers.Add("SOAPAction", url);
-
-
-
-            string sXML = "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
-
-            sXML += "<Transaction xmlns=\"http://www.ipsmetersystems.com/ReceiptingSystem\">";
-
-            sXML += "<CCHash>" + hash + "</CCHash>";
-            //sXML += "<Mode>" + mode + "</Mode>";
-
-            sXML += "<TransactionRecordID>" + transactionRecordID + "</TransactionRecordID>";
-
-            sXML += "</Transaction>";
+                req.Headers.Add("SOAPAction", url);
 
 
 
-            req.ContentLength = sXML.Length;
+                string sXML = "<?xml version=\"1.0\" encoding=\"utf-8\" ?>";
 
-            System.IO.StreamWriter sw = new System.IO.StreamWriter(req.GetRequestStream());
+                sXML += "<Transaction xmlns=\"http://www.ipsmetersystems.com/ReceiptingSystem\">";
 
-            sw.Write(sXML);
+                sXML += "<CCHash>" + hash + "</CCHash>";
+                //sXML += "<Mode>" + mode + "</Mode>";
 
-            sw.Close();
+                sXML += "<TransactionRecordID>" + transactionRecordID + "</TransactionRecordID>";
 
-            HttpWebResponse webResponse = (HttpWebResponse)req.GetResponse();
+                sXML += "</Transaction>";
 
-            Stream str = webResponse.GetResponseStream();
+
+
+                req.ContentLength = sXML.Length;
+
+                System.IO.StreamWriter sw = new System.IO.StreamWriter(req.GetRequestStream());
+                
+                sw.Write(sXML);
+
+                sw.Close();
+
+                HttpWebResponse webResponse = (HttpWebResponse)req.GetResponse();
+
+                Stream str = webResponse.GetResponseStream();
+            }
+            catch (Exception e)
+            {
+                throw new InvalidOperationException("Error sending to receipting server " + url, e);
+            }
         }
 
         private static TransactionStatus StatusFromRespose(AuthorizationResponseFields authorizationResponse)

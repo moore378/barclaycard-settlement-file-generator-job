@@ -120,19 +120,9 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
-    <None Include="Service References\IsraelProcessor\israelprocessor.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\IsraelProcessor\israelprocessor1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\IsraelProcessor\IsraelProcessorService.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\IsraelProcessor\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\IsraelProcessor\israelprocessor.disco" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\IsraelProcessor\configuration91.svcinfo" />
@@ -141,10 +131,20 @@
     <None Include="Service References\IsraelProcessor\configuration.svcinfo" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Service References\IsraelProcessor\israelprocessor2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\IsraelProcessor\israelprocessor21.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\IsraelProcessor\IsraelProcessorService1.wsdl" />
     <None Include="Service References\IsraelProcessor\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\IsraelProcessor\israelprocessor1.disco" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,0 +1,228 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <title></title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+  body
+  {
+      /*font-family: sans-serif;*/
+      font-family: calibri,tahoma,arial,sans-serif;
+      line-height: 1.3em;
+      margin: 0px;
+      /*font-size: 90%;*/
+      background-color: #EEE;
+      padding-left: 200px;
+      padding-right: 150px;
+      color: #444;
+  
+      /*text-align: center;*/
+  }
+  
+  .center-body
+  {
+      margin: 0px auto;
+      max-width: 700px;
+      box-shadow: 0px 0px 30px #BBB;
+      padding: 30px 70px 70px 70px;
+      background-color: white;
+      text-align: left;
+      position: relative;
+  }
+  
+  h1
+  {
+      font-size: 180%;    
+      margin-bottom: 35px;
+  }
+  
+  code
+  {
+      font-size: 115%;
+      background-color: #DDD;
+  }
+  
+  /* Code it its own paragraph*/
+  pre code
+  {
+      background-color: #EEE;
+      border-color: gray;
+      border-style: solid;
+      border-width: 1px 1px 1px 5px;
+      line-height: 1.2em;
+      display: block;
+      padding: 5px;
+      margin: 0px 20px;
+      font-size: 100%;
+      overflow-x:auto;
+  }
+  
+  a
+  {
+      text-decoration: none;
+      color: #66C;
+  }
+  
+  h1 a, h2 a, h3 a, h4 a
+  {
+      color: #444;
+  }
+  
+  #TOC
+  {
+      /*width:400px; */
+      display: inline-block; 
+      position: fixed; 
+      top: 0px; 
+      left: 0px;
+      background-color: white;
+      padding: 10px 20px;
+      border-bottom-right-radius: 10px;
+      font-size: 12px;
+      line-height: 20px;
+      border-right: 1px #888 solid; 
+      border-bottom: 1px #888 solid; 
+      max-width: 200px;
+  }
+  
+  #TOC ul
+  {
+      padding-left: 17px;
+  }
+  
+  #TOC>ul
+  {
+      list-style: none;
+      padding: 0px;
+  }
+  
+  .screen-preview
+  {
+      border: 2px #888 solid;
+      padding: 20px;
+      height: 350px;
+      font-size: 70%;
+      /*box-shadow: 0px 0px 5px #888;*/
+      overflow: hidden;
+  }
+  
+  .screen-preview *
+  {
+      padding: 5px;
+  }
+  
+  aside
+  {
+      float:none;
+      position: absolute;
+      right: 0;
+      width: 180px;
+      border: 1px solid #88A;
+      margin: 0;
+      margin-right: -200px;
+      padding: 3px 7px;
+      background-color: white;
+      border-radius: 10px;
+      border-top-left-radius: 0px;
+      border-bottom-right-radius: 0px;
+      font-size: 80%;
+      line-height: 16px;
+  }
+  
+  svg text
+  {
+      dominant-baseline: middle;
+  }
+  
+  .figure
+  {
+      text-align: center;
+  }
+  
+  .note
+  {
+      padding: 10px;
+      background-color: #DDD;
+      font-size: 90%;
+      position: relative;
+      /*color: black;*/
+  }
+  
+  .note-tag
+  {
+      display: inline-block;
+      width: 50px;
+      position: absolute;
+      left: -50px;
+      /*top: 0px;*/
+      background: none;
+      padding-left: 10px;
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
+      /*font-size: 80%;*/
+      /*font-weight: bold;*/
+      font-style: italic;
+      line-height: 1em;
+  }
+  
+  @media print
+  {
+      #TOC
+      {
+          display:none;
+      }
+  
+      .center-body
+      {
+          margin: 0px auto;
+          max-width: none;
+          box-shadow: none;
+      }
+  
+      body
+      {
+          padding: 0px;
+          color: black;
+      }
+  
+      code
+      {
+          -webkit-print-color-adjust: exact;
+      }
+  
+      pre code
+      {
+          background-color: #EEE;
+      }
+  
+  }
+  
+  
+  </style>
+</head>
+<body>
+<div class="center-body">
+<div id="TOC">
+<ul>
+<li><a href="#setting-up">Setting Up</a></li>
+</ul>
+</div>
+<h1 id="setting-up"><a href="#setting-up">Setting Up</a></h1>
+<p>First we need to register the service at a given URL:</p>
+<pre><code>netsh http add urlacl url=https://+:56341/israelprocessor user=michael.hunter</code></pre>
+<p>We need to make a trusted certificate to use as the certificate authority:</p>
+<pre><code>&quot;C:\Program Files (x86)\Microsoft SDKs\Windows\v7.1A\Bin\x64\makecert.exe&quot; -sv SignRoot.pvk -cy authority -r signroot.cer -a sha1 -n &quot;CN=Dev Certification Authority&quot; -ss my -sr localmachine</code></pre>
+<p>This needs to be moved Personal -&gt; Certificates to Trusted Root -&gt; Certificates in mmc (run mmc, File-&gt;Add/Remove Snap-in-&gt;Certificates).</p>
+<p>Then we need to create the certificate to use for the port:</p>
+<pre><code>&quot;C:\Program Files (x86)\Microsoft SDKs\Windows\v7.1A\Bin\x64\makecert.exe&quot; -iv SignRoot.pvk -ic signroot.cer -cy end -pe -n CN=&quot;localhost&quot; -eku 1.3.6.1.5.5.7.3.1 -ss my -sr localmachine -sky exchange -sp &quot;Microsoft RSA SChannel Cryptographic Provider&quot; -sy 12</code></pre>
+<p>Note that &quot;localhost&quot; needs to be whatever will be used to access the service.</p>
+<p>Then we need to register the certificate with the port:</p>
+<pre><code>netsh http add sslcert ipport=0.0.0.0:56341 certhash=b546a7907f7b5e3c78bf955b5186de308aa65163 appid={27de3452-f331-4486-b4bd-0d606b3009f2}</code></pre>
+<p>Note that the certificate hash is found details of the certificate in mmc as &quot;Thumbprint&quot;.</p>
+<p>Source: <a href="http://www.codeproject.com/Articles/24027/SSL-with-Self-hosted-WCF-Service">http://www.codeproject.com/Articles/24027/SSL-with-Self-hosted-WCF-Service</a></p>
+</div>
+</body>
+</html>

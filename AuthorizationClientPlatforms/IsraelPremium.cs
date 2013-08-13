@@ -8,9 +8,13 @@ namespace AuthorizationClientPlatforms
     public class IsraelPremium : IAuthorizationPlatform
     {
         IsraelProcessor.IsraelProcessorServiceClient client;
+        private string merchantNumber;
+        private string cashierNum;
 
-        public IsraelPremium()
+        public IsraelPremium(string merchantNumber, string cashierNum)
         {
+            this.merchantNumber = merchantNumber;
+            this.cashierNum = cashierNum;
             client = new IsraelProcessor.IsraelProcessorServiceClient();
         }
                    
@@ -19,21 +23,22 @@ namespace AuthorizationClientPlatforms
         {
             string transactionRecordResult;
             string resultRecord;
-
+            
             string premiumUserName = request.MerchantID.Trim();
             string premiumPassword = request.MerchantPassword;
-            string premiumCashierNum = "01";
-            string merchantNumber = "0963185013";
+            string premiumCashierNum = cashierNum;
+            string merchantNumber = this.merchantNumber;
             string transactionDate_yyyyMMdd = request.StartDateTime.ToString("yyyyMMdd");
             string transactionTime_HHmm = request.StartDateTime.ToString("HHmm");
-            string track2 = "";// request.TrackTwoData;
+            string track2 = request.TrackTwoData.Trim(';','?');
             string cardNum = request.Pan;
             string expDate_YYMM = request.ExpiryDateMMYY.Substring(2, 2) + request.ExpiryDateMMYY.Substring(0, 2);
             string amount = ((int)request.AmountDolars * 100).ToString();
             string transactionType = "01";
             string creditTerms = "1";
             string currency = "1";
-            string code = "51";
+            string code = "01";
+            string uniqNum = request.MeterSerialNumber;
             string paramJ = "4";
             string last4Digits = request.Pan.Substring(request.Pan.Length - 4, 4);
 
@@ -62,7 +67,7 @@ namespace AuthorizationClientPlatforms
                 "", // numOfPayment
                 "", // sapakMutav
                 "", // sapakMutavNo
-                "", // uniqNum
+                uniqNum, // uniqNum
                 "", // clubCode
                 paramJ, // paramJ
                 "", // addData

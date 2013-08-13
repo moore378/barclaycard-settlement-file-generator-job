@@ -81,8 +81,17 @@ namespace Rtcc.Main
 
                 var israelPremiumFactory = new SimpleServerFactory<IAuthorizationPlatform>(() =>
                     {
-                        LogImportant("Starting new connection to Israel Premium. " + GetTimeWithMiliseconds());
-                        return new AuthorizationClientPlatforms.IsraelPremium();
+                        LogImportant("(not)Starting new connection to Israel Premium. " + GetTimeWithMiliseconds());
+                        try
+                        {
+                            return new AuthorizationClientPlatforms.IsraelPremium(Properties.Settings.Default.IsraelMerchantNumber, Properties.Settings.Default.IsraelCashierNumber); 
+                        }
+                        catch (Exception e)
+                        {
+                            LogImportant(e.Message);
+                            LogDetail(e.ToString());
+                            throw;
+                        }
                     });
 
                 var israelController = new ServerController<IAuthorizationPlatform>(

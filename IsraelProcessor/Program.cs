@@ -18,14 +18,22 @@ namespace IsraelProcessor
             try
             {
                 // Based on example from http://msdn.microsoft.com/en-us/library/ms731758.aspx
-
-                var baseAddress = new Uri("http://localhost:56341/israelprocessor");
+                
+                var baseAddress = new Uri("https://localhost:56341/israelprocessor");
                 using (ServiceHost host = new ServiceHost(typeof(IsraelProcessorService), baseAddress))
                 {
                     ServiceMetadataBehavior smb = new ServiceMetadataBehavior();
-                    smb.HttpGetEnabled = true;
+                    smb.HttpsGetEnabled = true;
                     smb.MetadataExporter.PolicyVersion = PolicyVersion.Policy15;
                     host.Description.Behaviors.Add(smb);
+                    
+                    var contract = ContractDescription.GetContract(typeof(IIsraelProcessorService));
+                    var sep = new ServiceEndpoint(contract);
+                    sep.Address = new EndpointAddress(baseAddress);
+                    var bi = new BasicHttpBinding(BasicHttpSecurityMode.Transport);
+                    sep.Binding = bi;
+                                        
+                    host.AddServiceEndpoint(sep);
 
                     // Open the ServiceHost to start listening for messages. Since
                     // no endpoints are explicitly configured, the runtime will create

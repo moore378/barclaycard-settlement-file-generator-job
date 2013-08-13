@@ -34,6 +34,7 @@
               <Mapping SourceColumn="PoleSerNo" DataSetColumn="PoleSerNo" />
               <Mapping SourceColumn="PhoneNumber" DataSetColumn="PhoneNumber" />
               <Mapping SourceColumn="IP" DataSetColumn="IP" />
+              <Mapping SourceColumn="CCFee" DataSetColumn="CCFee" />
             </Mappings>
             <Sources />
           </TableAdapter>
@@ -161,7 +162,7 @@
   <xs:element name="DataSet1" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSet1" msprop:Generator_UserDSName="DataSet1">
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element name="SEL_RTCC_PROCESSOR" msprop:Generator_TableClassName="SEL_RTCC_PROCESSORDataTable" msprop:Generator_TableVarName="tableSEL_RTCC_PROCESSOR" msprop:Generator_TablePropName="SEL_RTCC_PROCESSOR" msprop:Generator_RowDeletingName="SEL_RTCC_PROCESSORRowDeleting" msprop:Generator_UserTableName="SEL_RTCC_PROCESSOR" msprop:Generator_RowChangingName="SEL_RTCC_PROCESSORRowChanging" msprop:Generator_RowEvHandlerName="SEL_RTCC_PROCESSORRowChangeEventHandler" msprop:Generator_RowDeletedName="SEL_RTCC_PROCESSORRowDeleted" msprop:Generator_RowEvArgName="SEL_RTCC_PROCESSORRowChangeEvent" msprop:Generator_RowChangedName="SEL_RTCC_PROCESSORRowChanged" msprop:Generator_RowClassName="SEL_RTCC_PROCESSORRow">
+        <xs:element name="SEL_RTCC_PROCESSOR" msprop:Generator_TableClassName="SEL_RTCC_PROCESSORDataTable" msprop:Generator_TableVarName="tableSEL_RTCC_PROCESSOR" msprop:Generator_RowChangedName="SEL_RTCC_PROCESSORRowChanged" msprop:Generator_TablePropName="SEL_RTCC_PROCESSOR" msprop:Generator_RowDeletingName="SEL_RTCC_PROCESSORRowDeleting" msprop:Generator_RowChangingName="SEL_RTCC_PROCESSORRowChanging" msprop:Generator_RowEvHandlerName="SEL_RTCC_PROCESSORRowChangeEventHandler" msprop:Generator_RowDeletedName="SEL_RTCC_PROCESSORRowDeleted" msprop:Generator_RowClassName="SEL_RTCC_PROCESSORRow" msprop:Generator_UserTableName="SEL_RTCC_PROCESSOR" msprop:Generator_RowEvArgName="SEL_RTCC_PROCESSORRowChangeEvent">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="TerminalSerNo" msprop:Generator_ColumnVarNameInTable="columnTerminalSerNo" msprop:Generator_ColumnPropNameInRow="TerminalSerNo" msprop:Generator_ColumnPropNameInTable="TerminalSerNoColumn" msprop:Generator_UserColumnName="TerminalSerNo">
@@ -189,24 +190,24 @@
               <xs:element name="CCTransactionKey" msprop:Generator_ColumnVarNameInTable="columnCCTransactionKey" msprop:Generator_ColumnPropNameInRow="CCTransactionKey" msprop:Generator_ColumnPropNameInTable="CCTransactionKeyColumn" msprop:Generator_UserColumnName="CCTransactionKey" minOccurs="0">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
-                    <xs:maxLength value="20" />
+                    <xs:maxLength value="255" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
               <xs:element name="CCClearingPlatform" msprop:Generator_ColumnVarNameInTable="columnCCClearingPlatform" msprop:Generator_ColumnPropNameInRow="CCClearingPlatform" msprop:Generator_ColumnPropNameInTable="CCClearingPlatformColumn" msprop:Generator_UserColumnName="CCClearingPlatform" minOccurs="0">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
-                    <xs:maxLength value="10" />
+                    <xs:maxLength value="50" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
-              <xs:element name="PoleID" msprop:Generator_ColumnVarNameInTable="columnPoleID" msprop:Generator_ColumnPropNameInRow="PoleID" msprop:Generator_ColumnPropNameInTable="PoleIDColumn" msprop:Generator_UserColumnName="PoleID" type="xs:decimal" minOccurs="0" />
+              <xs:element name="PoleID" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnPoleID" msprop:Generator_ColumnPropNameInRow="PoleID" msprop:Generator_ColumnPropNameInTable="PoleIDColumn" msprop:Generator_UserColumnName="PoleID" type="xs:decimal" minOccurs="0" />
               <xs:element name="TimeZoneOffset" msprop:Generator_ColumnVarNameInTable="columnTimeZoneOffset" msprop:Generator_ColumnPropNameInRow="TimeZoneOffset" msprop:Generator_ColumnPropNameInTable="TimeZoneOffsetColumn" msprop:Generator_UserColumnName="TimeZoneOffset" type="xs:decimal" minOccurs="0" />
               <xs:element name="DST_Adjust" msprop:Generator_ColumnVarNameInTable="columnDST_Adjust" msprop:Generator_ColumnPropNameInRow="DST_Adjust" msprop:Generator_ColumnPropNameInTable="DST_AdjustColumn" msprop:Generator_UserColumnName="DST_Adjust" type="xs:decimal" minOccurs="0" />
               <xs:element name="PoleSerNo" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnPoleSerNo" msprop:Generator_ColumnPropNameInRow="PoleSerNo" msprop:Generator_ColumnPropNameInTable="PoleSerNoColumn" msprop:Generator_UserColumnName="PoleSerNo" minOccurs="0">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
-                    <xs:maxLength value="50" />
+                    <xs:maxLength value="100" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
@@ -224,6 +225,7 @@
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
+              <xs:element name="CCFee" msdata:ReadOnly="true" msprop:Generator_ColumnVarNameInTable="columnCCFee" msprop:Generator_ColumnPropNameInRow="CCFee" msprop:Generator_ColumnPropNameInTable="CCFeeColumn" msprop:Generator_UserColumnName="CCFee" type="xs:decimal" minOccurs="0" />
             </xs:sequence>
           </xs:complexType>
         </xs:element>
