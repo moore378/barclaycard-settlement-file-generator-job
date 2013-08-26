@@ -74,6 +74,8 @@ namespace Rtcc
                 if (args.Level == LogLevel.Error)
                     text = "*******************************************************************************" + Environment.NewLine + text;
                 text += Environment.NewLine;
+                if (args.Exception != null)
+                    text += args.Exception.ToString() + Environment.NewLine;
 
                 if (textBox1.IsHandleCreated || textBox1.InvokeRequired)
                     textBox1.Invoke(new Action(() => { textBox1.AppendText(text); }));

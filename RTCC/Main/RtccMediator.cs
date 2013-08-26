@@ -34,7 +34,7 @@ namespace Rtcc.Main
         private IAuthorizationPlatform monetra;
         private PayByCellClient payByCell;
         private RtccPerformanceCounters.SessionStats performanceCounterSession;
-        private static System.Security.Cryptography.MD5 hasher = System.Security.Cryptography.MD5.Create();
+        private static ThreadLocal<System.Security.Cryptography.MD5> hasher = new ThreadLocal<System.Security.Cryptography.MD5>(() => System.Security.Cryptography.MD5.Create());
         private IAuthorizationPlatform israelPremium;
 
         public RtccMediator(IAuthorizationPlatform monetra, IAuthorizationPlatform israelPremium,
@@ -159,7 +159,7 @@ namespace Rtcc.Main
                     //objTrans.TransactionRecordID = transactionRecordID.GetValueOrDefault().ToString();
                     //objClient.SubmitReqest(objTrans);
 
-                    string hash = String.Concat(hasher.ComputeHash(Encoding.ASCII.GetBytes(";" + creditCardFields.Pan + "=" + creditCardFields.ExpDateYYMM + "?")).Select(b => b.ToString("X2")));
+                    string hash = String.Concat(hasher.Value.ComputeHash(Encoding.ASCII.GetBytes(";" + creditCardFields.Pan + "=" + creditCardFields.ExpDateYYMM + "?")).Select(b => b.ToString("X2")));
                     SendToReceiptServer(hash, transactionRecordID.GetValueOrDefault().ToString(), "1");
                 }
                 catch (Exception e)

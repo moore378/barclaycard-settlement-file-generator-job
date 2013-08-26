@@ -13,24 +13,42 @@ namespace TransactionManagementCommon
     {
         protected void LogImportant(string message)
         {
-            var temp = Logged;
-            if (temp != null)
-                temp(this, new LogEventArgs(message, LogLevel.Important));
+            try
+            {
+                var temp = Logged;
+                if (temp != null)
+                    temp(this, new LogEventArgs(message, LogLevel.Important));
+            }
+            catch // Ignore logging errors
+            {
+            }
         }
 
         protected void LogError(string message, Exception exception = null)
         {
-            var temp = Logged;
-            if (temp != null)
-                temp(this, new LogEventArgs(message, exception));
+            try
+            {
+                var temp = Logged;
+                if (temp != null)
+                    temp(this, new LogEventArgs(message, exception));
+            }
+            catch // Ignore logging errors
+            {
+            }
         }
 
         [Conditional("DetailedLoggingEnabled")]
         protected void LogDetail(string message)
         {
-            var temp = Logged;
-            if (temp != null)
-                temp(this, new LogEventArgs(message, LogLevel.Detail));
+            try
+            {
+                var temp = Logged;
+                if (temp != null)
+                    temp(this, new LogEventArgs(message, LogLevel.Detail));
+            }
+            catch // Ignore logging errors
+            {
+            }
         }
 
         /// <summary>
@@ -38,10 +56,16 @@ namespace TransactionManagementCommon
         /// </summary>
         protected virtual void ChildLogged(object sender, LogEventArgs args)
         {
-            // Default action is just bubble the log event up the chain
-            var temp = Logged;
-            if (temp != null)
-                temp(sender, args);
+            try
+            {
+                // Default action is just bubble the log event up the chain
+                var temp = Logged;
+                if (temp != null)
+                    temp(sender, args);
+            }
+            catch // Ignore logging errors
+            {
+            }
         }
 
         /// <summary>

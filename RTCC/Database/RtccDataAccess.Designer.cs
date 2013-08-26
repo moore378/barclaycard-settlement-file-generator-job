@@ -579,7 +579,7 @@ namespace Rtcc.Database {
                 this.columnTerminalID.ReadOnly = true;
                 this.columnTerminalID.Unique = true;
                 this.columnCompanyName.MaxLength = 50;
-                this.columnCCTerminalID.MaxLength = 8;
+                this.columnCCTerminalID.MaxLength = 50;
                 this.columnCCTransactionKey.MaxLength = 255;
                 this.columnCCClearingPlatform.MaxLength = 50;
                 this.columnPoleID.ReadOnly = true;

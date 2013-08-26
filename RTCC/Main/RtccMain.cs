@@ -62,7 +62,7 @@ namespace Rtcc.Main
 
                 var authorizationFailAction = new ServerController<IAuthorizationPlatform>.ExceptionHandler((excep, tries) =>
                 {
-                    LogError("Monetra server error. Queueing restart. " + GetTimeWithMiliseconds(), excep);
+                    LogError("Authorization server error. Queueing restart. " + GetTimeWithMiliseconds(), excep);
                     if (excep is AuthorizerProcessingException)
                         if ((((AuthorizerProcessingException)excep).AllowRetry) && (tries < 5))
                             return OperationFailAction.RestartAndRetry;
@@ -81,7 +81,7 @@ namespace Rtcc.Main
 
                 var israelPremiumFactory = new SimpleServerFactory<IAuthorizationPlatform>(() =>
                     {
-                        LogImportant("(not)Starting new connection to Israel Premium. " + GetTimeWithMiliseconds());
+                        LogImportant("Starting new connection to Israel Premium. " + GetTimeWithMiliseconds());
                         try
                         {
                             return new AuthorizationClientPlatforms.IsraelPremium(Properties.Settings.Default.IsraelMerchantNumber, Properties.Settings.Default.IsraelCashierNumber); 

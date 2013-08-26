@@ -162,7 +162,7 @@
   <xs:element name="DataSet1" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="DataSet1" msprop:Generator_UserDSName="DataSet1">
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element name="SEL_RTCC_PROCESSOR" msprop:Generator_TableClassName="SEL_RTCC_PROCESSORDataTable" msprop:Generator_TableVarName="tableSEL_RTCC_PROCESSOR" msprop:Generator_RowChangedName="SEL_RTCC_PROCESSORRowChanged" msprop:Generator_TablePropName="SEL_RTCC_PROCESSOR" msprop:Generator_RowDeletingName="SEL_RTCC_PROCESSORRowDeleting" msprop:Generator_RowChangingName="SEL_RTCC_PROCESSORRowChanging" msprop:Generator_RowEvHandlerName="SEL_RTCC_PROCESSORRowChangeEventHandler" msprop:Generator_RowDeletedName="SEL_RTCC_PROCESSORRowDeleted" msprop:Generator_RowClassName="SEL_RTCC_PROCESSORRow" msprop:Generator_UserTableName="SEL_RTCC_PROCESSOR" msprop:Generator_RowEvArgName="SEL_RTCC_PROCESSORRowChangeEvent">
+        <xs:element name="SEL_RTCC_PROCESSOR" msprop:Generator_TableClassName="SEL_RTCC_PROCESSORDataTable" msprop:Generator_TableVarName="tableSEL_RTCC_PROCESSOR" msprop:Generator_TablePropName="SEL_RTCC_PROCESSOR" msprop:Generator_RowDeletingName="SEL_RTCC_PROCESSORRowDeleting" msprop:Generator_RowChangingName="SEL_RTCC_PROCESSORRowChanging" msprop:Generator_RowEvHandlerName="SEL_RTCC_PROCESSORRowChangeEventHandler" msprop:Generator_RowDeletedName="SEL_RTCC_PROCESSORRowDeleted" msprop:Generator_UserTableName="SEL_RTCC_PROCESSOR" msprop:Generator_RowChangedName="SEL_RTCC_PROCESSORRowChanged" msprop:Generator_RowEvArgName="SEL_RTCC_PROCESSORRowChangeEvent" msprop:Generator_RowClassName="SEL_RTCC_PROCESSORRow">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="TerminalSerNo" msprop:Generator_ColumnVarNameInTable="columnTerminalSerNo" msprop:Generator_ColumnPropNameInRow="TerminalSerNo" msprop:Generator_ColumnPropNameInTable="TerminalSerNoColumn" msprop:Generator_UserColumnName="TerminalSerNo">
@@ -183,7 +183,7 @@
               <xs:element name="CCTerminalID" msprop:Generator_ColumnVarNameInTable="columnCCTerminalID" msprop:Generator_ColumnPropNameInRow="CCTerminalID" msprop:Generator_ColumnPropNameInTable="CCTerminalIDColumn" msprop:Generator_UserColumnName="CCTerminalID" minOccurs="0">
                 <xs:simpleType>
                   <xs:restriction base="xs:string">
-                    <xs:maxLength value="8" />
+                    <xs:maxLength value="50" />
                   </xs:restriction>
                 </xs:simpleType>
               </xs:element>
