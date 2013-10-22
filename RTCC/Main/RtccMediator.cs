@@ -147,7 +147,7 @@ namespace Rtcc.Main
                 LogDetail("Updating database for " + transactionRecordID.ToString() + ": " + newStatus.ToString());
                 status = newStatus;
                 if (isPreauth)
-                    rtccDatabase.UpdatePreauth(transactionRecordID.Value, DateTime.Now, authorizationResponse.receiptReference, authorizationResponse.authorizationCode, obscuredPan.ToString(), creditCardFields.ExpDateMMYY, authorizationResponse.cardType, creditCardFields.Pan.FirstSixDigits, creditCardFields.Pan.LastFourDigits, authorizationResponse.BatchNum, authorizationResponse.Ttid, (short)status.Value);
+                    rtccDatabase.UpdatePreauth(transactionRecordID.Value, DateTime.Now, authorizationResponse.receiptReference, authorizationResponse.authorizationCode, obscuredPan.ToString(), creditCardFields.ExpDateYYMM, authorizationResponse.cardType, creditCardFields.Pan.FirstSixDigits, creditCardFields.Pan.LastFourDigits, authorizationResponse.BatchNum, authorizationResponse.Ttid, (short)status.Value);
                 else
                     rtccDatabase.UpdateLiveTransactionRecord(transactionRecordID.Value, "Processed_Live", newStatus.ToString(), authorizationResponse.authorizationCode, authorizationResponse.cardType, obscuredPan.ToString(), authorizationResponse.BatchNum, authorizationResponse.Ttid, (short)status.Value);
 
