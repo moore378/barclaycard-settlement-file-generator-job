@@ -72,6 +72,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CardType.cs" />
     <Compile Include="Common\ThreadSafeResource.cs" />
     <Compile Include="Common\UseInstallLock.cs" />
     <Compile Include="ControllerBase\ControllerWrapper.cs" />
@@ -86,11 +87,18 @@
     <Compile Include="ControllerBase\IServerGovernor.cs" />
     <Compile Include="ControllerBase\SimpleServerFactory.cs" />
     <Compile Include="ControllerBase\ThreadedServerFactory.cs" />
+    <Compile Include="CreditCardPan.cs" />
+    <Compile Include="CreditCardStripe.cs" />
+    <Compile Include="CreditCardTrack.cs" />
+    <Compile Include="CreditCardTrackFields.cs" />
+    <Compile Include="CreditCardTracks.cs" />
     <Compile Include="Format.cs" />
+    <Compile Include="IValidatable.cs" />
     <Compile Include="LoggingObject.cs" />
     <Compile Include="PreauthStatus.cs" />
     <Compile Include="ServerController.cs" />
-    <Compile Include="TransactionManagement.cs" />
+    <Compile Include="StripeDecryptor.cs" />
+    <Compile Include="TransactionInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TransactionMode.cs" />
     <Compile Include="TransactionStatus.cs" />
