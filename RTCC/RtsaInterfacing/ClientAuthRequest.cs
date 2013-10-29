@@ -7,7 +7,7 @@ using Common;
 
 namespace Rtcc.RtsaInterfacing
 {
-    public class ClientAuthRequest : IValidatable
+    public class ClientAuthRequest
     {
         public string TerminalSerialNumber;
         public DateTime StartDateTime;
@@ -59,15 +59,11 @@ namespace Rtcc.RtsaInterfacing
             this.Flags = flags;
         }
 
-        #region IValidatable Members
-
         public void Validate(string failStatus)
         {
             // The meter ID must be numerical
             try { Int32.Parse(TerminalSerialNumber); }
             catch { throw new ValidationException("Invalid meter ID: " + TerminalSerialNumber); }
         }
-
-        #endregion
     }
 }

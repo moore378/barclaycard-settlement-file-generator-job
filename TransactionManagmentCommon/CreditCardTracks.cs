@@ -6,7 +6,7 @@ using System.Text;
 
 namespace TransactionManagementCommon
 {
-    public struct CreditCardTracks : IValidatable
+    public struct CreditCardTracks 
     {
         public CreditCardTrack TrackOne;
         public CreditCardTrack TrackTwo;

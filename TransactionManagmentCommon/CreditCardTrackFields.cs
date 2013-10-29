@@ -6,7 +6,7 @@ using System.Text;
 
 namespace TransactionManagementCommon
 {
-    public struct CreditCardTrackFields : IValidatable
+    public struct CreditCardTrackFields
     {
         public CreditCardPan Pan; // Unencrypted primary account number
         public string ExpDateYYMM; // expiry date

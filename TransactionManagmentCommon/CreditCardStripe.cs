@@ -9,7 +9,7 @@ namespace TransactionManagementCommon
     /// <summary>
     /// Decrypted, decoded credit card stripe data
     /// </summary>
-    public struct CreditCardStripe : IValidatable
+    public struct CreditCardStripe 
     {
         private string data;
         public string Data { get { return data; } }

@@ -92,8 +92,7 @@
     <Compile Include="CreditCardTrack.cs" />
     <Compile Include="CreditCardTrackFields.cs" />
     <Compile Include="CreditCardTracks.cs" />
-    <Compile Include="Format.cs" />
-    <Compile Include="IValidatable.cs" />
+    <Compile Include="TrackFormat.cs" />
     <Compile Include="LoggingObject.cs" />
     <Compile Include="PreauthStatus.cs" />
     <Compile Include="ServerController.cs" />

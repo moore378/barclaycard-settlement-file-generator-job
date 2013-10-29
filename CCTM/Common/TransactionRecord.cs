@@ -7,7 +7,7 @@ using Common;
 
 namespace Cctm.Common
 {
-    public class TransactionRecord : IValidatable
+    public class TransactionRecord
     {
         // Identity
         public int ID;
@@ -51,8 +51,6 @@ namespace Cctm.Common
 
         public decimal? PreauthAmountDollars;
                
-        #region IValidatable Members
-
         public void Validate(string failStatus)
         {
             // A few sanity checks to see that we have a reasonable transaction record
@@ -70,7 +68,5 @@ namespace Cctm.Common
             if (EncryptedStripe.Data.Length <= 0)
                 throw new ValidationException("Invalid transaction record track", failStatus);
         }
-
-        #endregion
     }
 }

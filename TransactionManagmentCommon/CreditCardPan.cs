@@ -7,7 +7,7 @@ using System.Text;
 
 namespace TransactionManagementCommon
 {
-    public struct CreditCardPan : IValidatable
+    public struct CreditCardPan
     {
         private string panString;
         private ObscurationMethod obscured;
@@ -75,8 +75,6 @@ namespace TransactionManagementCommon
             }
         }
 
-        #region IValidatable Members
-
         public void Validate(string failStatus)
         {
             // Check that the PAN is the right length
@@ -94,7 +92,5 @@ namespace TransactionManagementCommon
         {
             return panString;
         }
-
-        #endregion
     }
 }
