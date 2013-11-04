@@ -36,24 +36,6 @@ namespace TransactionManagementCommon
                 throw new ValidationException("Invalid stripe data length", failStatus);
         }
 
-        /// <summary>
-        /// Copies the string between startSentinal and endSentinal, or returns null
-        /// </summary>
-        /// <param name="track"></param>
-        /// <param name="startSentinal"></param>
-        /// <param name="endSentinal"></param>
-        /// <returns></returns>
-        public static string Between(string track, char startSentinal, char endSentinal)
-        {
-            int startIndex = track.IndexOf(startSentinal);
-            if (startIndex == -1)
-                return null;
-            int endIndex = track.IndexOf(endSentinal, startIndex);
-            if (endIndex == -1)
-                return null;
-            return track.Substring(startIndex, endIndex - startIndex);
-        }
-
         public CreditCardTracks SplitIntoTracks(string failStatus)
         {
             try

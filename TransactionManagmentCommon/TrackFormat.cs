@@ -6,7 +6,7 @@ using Common;
 
 namespace TransactionManagementCommon
 {
-    public class TrackFormat
+    public static class TrackFormat
     {
         /// <summary>
         /// Given a stripe with track two in a known location, this function will insert the 
@@ -79,6 +79,12 @@ namespace TransactionManagementCommon
                         // Insert sentinels
                         return new FormattedStripe(TrackFormat.InsertSentinels(unencryptedStripe.Data, 88));
 
+                    case EncryptionMethod.IpsEncryption_withSentinels:
+                        return new FormattedStripe(unencryptedStripe.Data);
+                        
+                    case EncryptionMethod.RsaEncryption_withSentinels:
+                        return new FormattedStripe(unencryptedStripe.Data);
+
                     default:
                         throw new StripeErrorException("Unknown encryption method: " + encryptionMethod.ToString(), failStatus);
                 }
@@ -121,6 +127,125 @@ namespace TransactionManagementCommon
                 return result.Remove(128);
             else
                 return result;
+        }
+
+
+        public static CreditCardTrackFields ParseTrackTwoIso7813(CreditCardTrack TrackTwo, string failStatus)
+        {
+            try
+            {
+                CreditCardTrackFields result = new CreditCardTrackFields();
+
+                string trackTwoString = TrackTwo.ToString();
+
+                // Assert that the first character is the start sentinal
+                if (trackTwoString.IndexOf(';') != 0)
+                    throw new ParseException("Error parsing track two, could not find start sentinal.", failStatus);
+                // The pan starts just after this
+                string fromPan = trackTwoString.Substring(1);
+
+                // Search for separator
+                int indexOfSeparator = fromPan.IndexOf('=');
+                if ((indexOfSeparator == -1) // The separator must be there
+                    || (indexOfSeparator > fromPan.Length - 9)) // The separator must be at least 9 characters from the end
+                    throw new ParseException("Error parsing track, could not find separator symbol.", failStatus);
+
+                // Extract the PAN
+                result.Pan = new CreditCardPan(fromPan.Substring(0, indexOfSeparator), CreditCardPan.ObscurationMethod.None);
+                // Extract expiry date
+                result.ExpDateYYMM = fromPan.Substring(indexOfSeparator + 1, 4);
+                // Extract service code
+                result.ServiceCode = fromPan.Substring(indexOfSeparator + 5, 3);
+
+                // Check that the end sentinal at the end
+                if (fromPan.IndexOf('?') == -1)
+                    throw new ParseException("Error parsing track, could not find termination sentinal.", failStatus);
+
+                // Extract the card type
+                if (result.Pan.ToString().Length < 4)
+                    result.CardType = CardType.Unknown;
+
+                string panFirstFour = result.Pan.ToString().Substring(0, 4);
+                char panPrefixDigit = panFirstFour[0];
+
+                result.CardType = CardType.Unknown;
+
+                // It seems from Malan's code that a normal card has a first digit in the range '2' to '7'
+                if ((panPrefixDigit >= '2') && (panPrefixDigit <= '7'))
+                    result.CardType = CardType.Normal;
+
+                if (panPrefixDigit == '1')
+                {
+                    switch (panFirstFour)
+                    {
+                        case "1010": result.CardType = CardType.Maintenance; break;
+                        case "1011": result.CardType = CardType.CoinCollector; break;
+                        case "1100": result.CardType = CardType.Special; break;
+                        case "1111": result.CardType = CardType.Diagnostic; break;
+                        default: result.CardType = CardType.SpecialUndefined; break;
+                    }
+                }
+
+
+                return result;
+            }
+            catch (ArgumentOutOfRangeException e)
+            {
+                throw new ParseException("Error parsing track", failStatus, e);
+            }
+            catch (ArgumentException e)
+            {
+                throw new ParseException("Error parsing track", failStatus, e);
+            }
+        }
+
+        public static bool ParseTrackTwoIsraelSpecial(CreditCardTrack trackTwo, string failStatus, out CreditCardTrackFields fields)
+        {
+            fields = new CreditCardTrackFields();
+
+            string trackTwoString = trackTwo.ToString();
+
+            string firstPart = Spanning(trackTwoString, ';', '=') ?? "";
+            if (firstPart.Length <= 18)
+                return false;
+
+            string secondPart = Spanning(trackTwoString, '=', '?') ?? "";
+
+            if (secondPart.Length != 21)
+                return false;
+
+            // Zero at end means 8 digit card
+            if (secondPart[19] == '0')
+                fields.Pan = new CreditCardPan(secondPart.Substring(2, 8), CreditCardPan.ObscurationMethod.None);
+            else // 9 digit card
+                fields.Pan = new CreditCardPan(secondPart[19] + secondPart.Substring(2, 8), CreditCardPan.ObscurationMethod.None);
+
+            fields.ExpDateYYMM = secondPart.Substring(15, 4);
+            fields.CardType = CardType.IsraelSpecial;
+
+            fields.ServiceCode = "";
+
+            fields.Validate(failStatus);
+
+            return true;
+        }
+
+        /// <summary>
+        /// Copies the string between startSentinal and endSentinal, or returns null
+        /// </summary>
+        /// <param name="track"></param>
+        /// <param name="startSentinal"></param>
+        /// <param name="endSentinal"></param>
+        /// <returns></returns>
+        public static string Spanning(string track, char startSentinal, char endSentinal)
+        {
+            int startIndex = track.IndexOf(startSentinal);
+            if (startIndex == -1)
+                return null;
+            int endIndex = track.IndexOf(endSentinal, startIndex);
+            if (endIndex == -1)
+                return null;
+            return track.Substring(startIndex, endIndex - startIndex + 1);
         }
     }
 }

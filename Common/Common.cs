@@ -67,7 +67,10 @@ namespace Common
         /// <summary>
         /// Rsa-encrypted track, without track two beginning and end sentinels, with track two starting at byte[78]
         /// </summary>
-        RsaEncryption = 2
+        RsaEncryption = 2,
+
+        IpsEncryption_withSentinels = 3,
+        RsaEncryption_withSentinels = 4,
     }
 
     public class FormattedStripe

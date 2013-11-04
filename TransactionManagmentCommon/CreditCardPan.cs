@@ -59,6 +59,9 @@ namespace TransactionManagementCommon
                     throw new InvalidOperationException("Cannot get the first six digits of a hashed PAN.");
                 if (panString.Length < 6)
                     throw new InvalidOperationException("Cannot get the first six digits of PAN shorter than 6 digits.");
+                if (panString.Length <= 8)
+                    return panString.Substring(0, 2);
+
                 return panString.Substring(0, 6);
             }
         }

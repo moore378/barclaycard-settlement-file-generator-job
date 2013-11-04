@@ -42,7 +42,7 @@ namespace AuthorizationClientPlatforms
             string uniqNum = request.MeterSerialNumber;
             string paramJ = "4";
             string last4Digits = request.Pan.Substring(request.Pan.Length - 4, 4);
-
+            
             int res = client.AuthCreditCardFull(
                 out transactionRecordResult, // out TransactionRecord
                 out resultRecord,  // out ResultRecord
@@ -91,6 +91,8 @@ namespace AuthorizationClientPlatforms
 
             var statusNum = Int32.Parse(readField(1, 3));
             var statusStr = statusCodes.ContainsKey(statusNum) ? statusCodes[statusNum] : statusNum.ToString();
+            int fileNumber = 0; Int32.TryParse(readField(96, 2), out fileNumber);
+
 
             var brand = Int32.Parse(readField(24, 1));
             string cardType;
@@ -108,11 +110,11 @@ namespace AuthorizationClientPlatforms
             var cardValidityDate = readField(30, 4);
             var transactionAmount = Int32.Parse(readField(36, 8))*0.01m;
             var authorizationNumber = readField(71, 7);
-
+            short batchNum = short.Parse(request.StartDateTime.ToString("MMdd"));
 
             return new AuthorizationResponseFields(
                 (res == 0) ? AuthorizationResultCode.Approved : AuthorizationResultCode.Declined,
-                authorizationNumber, cardType, "", statusStr, 0, 0);
+                authorizationNumber, cardType, "", statusStr, fileNumber, batchNum);
         }
 
         public IAuthorizationStatistics Statistics

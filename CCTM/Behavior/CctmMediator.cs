@@ -88,7 +88,7 @@ namespace Cctm.Behavior
             //TransactionRecord transactionRecord = DbTransactionRecordToTransactionRecord(dbTransactionRecord);
 
             AuthorizationResponseFields authorizationResponse = new AuthorizationResponseFields(AuthorizationResultCode.UnknownError, "Not processed", "Not processed", "Not processed", "Not processed", 0, 0);
-            CreditCardTrackFields creditCardFields = new CreditCardTrackFields() { ExpDateYYMM = "????", Pan = new CreditCardPan() { }, ServiceCode = ""};
+            CreditCardTrackFields creditCardFields = new CreditCardTrackFields() { ExpDateYYMM = "????", Pan = new CreditCardPan() { }, ServiceCode = "", CardType = CardType.Unknown };
             CreditCardStripe unencryptedStripe = new CreditCardStripe("");
             CreditCardPan obscuredPan = new CreditCardPan();
             
@@ -192,13 +192,15 @@ namespace Cctm.Behavior
                         tracks.Validate("Err: Invalid Track Data");
 
                         // Split track two into fields
-                        creditCardFields = tracks.ParseTrackTwo("Err: Track parse error");
+                        if (dbTransactionRecord.CCClearingPlatform.ToUpper() != "ISRAEL-PREMIUM"
+                            || !TrackFormat.ParseTrackTwoIsraelSpecial(tracks.TrackTwo, "Err: Israel track parse error", out creditCardFields))
+                                creditCardFields = TrackFormat.ParseTrackTwoIso7813(tracks.TrackTwo, "Err: Track parse error");
 
                         // Validate the fields
                         creditCardFields.Validate("Err: Invalid Track Fields");
 
                         // If this isn't a normal card, then we have an exceptional circumstance of this being a special card
-                        if (creditCardFields.CardType != CardType.Normal)
+                        if (creditCardFields.CardType != CardType.Normal && creditCardFields.CardType != CardType.IsraelSpecial)
                             throw new SpecialCardException();
                     }
                     else

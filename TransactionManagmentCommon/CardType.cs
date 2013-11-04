@@ -37,6 +37,8 @@ namespace TransactionManagementCommon
         /// <summary>
         /// 1???
         /// </summary>
-        SpecialUndefined
+        SpecialUndefined,
+
+        IsraelSpecial
     }
 }

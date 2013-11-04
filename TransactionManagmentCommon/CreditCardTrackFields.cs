@@ -56,35 +56,6 @@ namespace TransactionManagementCommon
             }
         }
 
-        public CardType CardType
-        {
-            get
-            {
-                if (Pan.ToString().Length < 4)
-                    return CardType.Unknown;
-
-                string panFirstFour = Pan.ToString().Substring(0, 4);
-                char panPrefixDigit = panFirstFour[0];
-
-                // It seems from Malan's code that a normal card has a first digit in the range '2' to '7'
-                if ((panPrefixDigit >= '2') && (panPrefixDigit <= '7'))
-                    return CardType.Normal;
-
-                if (panPrefixDigit == '1')
-                {
-                    switch (panFirstFour)
-                    {
-                        case "1010": return CardType.Maintenance;
-                        case "1011": return CardType.CoinCollector;
-                        case "1100": return CardType.Special;
-                        case "1111": return CardType.Diagnostic;
-                        default: return CardType.SpecialUndefined;
-                    }
-                }
-
-                // If all else fails, then we have no idea what card it is
-                return CardType.Unknown;
-            }
-        }
+        public CardType CardType;
     }
 }

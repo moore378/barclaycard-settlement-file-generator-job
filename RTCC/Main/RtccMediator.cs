@@ -91,6 +91,9 @@ namespace Rtcc.Main
                 // Validate the credit card stripe
                 unencryptedStripe.Validate("Err: Invalid Track Data");
 
+                // Get processor information
+                CCProcessorInfo processorInfo = rtccDatabase.GetRtccProcessorInfo(request.TerminalSerialNumber);
+
                 CreditCardTrackFields creditCardFields;
                 CreditCardTracks tracks;
                 try
@@ -102,7 +105,10 @@ namespace Rtcc.Main
                     tracks.Validate("Err: Invalid Track Data");
 
                     // Split track two into fields
-                    creditCardFields = tracks.ParseTrackTwo("Err: Track parse error");
+                    //creditCardFields = TrackFormat.ParseTrackTwoIso7813(tracks.TrackTwo, "Err: Track parse error");
+                    if (processorInfo.ClearingPlatform.ToUpper() != "ISRAEL-PREMIUM"
+                            || !TrackFormat.ParseTrackTwoIsraelSpecial(tracks.TrackTwo, "Err: Israel track parse error", out creditCardFields))
+                        creditCardFields = TrackFormat.ParseTrackTwoIso7813(tracks.TrackTwo, "Err: Track parse error");
 
                     // Validate the fields
                     creditCardFields.Validate("Err: Invalid Track Fields");
@@ -116,8 +122,7 @@ namespace Rtcc.Main
 
                 // Check the blacklist here
 
-                // Get processor information
-                CCProcessorInfo processorInfo = rtccDatabase.GetRtccProcessorInfo(request.TerminalSerialNumber);
+                
 
                 // Insert the record
                 status = TransactionStatus.Authorizing;

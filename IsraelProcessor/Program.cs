@@ -66,6 +66,8 @@ namespace IsraelProcessor
             lock(logLock)
             {
                 Console.WriteLine(msg);
+                if (!Directory.Exists(Path.GetDirectoryName(fileName)))
+                    Directory.CreateDirectory(Path.GetDirectoryName(fileName));
                 File.AppendAllText(fileName, timestamp.ToString("HH:mm:ss") + ":: " + msg + Environment.NewLine);
             }
         }
