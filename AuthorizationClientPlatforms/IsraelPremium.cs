@@ -104,6 +104,8 @@ namespace AuthorizationClientPlatforms
                 cardType = "Visa";
             else if (brand == 3)
                 cardType = "Maestro";
+            else if (brand == 5)
+                cardType = "IsraCard";
             else
                 cardType = brand.ToString();
 
