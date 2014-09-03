@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{DBA89E62-338A-4693-871D-7DDA97419CA2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AutoDatabase</RootNamespace>
+    <AssemblyName>AutoDatabase</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CompilerServices.AsyncTargetingPack.Net4">
+      <HintPath>..\packages\Microsoft.CompilerServices.AsyncTargetingPack.1.0.0\lib\net40\Microsoft.CompilerServices.AsyncTargetingPack.Net4.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AutoDatabaseAssembly.cs" />
+    <Compile Include="AutoDatabaseBuilder.cs" />
+    <Compile Include="ConnectionSource.cs" />
+    <Compile Include="DatabaseInterfaceAttribute.cs" />
+    <Compile Include="DatabaseParamAttribute.cs" />
+    <Compile Include="DatabaseParamGroupAttribute.cs" />
+    <Compile Include="DatabaseReturnAttribute.cs" />
+    <Compile Include="DebugContext.cs" />
+    <Compile Include="DebugProxy\DebugSqlCommand.cs" />
+    <Compile Include="DebugProxy\DebugSqlConnection.cs" />
+    <Compile Include="DebugProxy\DebugSqlConnectionSource.cs" />
+    <Compile Include="DebugProxy\DebugSqlDataReader.cs" />
+    <Compile Include="DebugProxy\DebugSqlParameter.cs" />
+    <Compile Include="DebugProxy\DebugSqlParameterCollection.cs" />
+    <Compile Include="IConnectionSource.cs" />
+    <Compile Include="IDatabaseMethodTracker.cs" />
+    <Compile Include="IDatabaseTracker.cs" />
+    <Compile Include="IStoredProcNameConverter.cs" />
+    <Compile Include="MethodImplementer.cs" />
+    <Compile Include="PascalCaseToUnderscoreConverter.cs" />
+    <Compile Include="PersistData.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StoredProcedureAttribute.cs" />
+    <Compile Include="TaskEnumerableTMethodImplementer.cs" />
+    <Compile Include="TaskMethodImplementer.cs" />
+    <Compile Include="TaskTMethodImplementer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EasyIL\EasyIL.csproj">
+      <Project>{f69f3355-f10c-436b-8ef6-d10ec96c7b69}</Project>
+      <Name>EasyIL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MjhGeneral\MjhGeneral.csproj">
+      <Project>{8681d9bc-c6aa-4feb-8121-6f3f0d2d292c}</Project>
+      <Name>MjhGeneral</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

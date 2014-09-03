@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{F69F3355-F10C-436B-8EF6-D10EC96C7B69}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EasyIL</RootNamespace>
+    <AssemblyName>EasyIL</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CompilerServices.AsyncTargetingPack.Net4">
+      <HintPath>..\packages\Microsoft.CompilerServices.AsyncTargetingPack.1.0.0\lib\net40\Microsoft.CompilerServices.AsyncTargetingPack.Net4.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Consumes.cs" />
+    <Compile Include="CustomSequence.cs" />
+    <Compile Include="EnumerableEx.cs" />
+    <Compile Include="IL.cs" />
+    <Compile Include="ILDataType.cs" />
+    <Compile Include="ILSeq.cs" />
+    <Compile Include="ILValues\ILVariable.cs" />
+    <Compile Include="ILValues\IStatement.cs" />
+    <Compile Include="ILValues\IValue.cs" />
+    <Compile Include="ILValues\ILStatements.cs" />
+    <Compile Include="ILValues\StatementEx.cs" />
+    <Compile Include="NewAssembly.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Returns.cs" />
+    <Compile Include="TypeBuilderEx.cs" />
+    <Compile Include="ILValues\RValue.cs" />
+    <Compile Include="ILValues\RWValue.cs" />
+    <Compile Include="ILValues\Statement.cs" />
+    <Compile Include="ILValues\Value.cs" />
+    <Compile Include="ILValues\ValueMethods.cs" />
+    <Compile Include="ILValues\ValueEx.cs" />
+    <Compile Include="ILValues\WValue.cs" />
+    <Compile Include="Word32.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
