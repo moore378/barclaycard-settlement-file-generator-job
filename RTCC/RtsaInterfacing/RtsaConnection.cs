@@ -88,13 +88,15 @@ namespace Rtcc.RtsaInterfacing
 
             bytesRead = 0;
             byte[] buf = new byte[size];
-            int index = 0;
+            int targetIndex = 0;
             byte[] readBytes = new byte[size];
 
-            while (size > 0)
+            int sizeRemaining = size;
+
+            while (sizeRemaining > 0)
             {
                 // Read in as much as we can of the remaining size
-                bytesRead = stream.Read(readBytes, 0, size);
+                bytesRead = stream.Read(readBytes, 0, sizeRemaining);
                 // If there are no bytes read, it means there is a stream error (or disconnection)
                 if (bytesRead == 0)
                 {
@@ -102,10 +104,11 @@ namespace Rtcc.RtsaInterfacing
                     return false;
                 }
                 // Copy the received data into the buffer
-                Array.Copy(readBytes, 0, buf, index, bytesRead);
+                Array.Copy(readBytes, 0, buf, targetIndex, bytesRead);
 
                 // We now have less bytes left to read
-                size -= bytesRead;
+                sizeRemaining -= bytesRead;
+                targetIndex += bytesRead;
             }
             block = buf;
             return true;
@@ -131,12 +134,7 @@ namespace Rtcc.RtsaInterfacing
                 return null;
 
             // Copy the message into a stream so we can load it into the XML document
-
             MemoryStream memStream = new MemoryStream(messageBlock);
-            // Create the XML document from the memory stream
-            //XmlDocument msg = new XmlDocument();
-            //memStream.Seek(0, SeekOrigin.Begin);
-            //msg.Load(memStream);
 
             return memStream;
         }

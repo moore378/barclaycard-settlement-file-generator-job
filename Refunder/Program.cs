@@ -67,9 +67,14 @@ namespace Refunder
                 }
 
                 var trans = monetra.TransNew();
+
+                
                 monetra.TransKeyVal(trans, "username", pendingRefund.CCTerminalID.Trim());
                 monetra.TransKeyVal(trans, "password", pendingRefund.CCTransactionKey);
-                monetra.TransKeyVal(trans, "ttid", pendingRefund.TTID.ToString());
+                if (pendingRefund.StartDateTime > DateTime.Now - TimeSpan.FromDays(30)) // Last 30 days?
+                    monetra.TransKeyVal(trans, "ttid", pendingRefund.TTID.ToString());
+                else
+                    monetra.TransKeyVal(trans, "account", pendingRefund.CreditCallPAN);
                 monetra.TransKeyVal(trans, "amount", Math.Abs(pendingRefund.CCAmount).ToString());
                 monetra.TransKeyVal(trans, "action", "return");
 
