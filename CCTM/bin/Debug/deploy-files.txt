@@ -1,0 +1,22 @@
+version=../../../CCTM/Properties/AssemblyInfo.cs=^\[assembly: AssemblyVersion\("(\d+\.\d+\.\d+\.\d+)"\)\]$
+filename=CCTM \1.zip
+copy-to=S:\TEMP - Will be deleted at regular intervals\CCTM
+release-notes.txt=git log -n5
+AuthorizationClientPlatforms.dll
+AutoDatabase.dll
+AxInterop.AUTHCTLLib.dll
+CCCrypto.dll
+CardEaseXMLClient.dll
+Common.dll
+CryptographicPlatforms.dll
+EasyIL.dll
+Interop.PCCOMLib.dll
+Microsoft.CompilerServices.AsyncTargetingPack.Net4.dll
+MjhGeneral.dll
+RsaUtils.dll
+Track.dll
+TransactionManagementCommon.dll
+libmonetra_stdcall.dll
+msvcm80.dll
+msvcp80.dll
+CCTM.exe

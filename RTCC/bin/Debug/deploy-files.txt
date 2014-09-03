@@ -1,0 +1,19 @@
+version=../../../RTCC/Properties/AssemblyInfo.cs=^\[assembly: AssemblyVersion\("(\d+\.\d+\.\d+\.\d+)"\)\]$
+filename=RTCC \1.zip
+copy-to=S:\TEMP - Will be deleted at regular intervals\RTCC
+release-notes.txt=git log -n5
+AuthorizationClientPlatforms.dll
+CCCrypto.dll
+Common.dll
+CryptographicPlatforms.dll
+Microsoft.CompilerServices.AsyncTargetingPack.Net4.dll
+RsaUtils.dll
+Track.dll
+TransactionManagementCommon.dll
+libmcrypto.dll
+libmonetra.dll
+libmssl.dll
+msvcm80.dll
+msvcp80.dll
+msvcr80.dll
+RTCC.exe
