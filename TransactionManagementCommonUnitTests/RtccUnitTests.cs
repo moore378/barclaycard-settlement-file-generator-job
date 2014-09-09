@@ -223,8 +223,8 @@ namespace UnitTests
             
             RtccRequestInterpreter interpreter = new RtccRequestInterpreter();
             interpreter.Logged += Log;
-            System.IO.Stream xmlStream = new System.IO.MemoryStream(encoding.GetBytes(xml));
-            ClientAuthRequest request = interpreter.ParseMessage(new RawDataMessage(xmlStream), "");
+            
+            ClientAuthRequest request = interpreter.ParseMessage(encoding.GetBytes(xml), "");
 
             // Check the results
             Assert.AreEqual(request.AmountDollars, 0.75);
@@ -279,7 +279,7 @@ namespace UnitTests
             mediator.Logged += Log;
 
             // Simulate a blank request from the client (the dummy interpreter will pretend that this blank request contains useful information)
-            rtsaConnection.SimulateMessageReceived(new RawDataMessage(new System.IO.MemoryStream()));
+            rtsaConnection.SimulateMessageReceived(new byte[0]);
             
             Assert.IsTrue(dummyResponse.Accepted == 1);
             Assert.AreEqual(dummyResponse.ResponseCode, "DummyAuthCode");
@@ -299,7 +299,7 @@ namespace UnitTests
             /// </summary>
             /// <param name="message"></param>
             /// <returns></returns>
-            public override ClientAuthRequest ParseMessage(RawDataMessage message, string failStatus)
+            public override ClientAuthRequest ParseMessage(byte[] message, string failStatus)
             {
                 return Request;
             }

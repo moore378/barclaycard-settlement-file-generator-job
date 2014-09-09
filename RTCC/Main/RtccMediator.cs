@@ -61,7 +61,7 @@ namespace Rtcc.Main
         /// This is called when an authorization request comes in from the client and needs to be processed.
         /// </summary>
         /// <param name="request">The request record to process</param>
-        public bool ProcessRequest(RawDataMessage requestMessage)
+        public bool ProcessRequest(byte[] requestMessage)
         {
             Stopwatch stopwatch = new Stopwatch();
             ClientAuthRequest request = null;

@@ -6,6 +6,7 @@ using TransactionManagementCommon;
 using System.Xml.Serialization;
 using Common;
 using System.IO;
+using System.Diagnostics;
 
 namespace Rtcc.RtsaInterfacing
 {
@@ -20,13 +21,13 @@ namespace Rtcc.RtsaInterfacing
         /// <param name="message">Raw data representing the message block</param>
         /// <param name="failStatus">The fail status of the ParseException if there is a problem parsing.</param>
         /// <exception cref="ParseException"></exception>
-        public virtual ClientAuthRequest ParseMessage(RawDataMessage message, string failStatus)
+        public virtual ClientAuthRequest ParseMessage(byte[] message, string failStatus)
         {
             try
             {
                 // Read the authorization request from the stream
                 XmlSerializer ser = new XmlSerializer(typeof(ClientAuthRequestXML));
-                ClientAuthRequestXML requestFromXML = (ClientAuthRequestXML)ser.Deserialize(message.Data);
+                ClientAuthRequestXML requestFromXML = (ClientAuthRequestXML)ser.Deserialize(new MemoryStream(message));
 
                 byte[] decodedEncryptedTrack;
 
@@ -58,8 +59,7 @@ namespace Rtcc.RtsaInterfacing
             }
             catch (Exception exception)
             {
-                //log("Error parsing request message - " + exception.ToString());
-                throw new ParseException("Error parsing request message", failStatus, exception);
+                throw new ParseException("Error parsing request message: \"" + BitConverter.ToString(message), failStatus, exception);
             }
         }
 
@@ -74,7 +74,12 @@ namespace Rtcc.RtsaInterfacing
             responseXMLObject.ReceiptReference = reply.ReceiptReference;
             responseXMLObject.ResponseCode = reply.ResponseCode;
 
-            ser.Serialize(memStream, responseXMLObject);
+            //ser.Serialize(memStream, responseXMLObject);
+            //int size = (int)memStream.Position;
+            //byte[] data = new byte[size];
+            //memStream.Seek(0, SeekOrigin.Begin);
+            //int readSize = memStream.Read(data, 0, size);
+            //Debug.Assert(readSize == size);
 
             LogDetail("Sending reply sent to client");
             return new RawDataMessage(memStream);

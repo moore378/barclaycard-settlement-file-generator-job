@@ -96,7 +96,8 @@ namespace Rtcc.RtsaInterfacing
             while (sizeRemaining > 0)
             {
                 // Read in as much as we can of the remaining size
-                bytesRead = stream.Read(readBytes, 0, sizeRemaining);
+                int numBytesToRead = sizeRemaining;
+                bytesRead = stream.Read(readBytes, 0, numBytesToRead);
                 // If there are no bytes read, it means there is a stream error (or disconnection)
                 if (bytesRead == 0)
                 {
@@ -120,23 +121,20 @@ namespace Rtcc.RtsaInterfacing
         /// </summary>
         /// <param name="stream">The stream from which to read the XML message</param>
         /// <returns>Returns an XML document if successful, returns null if termination is closed</returns>
-        private Stream readMessage(Stream stream)
+        private byte[] readMessage(Stream stream)
         {
             // Read the size of the message (4 bytes)
             byte[] sizeBlock;
             if (!readBlock(stream, 4, out sizeBlock))
                 return null;
-            int count = sizeBlock[0] + (sizeBlock[1] << 8) + (sizeBlock[2] << 16) + (sizeBlock[3] << 24);
+            int count = BitConverter.ToInt32(sizeBlock, 0);
 
             // Read in the message data
             byte[] messageBlock;
             if (!readBlock(stream, count, out messageBlock))
                 return null;
 
-            // Copy the message into a stream so we can load it into the XML document
-            MemoryStream memStream = new MemoryStream(messageBlock);
-
-            return memStream;
+            return messageBlock;
         }
 
         /// <summary>
@@ -160,9 +158,8 @@ namespace Rtcc.RtsaInterfacing
 
                 while (!doDisconnect)
                 {
-
                     // Read in a message
-                    Stream msg = readMessage(clientStream);
+                    byte[] msg = readMessage(clientStream);
                     if (msg == null)
                     {
                         // The client has disconnected from the server
@@ -172,7 +169,7 @@ namespace Rtcc.RtsaInterfacing
 
                     // Message has successfully been received
                     LogDetail("Message received: " + msg.ToString());
-                    DoMessageReceived(new RawDataMessage(msg));
+                    DoMessageReceived(msg);
                 }
             }
             catch (Exception e)
@@ -181,7 +178,7 @@ namespace Rtcc.RtsaInterfacing
             { tcpClient.Close(); }
         }
 
-        protected void DoMessageReceived(RawDataMessage msg)
+        protected void DoMessageReceived(byte[] msg)
         {
             var temp = MessageReceivedEvent;
             if (temp != null)

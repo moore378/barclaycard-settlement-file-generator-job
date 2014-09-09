@@ -7,9 +7,9 @@ namespace Rtcc.RtsaInterfacing
 {
     public class MessageReceivedEventArgs : EventArgs
     {
-        public RawDataMessage Message { get; private set; }
+        public byte[] Message { get; private set; }
 
-        public MessageReceivedEventArgs(RawDataMessage message)
+        public MessageReceivedEventArgs(byte[] message)
         {
             this.Message = message;
         }

@@ -19,7 +19,7 @@ namespace Rtcc.Dummy
             // Do nothing
         }
 
-        public void SimulateMessageReceived(RawDataMessage msg)
+        public void SimulateMessageReceived(byte[] msg)
         {
             DoMessageReceived(msg);
         }

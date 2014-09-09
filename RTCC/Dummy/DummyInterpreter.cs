@@ -22,7 +22,7 @@ namespace Rtcc.Dummy
         /// </summary>
         /// <param name="message"></param>
         /// <returns></returns>
-        public override ClientAuthRequest ParseMessage(RawDataMessage message, string failStatus)
+        public override ClientAuthRequest ParseMessage(byte[] message, string failStatus)
         {
             return Request;
         }
