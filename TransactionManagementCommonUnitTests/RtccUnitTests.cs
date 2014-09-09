@@ -227,7 +227,7 @@ namespace UnitTests
             ClientAuthRequest request = interpreter.ParseMessage(encoding.GetBytes(xml), "");
 
             // Check the results
-            Assert.AreEqual(request.AmountDollars, 0.75);
+            Assert.AreEqual(request.AmountDollars, 0.75m);
             byte[] originalTrackBytes = Convert.FromBase64String("50XIzZeEdzG07Er4meKc057l3sWg8Sax7Aug3H/l44m3+lGg4+Nu7ZLL3ZZm2ZPQslEdqirkW+modxQ8M7KyYbASjCjDrqE2DdqApMicH0ao5TEaUAV5+k1zK22b6UT1w8s1k0cA2dPp3pN3xW6PvVhG4cHlFmuoX12CSpODcWc=");
             Assert.IsTrue(request.EncryptedTrack.Data.SequenceEqual(originalTrackBytes));
         }

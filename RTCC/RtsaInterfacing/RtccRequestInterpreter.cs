@@ -74,7 +74,8 @@ namespace Rtcc.RtsaInterfacing
             responseXMLObject.ReceiptReference = reply.ReceiptReference;
             responseXMLObject.ResponseCode = reply.ResponseCode;
 
-            //ser.Serialize(memStream, responseXMLObject);
+            ser.Serialize(memStream, responseXMLObject);
+
             //int size = (int)memStream.Position;
             //byte[] data = new byte[size];
             //memStream.Seek(0, SeekOrigin.Begin);

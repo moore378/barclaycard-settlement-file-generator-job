@@ -55,7 +55,8 @@ namespace Rtcc.Dummy
                 MerchantID = "DummyMerchant",
                 MerchantPassword = "DummyPassword",
                 TerminalSerialNumber = "DummyTerminal",
-                PoleSerialNumber = "DummyPole"
+                PoleSerialNumber = "DummyPole",
+                ClearingPlatform = ""
             };
         }
 
