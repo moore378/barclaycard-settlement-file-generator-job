@@ -26,25 +26,10 @@ namespace Rtcc.RtsaInterfacing
         /// <summary>
         /// Create a TCP Messenger to wrap a TcpClient
         /// </summary>
-        /// <param name="aClient">TCP client to wrap</param>
-        /// <param name="aLog">Delegate to which the TCPMessenger will log</param>
-        public RtsaConnection(TcpClient aClient)
+        /// <param name="client">TCP client to wrap</param>
+        public RtsaConnection(TcpClient client)
         {
-            client = aClient;
-
-            //receiveMessage = aReceiveMsg;
-            //Convert.ToBase64String(
-
-            // Now that a client has connected, start a thread to listen for the connection 
-            Thread clientThread = new Thread(new ThreadStart(
-                () =>
-                {
-                    ThreadProc(aClient);
-                }
-                ));
-            clientThread.Start();
-
-            LogDetail("TCP messenger created!");
+            this.client = client;
         }
 
         // Null constructor for fake
@@ -182,9 +167,14 @@ namespace Rtcc.RtsaInterfacing
                 }
             }
             catch (Exception e)
-            { LogError("Error reading network stream from RTSA", e); }
+            { 
+                LogError("Error reading network stream from RTSA", e); 
+            }
             finally
-            { tcpClient.Close(); }
+            { 
+                tcpClient.Close();
+                LogDetail("RTSA-listener thread terminating");
+            }
         }
 
         protected void DoMessageReceived(byte[] msg)
@@ -192,6 +182,19 @@ namespace Rtcc.RtsaInterfacing
             var temp = MessageReceivedEvent;
             if (temp != null)
                 temp(this, new MessageReceivedEventArgs(msg));
+        }
+
+        internal void Start()
+        {
+            Thread clientThread = new Thread(new ThreadStart(
+                () =>
+                {
+                    ThreadProc(client);
+                }
+                ));
+            clientThread.Start();
+
+            LogDetail("TCP messenger created!");
         }
     }
 }
