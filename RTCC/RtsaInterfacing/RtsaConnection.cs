@@ -97,6 +97,9 @@ namespace Rtcc.RtsaInterfacing
             {
                 // Read in as much as we can of the remaining size
                 int numBytesToRead = sizeRemaining;
+
+                LogDetail("Waiting to receive " + numBytesToRead + " bytes");
+
                 bytesRead = stream.Read(readBytes, 0, numBytesToRead);
                 // If there are no bytes read, it means there is a stream error (or disconnection)
                 if (bytesRead == 0)
@@ -107,11 +110,11 @@ namespace Rtcc.RtsaInterfacing
                 // Copy the received data into the buffer
                 Array.Copy(readBytes, 0, buf, targetIndex, bytesRead);
 
-                LogDetail("Received " + readBytes + " bytes. "  + (sizeRemaining > 0 ? "Waiting for " + sizeRemaining + " remaining bytes" : ""));
+                sizeRemaining -= bytesRead;
+
+                LogDetail("Received " + bytesRead + " bytes. " + (sizeRemaining > 0 ? "Waiting for " + sizeRemaining + " remaining bytes" : ""));
                 LogDetail("Rx: " + BitConverter.ToString(readBytes, targetIndex, bytesRead));
 
-                // We now have less bytes left to read
-                sizeRemaining -= bytesRead;
                 targetIndex += bytesRead;
             }
 
