@@ -107,10 +107,16 @@ namespace Rtcc.RtsaInterfacing
                 // Copy the received data into the buffer
                 Array.Copy(readBytes, 0, buf, targetIndex, bytesRead);
 
+                LogDetail("Received " + readBytes + " bytes. "  + (sizeRemaining > 0 ? "Waiting for " + sizeRemaining + " remaining bytes" : ""));
+                LogDetail("Rx: " + BitConverter.ToString(readBytes, targetIndex, bytesRead));
+
                 // We now have less bytes left to read
                 sizeRemaining -= bytesRead;
                 targetIndex += bytesRead;
             }
+
+
+
             block = buf;
             return true;
         }
