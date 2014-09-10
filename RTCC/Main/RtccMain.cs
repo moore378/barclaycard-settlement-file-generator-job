@@ -122,13 +122,14 @@ namespace Rtcc.Main
                     // Create our wrapper object for the client
                     RtsaConnection rtsaConnection = new RtsaConnection(client);
                     rtsaConnection.Logged += ChildLogged;
-                    rtsaConnection.Start();
 
                     // This ties everything together... reading from the interface and processing using the authorizer
                     RtccMediator requestProcessor = new RtccMediator(monetraAuthorizer, israelPremium, rtsaConnection, rtccPerformanceCounters);
                     requestProcessor.TransactionDone += TransactionDone;
                     requestProcessor.Logged += ChildLogged;
                     // Note: To see what happens next (when a request is received), go to RTCC.RtccMediator.ProcessRequest
+
+                    rtsaConnection.Start();
                 }
             }
             catch (Exception exception)
