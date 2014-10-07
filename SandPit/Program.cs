@@ -9,6 +9,8 @@ using AutoDatabase;
 using System.Threading.Tasks;
 using System.Data;
 using AuthorizationClientPlatforms;
+using Rtcc;
+using Rtcc.Main;
 
 namespace SandPit
 {
@@ -19,10 +21,13 @@ namespace SandPit
     {
         static void Main(string[] args)
         {
-            var stripeStr = "1979BB6AE3E2B9A6591C9CCD63D3B4C7B59FCEDEEEF58ACE0D86C639EFF039B6C9D1E3C16C9AD0DB54D6A8F1EEA421F2BBFB9A79378100CE71C785583E161998984BAA089630DDB1BB2C17C09ABEE2B6356C82CF1B307A2F67E462580443B9C769DDE2E21EBE6229F6F1C9F5B25EED47A596726CCBEFC83971B04142985089A9";
-            System.Text.ASCIIEncoding encoding = new System.Text.ASCIIEncoding();
+            //var monetra = new Monetra(new MonetraDotNetNativeClient());
+            //var rtcc = new RtccMediator(monetra, null, null, new RtccPerformanceCounters(), )
 
-            var encStripe = Common.DatabaseFormats.DecodeDatabaseStripe(stripeStr);
+            //var stripeStr = "1979BB6AE3E2B9A6591C9CCD63D3B4C7B59FCEDEEEF58ACE0D86C639EFF039B6C9D1E3C16C9AD0DB54D6A8F1EEA421F2BBFB9A79378100CE71C785583E161998984BAA089630DDB1BB2C17C09ABEE2B6356C82CF1B307A2F67E462580443B9C769DDE2E21EBE6229F6F1C9F5B25EED47A596726CCBEFC83971B04142985089A9";
+            //System.Text.ASCIIEncoding encoding = new System.Text.ASCIIEncoding();
+
+            //var encStripe = Common.DatabaseFormats.DecodeDatabaseStripe(stripeStr);
 
             //var stripe = new Common.EncryptedStripe(encStripe);
             //CryptographicPlatforms.IPSTrackCipher.Decrypt(encStripe, );
