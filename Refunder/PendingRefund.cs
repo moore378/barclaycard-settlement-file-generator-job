@@ -19,5 +19,8 @@ namespace Refunder
         public String CCClearingPlatform; // varchar
         public Decimal? TTID; // decimal
         public Int16? BatNum; // smallint
+        public String CCTracks;
+        public Decimal KeyVer;
+        public String CCExpiryDate;
     }
 }

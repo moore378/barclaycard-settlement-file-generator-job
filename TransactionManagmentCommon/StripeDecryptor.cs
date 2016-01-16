@@ -72,5 +72,10 @@ namespace TransactionManagementCommon
                     throw new StripeErrorException("Unknown encryption method", errorStatus);
             }
         }
+
+        public string decryptStripe(string s, EncryptionMethod encryptionMethod, int p1, TransactionInfo testInfo, string p2)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

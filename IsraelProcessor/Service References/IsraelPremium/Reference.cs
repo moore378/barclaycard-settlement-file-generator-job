@@ -15,139 +15,139 @@ namespace IsraelProcessor.IsraelPremium {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
-    [System.Runtime.Serialization.CollectionDataContractAttribute(Name="ArrayOfString", Namespace="http://PremiumFinancicalServices.com/", ItemName="string")]
+    [System.Runtime.Serialization.CollectionDataContractAttribute(Name="ArrayOfString", Namespace="http://PayPlusServices.com/", ItemName="string")]
     [System.SerializableAttribute()]
     public class ArrayOfString : System.Collections.Generic.List<string> {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(Namespace="http://PremiumFinancicalServices.com/", ConfigurationName="IsraelPremium.PremiumServiceSoap")]
+    [System.ServiceModel.ServiceContractAttribute(Namespace="http://PayPlusServices.com/", ConfigurationName="IsraelPremium.PremiumServiceSoap")]
     public interface PremiumServiceSoap {
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://PremiumFinancicalServices.com/AuthCreditCardFull", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://PayPlusServices.com/AuthCreditCardFull", ReplyAction="*")]
         IsraelProcessor.IsraelPremium.AuthCreditCardFullResponse AuthCreditCardFull(IsraelProcessor.IsraelPremium.AuthCreditCardFullRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://PremiumFinancicalServices.com/AuthCreditCardFull", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://PayPlusServices.com/AuthCreditCardFull", ReplyAction="*")]
         System.Threading.Tasks.Task<IsraelProcessor.IsraelPremium.AuthCreditCardFullResponse> AuthCreditCardFullAsync(IsraelProcessor.IsraelPremium.AuthCreditCardFullRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://PremiumFinancicalServices.com/RetryAuthCreditCardFull", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://PayPlusServices.com/RetryAuthCreditCardFull", ReplyAction="*")]
         IsraelProcessor.IsraelPremium.RetryAuthCreditCardFullResponse RetryAuthCreditCardFull(IsraelProcessor.IsraelPremium.RetryAuthCreditCardFullRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://PremiumFinancicalServices.com/RetryAuthCreditCardFull", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://PayPlusServices.com/RetryAuthCreditCardFull", ReplyAction="*")]
         System.Threading.Tasks.Task<IsraelProcessor.IsraelPremium.RetryAuthCreditCardFullResponse> RetryAuthCreditCardFullAsync(IsraelProcessor.IsraelPremium.RetryAuthCreditCardFullRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://PremiumFinancicalServices.com/AuthCreditCardFullEx", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://PayPlusServices.com/AuthCreditCardFullEx", ReplyAction="*")]
         IsraelProcessor.IsraelPremium.AuthCreditCardFullExResponse AuthCreditCardFullEx(IsraelProcessor.IsraelPremium.AuthCreditCardFullExRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://PremiumFinancicalServices.com/AuthCreditCardFullEx", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://PayPlusServices.com/AuthCreditCardFullEx", ReplyAction="*")]
         System.Threading.Tasks.Task<IsraelProcessor.IsraelPremium.AuthCreditCardFullExResponse> AuthCreditCardFullExAsync(IsraelProcessor.IsraelPremium.AuthCreditCardFullExRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://PremiumFinancicalServices.com/RestoreAuthCreditCardFullResultByVoucherId", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://PayPlusServices.com/RestoreAuthCreditCardFullResultByVoucherId", ReplyAction="*")]
         IsraelProcessor.IsraelPremium.RestoreAuthCreditCardFullResultByVoucherIdResponse RestoreAuthCreditCardFullResultByVoucherId(IsraelProcessor.IsraelPremium.RestoreAuthCreditCardFullResultByVoucherIdRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://PremiumFinancicalServices.com/RestoreAuthCreditCardFullResultByVoucherId", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://PayPlusServices.com/RestoreAuthCreditCardFullResultByVoucherId", ReplyAction="*")]
         System.Threading.Tasks.Task<IsraelProcessor.IsraelPremium.RestoreAuthCreditCardFullResultByVoucherIdResponse> RestoreAuthCreditCardFullResultByVoucherIdAsync(IsraelProcessor.IsraelPremium.RestoreAuthCreditCardFullResultByVoucherIdRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://PremiumFinancicalServices.com/DepositTransactionsEx", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://PayPlusServices.com/DepositTransactionsEx", ReplyAction="*")]
         IsraelProcessor.IsraelPremium.DepositTransactionsExResponse DepositTransactionsEx(IsraelProcessor.IsraelPremium.DepositTransactionsExRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://PremiumFinancicalServices.com/DepositTransactionsEx", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://PayPlusServices.com/DepositTransactionsEx", ReplyAction="*")]
         System.Threading.Tasks.Task<IsraelProcessor.IsraelPremium.DepositTransactionsExResponse> DepositTransactionsExAsync(IsraelProcessor.IsraelPremium.DepositTransactionsExRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://PremiumFinancicalServices.com/AuthCreditCardGas", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://PayPlusServices.com/AuthCreditCardGas", ReplyAction="*")]
         IsraelProcessor.IsraelPremium.AuthCreditCardGasResponse AuthCreditCardGas(IsraelProcessor.IsraelPremium.AuthCreditCardGasRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://PremiumFinancicalServices.com/AuthCreditCardGas", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://PayPlusServices.com/AuthCreditCardGas", ReplyAction="*")]
         System.Threading.Tasks.Task<IsraelProcessor.IsraelPremium.AuthCreditCardGasResponse> AuthCreditCardGasAsync(IsraelProcessor.IsraelPremium.AuthCreditCardGasRequest request);
         
-        // CODEGEN: Generating message contract since element name premiumUserName from namespace http://PremiumFinancicalServices.com/ is not marked nillable
-        [System.ServiceModel.OperationContractAttribute(Action="http://PremiumFinancicalServices.com/RemoveLastTransaction", ReplyAction="*")]
+        // CODEGEN: Generating message contract since element name premiumUserName from namespace http://PayPlusServices.com/ is not marked nillable
+        [System.ServiceModel.OperationContractAttribute(Action="http://PayPlusServices.com/RemoveLastTransaction", ReplyAction="*")]
         IsraelProcessor.IsraelPremium.RemoveLastTransactionResponse RemoveLastTransaction(IsraelProcessor.IsraelPremium.RemoveLastTransactionRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://PremiumFinancicalServices.com/RemoveLastTransaction", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://PayPlusServices.com/RemoveLastTransaction", ReplyAction="*")]
         System.Threading.Tasks.Task<IsraelProcessor.IsraelPremium.RemoveLastTransactionResponse> RemoveLastTransactionAsync(IsraelProcessor.IsraelPremium.RemoveLastTransactionRequest request);
         
-        // CODEGEN: Generating message contract since element name premiumUserName from namespace http://PremiumFinancicalServices.com/ is not marked nillable
-        [System.ServiceModel.OperationContractAttribute(Action="http://PremiumFinancicalServices.com/RemoveTransactionByVoucherIds", ReplyAction="*")]
+        // CODEGEN: Generating message contract since element name premiumUserName from namespace http://PayPlusServices.com/ is not marked nillable
+        [System.ServiceModel.OperationContractAttribute(Action="http://PayPlusServices.com/RemoveTransactionByVoucherIds", ReplyAction="*")]
         IsraelProcessor.IsraelPremium.RemoveTransactionByVoucherIdsResponse RemoveTransactionByVoucherIds(IsraelProcessor.IsraelPremium.RemoveTransactionByVoucherIdsRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://PremiumFinancicalServices.com/RemoveTransactionByVoucherIds", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://PayPlusServices.com/RemoveTransactionByVoucherIds", ReplyAction="*")]
         System.Threading.Tasks.Task<IsraelProcessor.IsraelPremium.RemoveTransactionByVoucherIdsResponse> RemoveTransactionByVoucherIdsAsync(IsraelProcessor.IsraelPremium.RemoveTransactionByVoucherIdsRequest request);
         
-        // CODEGEN: Generating message contract since element name premiumUserName from namespace http://PremiumFinancicalServices.com/ is not marked nillable
-        [System.ServiceModel.OperationContractAttribute(Action="http://PremiumFinancicalServices.com/GetDepositData", ReplyAction="*")]
+        // CODEGEN: Generating message contract since element name premiumUserName from namespace http://PayPlusServices.com/ is not marked nillable
+        [System.ServiceModel.OperationContractAttribute(Action="http://PayPlusServices.com/GetDepositData", ReplyAction="*")]
         IsraelProcessor.IsraelPremium.GetDepositDataResponse GetDepositData(IsraelProcessor.IsraelPremium.GetDepositDataRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://PremiumFinancicalServices.com/GetDepositData", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://PayPlusServices.com/GetDepositData", ReplyAction="*")]
         System.Threading.Tasks.Task<IsraelProcessor.IsraelPremium.GetDepositDataResponse> GetDepositDataAsync(IsraelProcessor.IsraelPremium.GetDepositDataRequest request);
         
-        // CODEGEN: Generating message contract since element name GetDateAndTimeResult from namespace http://PremiumFinancicalServices.com/ is not marked nillable
-        [System.ServiceModel.OperationContractAttribute(Action="http://PremiumFinancicalServices.com/GetDateAndTime", ReplyAction="*")]
+        // CODEGEN: Generating message contract since element name GetDateAndTimeResult from namespace http://PayPlusServices.com/ is not marked nillable
+        [System.ServiceModel.OperationContractAttribute(Action="http://PayPlusServices.com/GetDateAndTime", ReplyAction="*")]
         IsraelProcessor.IsraelPremium.GetDateAndTimeResponse GetDateAndTime(IsraelProcessor.IsraelPremium.GetDateAndTimeRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://PremiumFinancicalServices.com/GetDateAndTime", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://PayPlusServices.com/GetDateAndTime", ReplyAction="*")]
         System.Threading.Tasks.Task<IsraelProcessor.IsraelPremium.GetDateAndTimeResponse> GetDateAndTimeAsync(IsraelProcessor.IsraelPremium.GetDateAndTimeRequest request);
         
-        // CODEGEN: Generating message contract since element name premiumUserName from namespace http://PremiumFinancicalServices.com/ is not marked nillable
-        [System.ServiceModel.OperationContractAttribute(Action="http://PremiumFinancicalServices.com/GetMerchantCashierInfo", ReplyAction="*")]
+        // CODEGEN: Generating message contract since element name premiumUserName from namespace http://PayPlusServices.com/ is not marked nillable
+        [System.ServiceModel.OperationContractAttribute(Action="http://PayPlusServices.com/GetMerchantCashierInfo", ReplyAction="*")]
         IsraelProcessor.IsraelPremium.GetMerchantCashierInfoResponse GetMerchantCashierInfo(IsraelProcessor.IsraelPremium.GetMerchantCashierInfoRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://PremiumFinancicalServices.com/GetMerchantCashierInfo", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://PayPlusServices.com/GetMerchantCashierInfo", ReplyAction="*")]
         System.Threading.Tasks.Task<IsraelProcessor.IsraelPremium.GetMerchantCashierInfoResponse> GetMerchantCashierInfoAsync(IsraelProcessor.IsraelPremium.GetMerchantCashierInfoRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://PremiumFinancicalServices.com/RetainerCreditCardStorage", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://PayPlusServices.com/RetainerCreditCardStorage", ReplyAction="*")]
         IsraelProcessor.IsraelPremium.RetainerCreditCardStorageResponse RetainerCreditCardStorage(IsraelProcessor.IsraelPremium.RetainerCreditCardStorageRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://PremiumFinancicalServices.com/RetainerCreditCardStorage", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://PayPlusServices.com/RetainerCreditCardStorage", ReplyAction="*")]
         System.Threading.Tasks.Task<IsraelProcessor.IsraelPremium.RetainerCreditCardStorageResponse> RetainerCreditCardStorageAsync(IsraelProcessor.IsraelPremium.RetainerCreditCardStorageRequest request);
         
-        // CODEGEN: Generating message contract since element name merchantId from namespace http://PremiumFinancicalServices.com/ is not marked nillable
-        [System.ServiceModel.OperationContractAttribute(Action="http://PremiumFinancicalServices.com/isUserExistInPremiumUsers", ReplyAction="*")]
+        // CODEGEN: Generating message contract since element name merchantId from namespace http://PayPlusServices.com/ is not marked nillable
+        [System.ServiceModel.OperationContractAttribute(Action="http://PayPlusServices.com/isUserExistInPremiumUsers", ReplyAction="*")]
         IsraelProcessor.IsraelPremium.isUserExistInPremiumUsersResponse isUserExistInPremiumUsers(IsraelProcessor.IsraelPremium.isUserExistInPremiumUsersRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://PremiumFinancicalServices.com/isUserExistInPremiumUsers", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://PayPlusServices.com/isUserExistInPremiumUsers", ReplyAction="*")]
         System.Threading.Tasks.Task<IsraelProcessor.IsraelPremium.isUserExistInPremiumUsersResponse> isUserExistInPremiumUsersAsync(IsraelProcessor.IsraelPremium.isUserExistInPremiumUsersRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://PremiumFinancicalServices.com/HKeva_ManageCustomer", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://PayPlusServices.com/HKeva_ManageCustomer", ReplyAction="*")]
         IsraelProcessor.IsraelPremium.HKeva_ManageCustomerResponse HKeva_ManageCustomer(IsraelProcessor.IsraelPremium.HKeva_ManageCustomerRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://PremiumFinancicalServices.com/HKeva_ManageCustomer", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://PayPlusServices.com/HKeva_ManageCustomer", ReplyAction="*")]
         System.Threading.Tasks.Task<IsraelProcessor.IsraelPremium.HKeva_ManageCustomerResponse> HKeva_ManageCustomerAsync(IsraelProcessor.IsraelPremium.HKeva_ManageCustomerRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://PremiumFinancicalServices.com/HKeva_ManageTrans", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://PayPlusServices.com/HKeva_ManageTrans", ReplyAction="*")]
         IsraelProcessor.IsraelPremium.HKeva_ManageTransResponse HKeva_ManageTrans(IsraelProcessor.IsraelPremium.HKeva_ManageTransRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://PremiumFinancicalServices.com/HKeva_ManageTrans", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://PayPlusServices.com/HKeva_ManageTrans", ReplyAction="*")]
         System.Threading.Tasks.Task<IsraelProcessor.IsraelPremium.HKeva_ManageTransResponse> HKeva_ManageTransAsync(IsraelProcessor.IsraelPremium.HKeva_ManageTransRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://PremiumFinancicalServices.com/GAMA_TransTitle", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://PayPlusServices.com/GAMA_TransTitle", ReplyAction="*")]
         IsraelProcessor.IsraelPremium.GAMA_TransTitleResponse GAMA_TransTitle(IsraelProcessor.IsraelPremium.GAMA_TransTitleRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://PremiumFinancicalServices.com/GAMA_TransTitle", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://PayPlusServices.com/GAMA_TransTitle", ReplyAction="*")]
         System.Threading.Tasks.Task<IsraelProcessor.IsraelPremium.GAMA_TransTitleResponse> GAMA_TransTitleAsync(IsraelProcessor.IsraelPremium.GAMA_TransTitleRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://PremiumFinancicalServices.com/GAMA_TransData", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://PayPlusServices.com/GAMA_TransData", ReplyAction="*")]
         IsraelProcessor.IsraelPremium.GAMA_TransDataResponse GAMA_TransData(IsraelProcessor.IsraelPremium.GAMA_TransDataRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://PremiumFinancicalServices.com/GAMA_TransData", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://PayPlusServices.com/GAMA_TransData", ReplyAction="*")]
         System.Threading.Tasks.Task<IsraelProcessor.IsraelPremium.GAMA_TransDataResponse> GAMA_TransDataAsync(IsraelProcessor.IsraelPremium.GAMA_TransDataRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://PremiumFinancicalServices.com/GAMA_TransTotal", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://PayPlusServices.com/GAMA_TransTotal", ReplyAction="*")]
         IsraelProcessor.IsraelPremium.GAMA_TransTotalResponse GAMA_TransTotal(IsraelProcessor.IsraelPremium.GAMA_TransTotalRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://PremiumFinancicalServices.com/GAMA_TransTotal", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://PayPlusServices.com/GAMA_TransTotal", ReplyAction="*")]
         System.Threading.Tasks.Task<IsraelProcessor.IsraelPremium.GAMA_TransTotalResponse> GAMA_TransTotalAsync(IsraelProcessor.IsraelPremium.GAMA_TransTotalRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://PremiumFinancicalServices.com/GAMA_DepositData", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://PayPlusServices.com/GAMA_DepositData", ReplyAction="*")]
         IsraelProcessor.IsraelPremium.GAMA_DepositDataResponse GAMA_DepositData(IsraelProcessor.IsraelPremium.GAMA_DepositDataRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://PremiumFinancicalServices.com/GAMA_DepositData", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://PayPlusServices.com/GAMA_DepositData", ReplyAction="*")]
         System.Threading.Tasks.Task<IsraelProcessor.IsraelPremium.GAMA_DepositDataResponse> GAMA_DepositDataAsync(IsraelProcessor.IsraelPremium.GAMA_DepositDataRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://PremiumFinancicalServices.com/GAMA_DepositTotal", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://PayPlusServices.com/GAMA_DepositTotal", ReplyAction="*")]
         IsraelProcessor.IsraelPremium.GAMA_DepositTotalResponse GAMA_DepositTotal(IsraelProcessor.IsraelPremium.GAMA_DepositTotalRequest request);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://PremiumFinancicalServices.com/GAMA_DepositTotal", ReplyAction="*")]
+        [System.ServiceModel.OperationContractAttribute(Action="http://PayPlusServices.com/GAMA_DepositTotal", ReplyAction="*")]
         System.Threading.Tasks.Task<IsraelProcessor.IsraelPremium.GAMA_DepositTotalResponse> GAMA_DepositTotalAsync(IsraelProcessor.IsraelPremium.GAMA_DepositTotalRequest request);
     }
     
@@ -156,7 +156,7 @@ namespace IsraelProcessor.IsraelPremium {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class AuthCreditCardFullRequest {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="AuthCreditCardFull", Namespace="http://PremiumFinancicalServices.com/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="AuthCreditCardFull", Namespace="http://PayPlusServices.com/", Order=0)]
         public IsraelProcessor.IsraelPremium.AuthCreditCardFullRequestBody Body;
         
         public AuthCreditCardFullRequest() {
@@ -169,7 +169,7 @@ namespace IsraelProcessor.IsraelPremium {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PremiumFinancicalServices.com/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PayPlusServices.com/")]
     public partial class AuthCreditCardFullRequestBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
@@ -349,7 +349,7 @@ namespace IsraelProcessor.IsraelPremium {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class AuthCreditCardFullResponse {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="AuthCreditCardFullResponse", Namespace="http://PremiumFinancicalServices.com/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="AuthCreditCardFullResponse", Namespace="http://PayPlusServices.com/", Order=0)]
         public IsraelProcessor.IsraelPremium.AuthCreditCardFullResponseBody Body;
         
         public AuthCreditCardFullResponse() {
@@ -362,7 +362,7 @@ namespace IsraelProcessor.IsraelPremium {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PremiumFinancicalServices.com/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PayPlusServices.com/")]
     public partial class AuthCreditCardFullResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
@@ -389,7 +389,7 @@ namespace IsraelProcessor.IsraelPremium {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class RetryAuthCreditCardFullRequest {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="RetryAuthCreditCardFull", Namespace="http://PremiumFinancicalServices.com/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="RetryAuthCreditCardFull", Namespace="http://PayPlusServices.com/", Order=0)]
         public IsraelProcessor.IsraelPremium.RetryAuthCreditCardFullRequestBody Body;
         
         public RetryAuthCreditCardFullRequest() {
@@ -402,7 +402,7 @@ namespace IsraelProcessor.IsraelPremium {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PremiumFinancicalServices.com/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PayPlusServices.com/")]
     public partial class RetryAuthCreditCardFullRequestBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
@@ -582,7 +582,7 @@ namespace IsraelProcessor.IsraelPremium {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class RetryAuthCreditCardFullResponse {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="RetryAuthCreditCardFullResponse", Namespace="http://PremiumFinancicalServices.com/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="RetryAuthCreditCardFullResponse", Namespace="http://PayPlusServices.com/", Order=0)]
         public IsraelProcessor.IsraelPremium.RetryAuthCreditCardFullResponseBody Body;
         
         public RetryAuthCreditCardFullResponse() {
@@ -595,7 +595,7 @@ namespace IsraelProcessor.IsraelPremium {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PremiumFinancicalServices.com/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PayPlusServices.com/")]
     public partial class RetryAuthCreditCardFullResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
@@ -622,7 +622,7 @@ namespace IsraelProcessor.IsraelPremium {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class AuthCreditCardFullExRequest {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="AuthCreditCardFullEx", Namespace="http://PremiumFinancicalServices.com/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="AuthCreditCardFullEx", Namespace="http://PayPlusServices.com/", Order=0)]
         public IsraelProcessor.IsraelPremium.AuthCreditCardFullExRequestBody Body;
         
         public AuthCreditCardFullExRequest() {
@@ -635,7 +635,7 @@ namespace IsraelProcessor.IsraelPremium {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PremiumFinancicalServices.com/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PayPlusServices.com/")]
     public partial class AuthCreditCardFullExRequestBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
@@ -820,7 +820,7 @@ namespace IsraelProcessor.IsraelPremium {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class AuthCreditCardFullExResponse {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="AuthCreditCardFullExResponse", Namespace="http://PremiumFinancicalServices.com/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="AuthCreditCardFullExResponse", Namespace="http://PayPlusServices.com/", Order=0)]
         public IsraelProcessor.IsraelPremium.AuthCreditCardFullExResponseBody Body;
         
         public AuthCreditCardFullExResponse() {
@@ -833,7 +833,7 @@ namespace IsraelProcessor.IsraelPremium {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PremiumFinancicalServices.com/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PayPlusServices.com/")]
     public partial class AuthCreditCardFullExResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
@@ -880,7 +880,7 @@ namespace IsraelProcessor.IsraelPremium {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class RestoreAuthCreditCardFullResultByVoucherIdRequest {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="RestoreAuthCreditCardFullResultByVoucherId", Namespace="http://PremiumFinancicalServices.com/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="RestoreAuthCreditCardFullResultByVoucherId", Namespace="http://PayPlusServices.com/", Order=0)]
         public IsraelProcessor.IsraelPremium.RestoreAuthCreditCardFullResultByVoucherIdRequestBody Body;
         
         public RestoreAuthCreditCardFullResultByVoucherIdRequest() {
@@ -893,7 +893,7 @@ namespace IsraelProcessor.IsraelPremium {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PremiumFinancicalServices.com/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PayPlusServices.com/")]
     public partial class RestoreAuthCreditCardFullResultByVoucherIdRequestBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
@@ -928,7 +928,7 @@ namespace IsraelProcessor.IsraelPremium {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class RestoreAuthCreditCardFullResultByVoucherIdResponse {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="RestoreAuthCreditCardFullResultByVoucherIdResponse", Namespace="http://PremiumFinancicalServices.com/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="RestoreAuthCreditCardFullResultByVoucherIdResponse", Namespace="http://PayPlusServices.com/", Order=0)]
         public IsraelProcessor.IsraelPremium.RestoreAuthCreditCardFullResultByVoucherIdResponseBody Body;
         
         public RestoreAuthCreditCardFullResultByVoucherIdResponse() {
@@ -941,7 +941,7 @@ namespace IsraelProcessor.IsraelPremium {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PremiumFinancicalServices.com/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PayPlusServices.com/")]
     public partial class RestoreAuthCreditCardFullResultByVoucherIdResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
@@ -964,7 +964,7 @@ namespace IsraelProcessor.IsraelPremium {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class DepositTransactionsExRequest {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="DepositTransactionsEx", Namespace="http://PremiumFinancicalServices.com/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="DepositTransactionsEx", Namespace="http://PayPlusServices.com/", Order=0)]
         public IsraelProcessor.IsraelPremium.DepositTransactionsExRequestBody Body;
         
         public DepositTransactionsExRequest() {
@@ -977,7 +977,7 @@ namespace IsraelProcessor.IsraelPremium {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PremiumFinancicalServices.com/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PayPlusServices.com/")]
     public partial class DepositTransactionsExRequestBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
@@ -1004,7 +1004,7 @@ namespace IsraelProcessor.IsraelPremium {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class DepositTransactionsExResponse {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="DepositTransactionsExResponse", Namespace="http://PremiumFinancicalServices.com/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="DepositTransactionsExResponse", Namespace="http://PayPlusServices.com/", Order=0)]
         public IsraelProcessor.IsraelPremium.DepositTransactionsExResponseBody Body;
         
         public DepositTransactionsExResponse() {
@@ -1017,7 +1017,7 @@ namespace IsraelProcessor.IsraelPremium {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PremiumFinancicalServices.com/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PayPlusServices.com/")]
     public partial class DepositTransactionsExResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
@@ -1052,7 +1052,7 @@ namespace IsraelProcessor.IsraelPremium {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class AuthCreditCardGasRequest {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="AuthCreditCardGas", Namespace="http://PremiumFinancicalServices.com/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="AuthCreditCardGas", Namespace="http://PayPlusServices.com/", Order=0)]
         public IsraelProcessor.IsraelPremium.AuthCreditCardGasRequestBody Body;
         
         public AuthCreditCardGasRequest() {
@@ -1065,7 +1065,7 @@ namespace IsraelProcessor.IsraelPremium {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PremiumFinancicalServices.com/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PayPlusServices.com/")]
     public partial class AuthCreditCardGasRequestBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
@@ -1240,7 +1240,7 @@ namespace IsraelProcessor.IsraelPremium {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class AuthCreditCardGasResponse {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="AuthCreditCardGasResponse", Namespace="http://PremiumFinancicalServices.com/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="AuthCreditCardGasResponse", Namespace="http://PayPlusServices.com/", Order=0)]
         public IsraelProcessor.IsraelPremium.AuthCreditCardGasResponseBody Body;
         
         public AuthCreditCardGasResponse() {
@@ -1253,7 +1253,7 @@ namespace IsraelProcessor.IsraelPremium {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PremiumFinancicalServices.com/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PayPlusServices.com/")]
     public partial class AuthCreditCardGasResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
@@ -1281,7 +1281,7 @@ namespace IsraelProcessor.IsraelPremium {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class RemoveLastTransactionRequest {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="RemoveLastTransaction", Namespace="http://PremiumFinancicalServices.com/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="RemoveLastTransaction", Namespace="http://PayPlusServices.com/", Order=0)]
         public IsraelProcessor.IsraelPremium.RemoveLastTransactionRequestBody Body;
         
         public RemoveLastTransactionRequest() {
@@ -1295,7 +1295,7 @@ namespace IsraelProcessor.IsraelPremium {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PremiumFinancicalServices.com/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PayPlusServices.com/")]
     public partial class RemoveLastTransactionRequestBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
@@ -1327,7 +1327,7 @@ namespace IsraelProcessor.IsraelPremium {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class RemoveLastTransactionResponse {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="RemoveLastTransactionResponse", Namespace="http://PremiumFinancicalServices.com/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="RemoveLastTransactionResponse", Namespace="http://PayPlusServices.com/", Order=0)]
         public IsraelProcessor.IsraelPremium.RemoveLastTransactionResponseBody Body;
         
         public RemoveLastTransactionResponse() {
@@ -1341,7 +1341,7 @@ namespace IsraelProcessor.IsraelPremium {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PremiumFinancicalServices.com/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PayPlusServices.com/")]
     public partial class RemoveLastTransactionResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
@@ -1361,7 +1361,7 @@ namespace IsraelProcessor.IsraelPremium {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class RemoveTransactionByVoucherIdsRequest {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="RemoveTransactionByVoucherIds", Namespace="http://PremiumFinancicalServices.com/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="RemoveTransactionByVoucherIds", Namespace="http://PayPlusServices.com/", Order=0)]
         public IsraelProcessor.IsraelPremium.RemoveTransactionByVoucherIdsRequestBody Body;
         
         public RemoveTransactionByVoucherIdsRequest() {
@@ -1375,7 +1375,7 @@ namespace IsraelProcessor.IsraelPremium {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PremiumFinancicalServices.com/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PayPlusServices.com/")]
     public partial class RemoveTransactionByVoucherIdsRequestBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
@@ -1411,7 +1411,7 @@ namespace IsraelProcessor.IsraelPremium {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class RemoveTransactionByVoucherIdsResponse {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="RemoveTransactionByVoucherIdsResponse", Namespace="http://PremiumFinancicalServices.com/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="RemoveTransactionByVoucherIdsResponse", Namespace="http://PayPlusServices.com/", Order=0)]
         public IsraelProcessor.IsraelPremium.RemoveTransactionByVoucherIdsResponseBody Body;
         
         public RemoveTransactionByVoucherIdsResponse() {
@@ -1425,7 +1425,7 @@ namespace IsraelProcessor.IsraelPremium {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PremiumFinancicalServices.com/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PayPlusServices.com/")]
     public partial class RemoveTransactionByVoucherIdsResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
@@ -1445,7 +1445,7 @@ namespace IsraelProcessor.IsraelPremium {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class GetDepositDataRequest {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetDepositData", Namespace="http://PremiumFinancicalServices.com/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetDepositData", Namespace="http://PayPlusServices.com/", Order=0)]
         public IsraelProcessor.IsraelPremium.GetDepositDataRequestBody Body;
         
         public GetDepositDataRequest() {
@@ -1459,7 +1459,7 @@ namespace IsraelProcessor.IsraelPremium {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PremiumFinancicalServices.com/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PayPlusServices.com/")]
     public partial class GetDepositDataRequestBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
@@ -1495,7 +1495,7 @@ namespace IsraelProcessor.IsraelPremium {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class GetDepositDataResponse {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetDepositDataResponse", Namespace="http://PremiumFinancicalServices.com/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetDepositDataResponse", Namespace="http://PayPlusServices.com/", Order=0)]
         public IsraelProcessor.IsraelPremium.GetDepositDataResponseBody Body;
         
         public GetDepositDataResponse() {
@@ -1509,7 +1509,7 @@ namespace IsraelProcessor.IsraelPremium {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PremiumFinancicalServices.com/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PayPlusServices.com/")]
     public partial class GetDepositDataResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
@@ -1529,7 +1529,7 @@ namespace IsraelProcessor.IsraelPremium {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class GetDateAndTimeRequest {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetDateAndTime", Namespace="http://PremiumFinancicalServices.com/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetDateAndTime", Namespace="http://PayPlusServices.com/", Order=0)]
         public IsraelProcessor.IsraelPremium.GetDateAndTimeRequestBody Body;
         
         public GetDateAndTimeRequest() {
@@ -1556,7 +1556,7 @@ namespace IsraelProcessor.IsraelPremium {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class GetDateAndTimeResponse {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetDateAndTimeResponse", Namespace="http://PremiumFinancicalServices.com/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetDateAndTimeResponse", Namespace="http://PayPlusServices.com/", Order=0)]
         public IsraelProcessor.IsraelPremium.GetDateAndTimeResponseBody Body;
         
         public GetDateAndTimeResponse() {
@@ -1570,7 +1570,7 @@ namespace IsraelProcessor.IsraelPremium {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PremiumFinancicalServices.com/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PayPlusServices.com/")]
     public partial class GetDateAndTimeResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
@@ -1590,7 +1590,7 @@ namespace IsraelProcessor.IsraelPremium {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class GetMerchantCashierInfoRequest {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetMerchantCashierInfo", Namespace="http://PremiumFinancicalServices.com/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetMerchantCashierInfo", Namespace="http://PayPlusServices.com/", Order=0)]
         public IsraelProcessor.IsraelPremium.GetMerchantCashierInfoRequestBody Body;
         
         public GetMerchantCashierInfoRequest() {
@@ -1604,7 +1604,7 @@ namespace IsraelProcessor.IsraelPremium {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PremiumFinancicalServices.com/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PayPlusServices.com/")]
     public partial class GetMerchantCashierInfoRequestBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
@@ -1636,7 +1636,7 @@ namespace IsraelProcessor.IsraelPremium {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class GetMerchantCashierInfoResponse {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetMerchantCashierInfoResponse", Namespace="http://PremiumFinancicalServices.com/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GetMerchantCashierInfoResponse", Namespace="http://PayPlusServices.com/", Order=0)]
         public IsraelProcessor.IsraelPremium.GetMerchantCashierInfoResponseBody Body;
         
         public GetMerchantCashierInfoResponse() {
@@ -1650,7 +1650,7 @@ namespace IsraelProcessor.IsraelPremium {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PremiumFinancicalServices.com/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PayPlusServices.com/")]
     public partial class GetMerchantCashierInfoResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
@@ -1669,7 +1669,7 @@ namespace IsraelProcessor.IsraelPremium {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class RetainerCreditCardStorageRequest {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="RetainerCreditCardStorage", Namespace="http://PremiumFinancicalServices.com/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="RetainerCreditCardStorage", Namespace="http://PayPlusServices.com/", Order=0)]
         public IsraelProcessor.IsraelPremium.RetainerCreditCardStorageRequestBody Body;
         
         public RetainerCreditCardStorageRequest() {
@@ -1682,7 +1682,7 @@ namespace IsraelProcessor.IsraelPremium {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PremiumFinancicalServices.com/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PayPlusServices.com/")]
     public partial class RetainerCreditCardStorageRequestBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
@@ -1725,7 +1725,7 @@ namespace IsraelProcessor.IsraelPremium {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class RetainerCreditCardStorageResponse {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="RetainerCreditCardStorageResponse", Namespace="http://PremiumFinancicalServices.com/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="RetainerCreditCardStorageResponse", Namespace="http://PayPlusServices.com/", Order=0)]
         public IsraelProcessor.IsraelPremium.RetainerCreditCardStorageResponseBody Body;
         
         public RetainerCreditCardStorageResponse() {
@@ -1738,7 +1738,7 @@ namespace IsraelProcessor.IsraelPremium {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PremiumFinancicalServices.com/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PayPlusServices.com/")]
     public partial class RetainerCreditCardStorageResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
@@ -1782,7 +1782,7 @@ namespace IsraelProcessor.IsraelPremium {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class isUserExistInPremiumUsersRequest {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="isUserExistInPremiumUsers", Namespace="http://PremiumFinancicalServices.com/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="isUserExistInPremiumUsers", Namespace="http://PayPlusServices.com/", Order=0)]
         public IsraelProcessor.IsraelPremium.isUserExistInPremiumUsersRequestBody Body;
         
         public isUserExistInPremiumUsersRequest() {
@@ -1796,7 +1796,7 @@ namespace IsraelProcessor.IsraelPremium {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PremiumFinancicalServices.com/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PayPlusServices.com/")]
     public partial class isUserExistInPremiumUsersRequestBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
@@ -1828,7 +1828,7 @@ namespace IsraelProcessor.IsraelPremium {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class isUserExistInPremiumUsersResponse {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="isUserExistInPremiumUsersResponse", Namespace="http://PremiumFinancicalServices.com/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="isUserExistInPremiumUsersResponse", Namespace="http://PayPlusServices.com/", Order=0)]
         public IsraelProcessor.IsraelPremium.isUserExistInPremiumUsersResponseBody Body;
         
         public isUserExistInPremiumUsersResponse() {
@@ -1842,7 +1842,7 @@ namespace IsraelProcessor.IsraelPremium {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PremiumFinancicalServices.com/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PayPlusServices.com/")]
     public partial class isUserExistInPremiumUsersResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
@@ -1861,7 +1861,7 @@ namespace IsraelProcessor.IsraelPremium {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class HKeva_ManageCustomerRequest {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="HKeva_ManageCustomer", Namespace="http://PremiumFinancicalServices.com/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="HKeva_ManageCustomer", Namespace="http://PayPlusServices.com/", Order=0)]
         public IsraelProcessor.IsraelPremium.HKeva_ManageCustomerRequestBody Body;
         
         public HKeva_ManageCustomerRequest() {
@@ -1874,7 +1874,7 @@ namespace IsraelProcessor.IsraelPremium {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PremiumFinancicalServices.com/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PayPlusServices.com/")]
     public partial class HKeva_ManageCustomerRequestBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
@@ -1999,7 +1999,7 @@ namespace IsraelProcessor.IsraelPremium {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class HKeva_ManageCustomerResponse {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="HKeva_ManageCustomerResponse", Namespace="http://PremiumFinancicalServices.com/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="HKeva_ManageCustomerResponse", Namespace="http://PayPlusServices.com/", Order=0)]
         public IsraelProcessor.IsraelPremium.HKeva_ManageCustomerResponseBody Body;
         
         public HKeva_ManageCustomerResponse() {
@@ -2012,7 +2012,7 @@ namespace IsraelProcessor.IsraelPremium {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PremiumFinancicalServices.com/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PayPlusServices.com/")]
     public partial class HKeva_ManageCustomerResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
@@ -2047,7 +2047,7 @@ namespace IsraelProcessor.IsraelPremium {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class HKeva_ManageTransRequest {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="HKeva_ManageTrans", Namespace="http://PremiumFinancicalServices.com/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="HKeva_ManageTrans", Namespace="http://PayPlusServices.com/", Order=0)]
         public IsraelProcessor.IsraelPremium.HKeva_ManageTransRequestBody Body;
         
         public HKeva_ManageTransRequest() {
@@ -2060,7 +2060,7 @@ namespace IsraelProcessor.IsraelPremium {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PremiumFinancicalServices.com/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PayPlusServices.com/")]
     public partial class HKeva_ManageTransRequestBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
@@ -2265,7 +2265,7 @@ namespace IsraelProcessor.IsraelPremium {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class HKeva_ManageTransResponse {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="HKeva_ManageTransResponse", Namespace="http://PremiumFinancicalServices.com/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="HKeva_ManageTransResponse", Namespace="http://PayPlusServices.com/", Order=0)]
         public IsraelProcessor.IsraelPremium.HKeva_ManageTransResponseBody Body;
         
         public HKeva_ManageTransResponse() {
@@ -2278,7 +2278,7 @@ namespace IsraelProcessor.IsraelPremium {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PremiumFinancicalServices.com/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PayPlusServices.com/")]
     public partial class HKeva_ManageTransResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
@@ -2313,7 +2313,7 @@ namespace IsraelProcessor.IsraelPremium {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class GAMA_TransTitleRequest {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="GAMA_TransTitle", Namespace="http://PremiumFinancicalServices.com/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GAMA_TransTitle", Namespace="http://PayPlusServices.com/", Order=0)]
         public IsraelProcessor.IsraelPremium.GAMA_TransTitleRequestBody Body;
         
         public GAMA_TransTitleRequest() {
@@ -2326,7 +2326,7 @@ namespace IsraelProcessor.IsraelPremium {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PremiumFinancicalServices.com/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PayPlusServices.com/")]
     public partial class GAMA_TransTitleRequestBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
@@ -2361,7 +2361,7 @@ namespace IsraelProcessor.IsraelPremium {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class GAMA_TransTitleResponse {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="GAMA_TransTitleResponse", Namespace="http://PremiumFinancicalServices.com/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GAMA_TransTitleResponse", Namespace="http://PayPlusServices.com/", Order=0)]
         public IsraelProcessor.IsraelPremium.GAMA_TransTitleResponseBody Body;
         
         public GAMA_TransTitleResponse() {
@@ -2374,7 +2374,7 @@ namespace IsraelProcessor.IsraelPremium {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PremiumFinancicalServices.com/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PayPlusServices.com/")]
     public partial class GAMA_TransTitleResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
@@ -2397,7 +2397,7 @@ namespace IsraelProcessor.IsraelPremium {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class GAMA_TransDataRequest {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="GAMA_TransData", Namespace="http://PremiumFinancicalServices.com/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GAMA_TransData", Namespace="http://PayPlusServices.com/", Order=0)]
         public IsraelProcessor.IsraelPremium.GAMA_TransDataRequestBody Body;
         
         public GAMA_TransDataRequest() {
@@ -2410,7 +2410,7 @@ namespace IsraelProcessor.IsraelPremium {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PremiumFinancicalServices.com/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PayPlusServices.com/")]
     public partial class GAMA_TransDataRequestBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
@@ -2449,7 +2449,7 @@ namespace IsraelProcessor.IsraelPremium {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class GAMA_TransDataResponse {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="GAMA_TransDataResponse", Namespace="http://PremiumFinancicalServices.com/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GAMA_TransDataResponse", Namespace="http://PayPlusServices.com/", Order=0)]
         public IsraelProcessor.IsraelPremium.GAMA_TransDataResponseBody Body;
         
         public GAMA_TransDataResponse() {
@@ -2462,7 +2462,7 @@ namespace IsraelProcessor.IsraelPremium {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PremiumFinancicalServices.com/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PayPlusServices.com/")]
     public partial class GAMA_TransDataResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
@@ -2489,7 +2489,7 @@ namespace IsraelProcessor.IsraelPremium {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class GAMA_TransTotalRequest {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="GAMA_TransTotal", Namespace="http://PremiumFinancicalServices.com/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GAMA_TransTotal", Namespace="http://PayPlusServices.com/", Order=0)]
         public IsraelProcessor.IsraelPremium.GAMA_TransTotalRequestBody Body;
         
         public GAMA_TransTotalRequest() {
@@ -2502,7 +2502,7 @@ namespace IsraelProcessor.IsraelPremium {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PremiumFinancicalServices.com/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PayPlusServices.com/")]
     public partial class GAMA_TransTotalRequestBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
@@ -2533,7 +2533,7 @@ namespace IsraelProcessor.IsraelPremium {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class GAMA_TransTotalResponse {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="GAMA_TransTotalResponse", Namespace="http://PremiumFinancicalServices.com/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GAMA_TransTotalResponse", Namespace="http://PayPlusServices.com/", Order=0)]
         public IsraelProcessor.IsraelPremium.GAMA_TransTotalResponseBody Body;
         
         public GAMA_TransTotalResponse() {
@@ -2546,7 +2546,7 @@ namespace IsraelProcessor.IsraelPremium {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PremiumFinancicalServices.com/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PayPlusServices.com/")]
     public partial class GAMA_TransTotalResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
@@ -2569,7 +2569,7 @@ namespace IsraelProcessor.IsraelPremium {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class GAMA_DepositDataRequest {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="GAMA_DepositData", Namespace="http://PremiumFinancicalServices.com/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GAMA_DepositData", Namespace="http://PayPlusServices.com/", Order=0)]
         public IsraelProcessor.IsraelPremium.GAMA_DepositDataRequestBody Body;
         
         public GAMA_DepositDataRequest() {
@@ -2582,7 +2582,7 @@ namespace IsraelProcessor.IsraelPremium {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PremiumFinancicalServices.com/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PayPlusServices.com/")]
     public partial class GAMA_DepositDataRequestBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
@@ -2613,7 +2613,7 @@ namespace IsraelProcessor.IsraelPremium {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class GAMA_DepositDataResponse {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="GAMA_DepositDataResponse", Namespace="http://PremiumFinancicalServices.com/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GAMA_DepositDataResponse", Namespace="http://PayPlusServices.com/", Order=0)]
         public IsraelProcessor.IsraelPremium.GAMA_DepositDataResponseBody Body;
         
         public GAMA_DepositDataResponse() {
@@ -2626,7 +2626,7 @@ namespace IsraelProcessor.IsraelPremium {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PremiumFinancicalServices.com/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PayPlusServices.com/")]
     public partial class GAMA_DepositDataResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
@@ -2649,7 +2649,7 @@ namespace IsraelProcessor.IsraelPremium {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class GAMA_DepositTotalRequest {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="GAMA_DepositTotal", Namespace="http://PremiumFinancicalServices.com/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GAMA_DepositTotal", Namespace="http://PayPlusServices.com/", Order=0)]
         public IsraelProcessor.IsraelPremium.GAMA_DepositTotalRequestBody Body;
         
         public GAMA_DepositTotalRequest() {
@@ -2662,7 +2662,7 @@ namespace IsraelProcessor.IsraelPremium {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PremiumFinancicalServices.com/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PayPlusServices.com/")]
     public partial class GAMA_DepositTotalRequestBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
@@ -2693,7 +2693,7 @@ namespace IsraelProcessor.IsraelPremium {
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
     public partial class GAMA_DepositTotalResponse {
         
-        [System.ServiceModel.MessageBodyMemberAttribute(Name="GAMA_DepositTotalResponse", Namespace="http://PremiumFinancicalServices.com/", Order=0)]
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="GAMA_DepositTotalResponse", Namespace="http://PayPlusServices.com/", Order=0)]
         public IsraelProcessor.IsraelPremium.GAMA_DepositTotalResponseBody Body;
         
         public GAMA_DepositTotalResponse() {
@@ -2706,7 +2706,7 @@ namespace IsraelProcessor.IsraelPremium {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PremiumFinancicalServices.com/")]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://PayPlusServices.com/")]
     public partial class GAMA_DepositTotalResponseBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(Order=0)]
