@@ -10,6 +10,9 @@ using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.ServiceProcess;
 
+using CryptographicPlatforms;
+
+
 [assembly: InternalsVisibleTo("TransactionManagementUnitTests")]
 
 namespace Rtcc
@@ -24,6 +27,21 @@ namespace Rtcc
         [STAThread]
         static void Main(string[] args)
         {
+          //  StripeDecryptor decryptor = new StripeDecryptor();
+          //  var request = new Common.EncryptedStripe(new byte[0]);
+          //  var req=""; 
+          //  var sysdt = new DateTime();
+
+          //  sysdt = Convert.ToDateTime("02/22/2016 17:55:00");
+
+         //   request =    DatabaseFormats .encoding.GetBytes("3F07E554F9182ECAD577527286FE3BCFCD7EC81E4FD1C506D1515F0517E0A62776DB630970094A041D34324C07C64651CA1204CD57513B0548E3125151DC5F20796F24AA7A337312F1BF098846F94B0AD5B69E911010C312841FB9523C33A49E4C13336839BEE20D4A91B8F3A5D958DAE8B9FE087ED5615A5FAE02D797737846");
+
+         //   req = IPSTrackCipher.Decrypt(request, sysdt, 28, 12345, 1);
+
+          //  MessageBox.Show(req);
+            
+            
+            
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
             Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);
 
@@ -86,4 +104,7 @@ namespace Rtcc
         static LogFile exceptionLogFile = new LogFile(Path.Combine(logFolder, "Exceptions_"), ".txt");
         static LogFile normalLogFile = new LogFile(Path.Combine(logFolder, "Transactions_"), ".txt");
     }
+
+     
+
 }

@@ -93,6 +93,13 @@ namespace AuthorizationClientPlatforms
                     transaction.username = request.MerchantID;
                     transaction.password = request.MerchantPassword;
                     transaction.nsf = "no";
+
+                    if (request.MerchantID.Trim() == "ipspbp")
+                    {
+                        transaction.rfid = "yes"; //alex 04/01/2016
+                        log("RFID set");
+                    }
+
                     switch (mode)
                     {
                         case AuthorizeMode.Normal: transaction.action = "sale"; log("Monetra: Sale"); break;
@@ -121,7 +128,10 @@ namespace AuthorizationClientPlatforms
                     if (mode != AuthorizeMode.Finalize)
                     {
                         if (request.TrackTwoData != "")
+                        {
                             transaction.trackdata = request.TrackTwoData;
+                           // log("T2:>>>" + request.TrackTwoData); //alex 02252016 PCI VIOLATION 
+                        }
                         else
                         {
                             transaction.account = request.Pan;
@@ -318,7 +328,10 @@ namespace AuthorizationClientPlatforms
             /// Alpha-numeric order number
             /// </summary>
             public abstract string ordernum { set; }
-
+            /// <summary>
+            /// rfid flag to indicate contactless //alex 04/01/2016
+            /// </summary>
+            public abstract string rfid { set; }
 
             /// <summary>
             /// Finalizes a transaction and sends it to the Monetra server
@@ -694,6 +707,13 @@ namespace AuthorizationClientPlatforms
             {
                 set { _client.M_TransKeyVal(_transactionID, "nsf", value); }
             }
+
+            //.alex 04/01/2016
+            public override string rfid
+            {
+                set { _client.M_TransKeyVal(_transactionID, "rfid", value); }
+            }
+
         }
 
         private class MonetraDLLTransResponse : MonetraClient.Transaction.Response
@@ -1442,6 +1462,14 @@ namespace AuthorizationClientPlatforms
             {
                 set { monetra.TransKeyVal(transactionID, "nsf", value); }
             }
+
+
+            //.alex 04/01/2016
+            public override string rfid
+            {
+                set { monetra.TransKeyVal(transactionID, "rfid", value); }
+            }
+
         }
 
         public override void NotConnected()
