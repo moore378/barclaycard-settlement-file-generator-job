@@ -72,7 +72,7 @@ namespace MjhGeneral.EasyTcp
                 return listeningTask;
             }
             else
-                return TaskEx.FromResult(0);
+                return Task.FromResult(0);
         }
     }
 }

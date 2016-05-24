@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Rtcc</RootNamespace>
     <AssemblyName>RTCC</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <FileUpgradeFlags>
@@ -46,6 +46,7 @@
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <PlatformTarget>AnyCPU</PlatformTarget>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -55,14 +56,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CCCrypto, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\Debug\CCCrypto.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.CompilerServices.AsyncTargetingPack.Net4">
-      <HintPath>..\packages\Microsoft.CompilerServices.AsyncTargetingPack.1.0.0\lib\net40\Microsoft.CompilerServices.AsyncTargetingPack.Net4.dll</HintPath>
     </Reference>
     <Reference Include="RsaUtils, Version=1.0.0.5, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="System" />
@@ -176,7 +175,6 @@
     <None Include="Database\RtccDataAccess.xss">
       <DependentUpon>RtccDataAccess.xsd</DependentUpon>
     </None>
-    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

@@ -61,7 +61,7 @@ public static class EnumerableEx
         var busy = new Queue<Task<TOut>>();
         var result = new List<Task<TOut>>(data.Count());
 
-        Task prevStart = TaskEx.FromResult(0);
+        Task prevStart = Task.FromResult(0);
 
         // First few
         while (busy.Count < windowSize && dataEnumerator.MoveNext())
@@ -111,7 +111,7 @@ public static class EnumerableEx
         var busy = new Queue<Task>();
         var result = new List<Task>(data.Count());
 
-        Task prevStart = TaskEx.FromResult(0);
+        Task prevStart = Task.FromResult(0);
 
         // First few
         while (busy.Count < windowSize && dataEnumerator.MoveNext())

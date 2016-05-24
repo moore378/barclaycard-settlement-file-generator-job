@@ -37,8 +37,8 @@ namespace System.Threading.Tasks
             if (task.IsCompleted || milliseconds == Timeout.Infinite)
                 return task.Result;
             var cancelTimeout = new CancellationTokenSource();
-            var timeoutTask = TaskEx.Delay(milliseconds, cancelTimeout.Token);
-            Task first = await TaskEx.WhenAny(task, timeoutTask);
+            var timeoutTask = Task.Delay(milliseconds, cancelTimeout.Token);
+            Task first = await Task.WhenAny(task, timeoutTask);
             if (first == task)
             {
                 cancelTimeout.Cancel();
@@ -57,8 +57,8 @@ namespace System.Threading.Tasks
             if (task.IsCompleted || milliseconds == Timeout.Infinite)
                 return task.Result;
             var cancelTimeout = new CancellationTokenSource();
-            var timeoutTask = TaskEx.Delay(milliseconds, cancelTimeout.Token);
-            Task first = await TaskEx.WhenAny(task, timeoutTask);
+            var timeoutTask = Task.Delay(milliseconds, cancelTimeout.Token);
+            Task first = await Task.WhenAny(task, timeoutTask);
             if (first == task)
             {
                 cancelTimeout.Cancel();
@@ -80,8 +80,8 @@ namespace System.Threading.Tasks
             if (task.IsCompleted)
                 return task.Result;
             var cancelTimeout = new CancellationTokenSource();
-            var timeoutTask = TaskEx.Delay(timeout, cancelTimeout.Token);
-            Task first = await TaskEx.WhenAny(task, timeoutTask);
+            var timeoutTask = Task.Delay(timeout, cancelTimeout.Token);
+            Task first = await Task.WhenAny(task, timeoutTask);
             if (first == task)
             {
                 cancelTimeout.Cancel();
@@ -100,8 +100,8 @@ namespace System.Threading.Tasks
             if (task.IsCompleted)
                 return task.Result;
             var cancelTimeout = new CancellationTokenSource();
-            var timeoutTask = TaskEx.Delay(timeout, cancelTimeout.Token);
-            Task first = await TaskEx.WhenAny(task, timeoutTask);
+            var timeoutTask = Task.Delay(timeout, cancelTimeout.Token);
+            Task first = await Task.WhenAny(task, timeoutTask);
             if (first == task)
             {
                 cancelTimeout.Cancel();

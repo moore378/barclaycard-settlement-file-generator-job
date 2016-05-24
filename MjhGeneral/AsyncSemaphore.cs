@@ -10,7 +10,7 @@ namespace MjhGeneral
     {
         private int count;
         private Queue<TaskCompletionSource<bool>> waiting = new Queue<TaskCompletionSource<bool>>();
-        private Task<bool> completed = TaskEx.FromResult(false);
+        private Task<bool> completed = Task.FromResult(false);
 
         public AsyncSemaphore(int initialCount)
         {
