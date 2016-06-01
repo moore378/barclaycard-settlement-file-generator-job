@@ -8,7 +8,6 @@ AuthorizationClientPlatforms.dll
 CCCrypto.dll
 Common.dll
 CryptographicPlatforms.dll
-Microsoft.CompilerServices.AsyncTargetingPack.Net4.dll
 RsaUtils.dll
 Track.dll
 TransactionManagementCommon.dll

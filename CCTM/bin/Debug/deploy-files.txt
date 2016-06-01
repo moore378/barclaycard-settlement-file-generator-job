@@ -13,7 +13,6 @@ Common.dll
 CryptographicPlatforms.dll
 EasyIL.dll
 Interop.PCCOMLib.dll
-Microsoft.CompilerServices.AsyncTargetingPack.Net4.dll
 MjhGeneral.dll
 RsaUtils.dll
 Track.dll
