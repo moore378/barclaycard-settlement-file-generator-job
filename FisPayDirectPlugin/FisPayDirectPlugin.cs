@@ -249,9 +249,6 @@ namespace AuthorizationClientPlatforms.Plugins
                         paymentMethodCode = assess.PaymentChargeTypePrimary.PaymentMethodCode;
                     }
 
-
-                    IpsTmsEventSource.Log.LogInformational(String.Format("Should be putting a fee of {0}", ccFee));
-
                     // Parse out the response handling.
                     response = new AuthorizationResponseFields() 
                     { 
@@ -264,8 +261,6 @@ namespace AuthorizationClientPlatforms.Plugins
                         BatchNum = (short)(transactionId / 10000000), //batchNum
                         AdditionalCCFee = ccFee
                     };
-
-                    IpsTmsEventSource.Log.LogInformational(String.Format("The fee should be {0}", response.AdditionalCCFee));
                 }
                 else
                 {
