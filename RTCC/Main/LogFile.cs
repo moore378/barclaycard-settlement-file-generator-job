@@ -14,13 +14,19 @@ namespace Rtcc.Main
         string[] newLineSeperator = new string[] { Environment.NewLine };
         string pathPrefix;
         string pathSuffix;
-        StreamWriter currentFile;
-        string currentFileName;
 
         public LogFile(string pathPrefix, string pathSuffix)
         {
             this.pathPrefix = pathPrefix;
             this.pathSuffix = pathSuffix;
+
+            // Create the directory if it doesn't exist.
+            string path = Path.GetDirectoryName(pathPrefix);
+
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
         }
 
         public void Log(string msg)
@@ -28,12 +34,15 @@ namespace Rtcc.Main
             fileLogLock.WaitOne();
             try
             {
-                var fileStream = GetCurrentFile();
-                
-                string timeString = DateTime.Now.ToString("HH:mm:ss");
-                
-                foreach (var line in msg.Split(newLineSeperator, StringSplitOptions.None))
-                    fileStream.WriteLine(timeString + " :: " + line);
+                // Write to the file and ensure that the buffering are flushed.
+                // Note that this is similar to File.AppendAllLines().
+                using (var fileStream = GetCurrentFile())
+                {
+                    string timeString = DateTime.Now.ToString("HH:mm:ss");
+
+                    foreach (var line in msg.Split(newLineSeperator, StringSplitOptions.None))
+                        fileStream.WriteLine(timeString + " :: " + line);
+                }
             }
             finally
             {
@@ -43,23 +52,11 @@ namespace Rtcc.Main
 
         private StreamWriter GetCurrentFile()
         {
+            StreamWriter currentFile;
+
             string intendedFileName = MakeFileName();
-            // Need to change files?
-            if (intendedFileName != currentFileName)
-            {
-                currentFileName = intendedFileName;
 
-                if (currentFile != null)
-                {
-                    currentFile.Close();
-                    currentFile.Dispose();
-                    currentFile = null;
-                }
-                else if (!Directory.Exists("logs"))
-                    Directory.CreateDirectory("logs");
-
-                currentFile = new StreamWriter(currentFileName, true, Encoding.ASCII);
-            }
+            currentFile = new StreamWriter(intendedFileName, true, Encoding.ASCII);
 
             return currentFile;           
         }

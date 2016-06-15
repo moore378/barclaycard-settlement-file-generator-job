@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using System.Configuration;
 using System.Configuration.Install;
 using System.ServiceProcess;
 using System.ServiceModel;
 using System.Collections;
+using System.IO;
 
 using System.Diagnostics;
 using System.Diagnostics.Tracing;
@@ -25,18 +27,25 @@ namespace FisPayDirectProcessor
 {
     class Program
     {
-        static void Main(string[] args)
+        private static ObservableEventListener _listener;
+
+        /// <summary>
+        /// Initializes the logging system.
+        /// TODO: Put this in some generic AuthorizationProcessorService
+        /// </summary>
+        private static void LogInitialize()
         {
-            bool printUsage = false;
+            // Get the location and name of the log file.
+            string fileName = ConfigurationManager.AppSettings["LogFile"];
 
             // Initialize the listeners and sinks during application start-up 
-            var listener1 = new ObservableEventListener();
-            listener1.EnableEvents(IpsTmsEventSource.Log,
+            _listener = new ObservableEventListener();
+            _listener.EnableEvents(IpsTmsEventSource.Log,
                 EventLevel.LogAlways, Keywords.All
                 );
 
             RollingFlatFileSink sink = new RollingFlatFileSink(
-                @"logs\transactions.log",
+                fileName,
                 0,
                 "yyyy_MM_dd_HH",
                 RollFileExistsBehavior.Overwrite,
@@ -45,7 +54,21 @@ namespace FisPayDirectProcessor
                 //new IpsTextFormatter("yyyy-MM-dd HH:mm:ss"),
                 new IpsTextFormatter("O"),
                 false);
-            listener1.Subscribe(sink);
+            _listener.Subscribe(sink);
+        }
+
+        private static void LogShutdown()
+        {
+            _listener.DisableEvents(IpsTmsEventSource.Log);
+            _listener.Dispose();
+        }
+
+        static void Main(string[] args)
+        {
+            bool printUsage = false;
+
+            // Initialize the logging system.
+            LogInitialize();
 
             switch (args.Length)
             {
@@ -81,8 +104,7 @@ namespace FisPayDirectProcessor
                 Console.WriteLine("Invalid arguments");
             }
 
-            listener1.DisableEvents(IpsTmsEventSource.Log);
-            listener1.Dispose();
+            LogShutdown();
         }
 
         public static void RunConsole()
