@@ -3,12 +3,14 @@ using System.Xml;
 using System.Xml.Serialization;
 using System.Threading;
 
+using System.Runtime.Serialization;
+using System.Collections.Generic;
+
 namespace AuthorizationClientPlatforms
 {
     public interface IAuthorizationStatistics
     {
         int TotalProcessed { get; }
-        
         int TotalErrors { get; }
         int TotalConnectionErrors { get; }
         int TotalApproved { get; }
@@ -28,7 +30,7 @@ namespace AuthorizationClientPlatforms
         private Action<IAuthorizationStatistics> changed = new Action<IAuthorizationStatistics>((stats) => { });
 
         public event Action<IAuthorizationStatistics> Changed;
-        
+
         private int totalErrors;
 
         public int TotalErrors
@@ -36,6 +38,7 @@ namespace AuthorizationClientPlatforms
             get { return totalErrors; }
             set { totalErrors = value; OnChanged(); }
         }
+
         private int totalConnectionErrors;
 
         public int TotalConnectionErrors
@@ -59,7 +62,6 @@ namespace AuthorizationClientPlatforms
             get { return totalDeclined; }
             set { totalDeclined = value; OnChanged(); }
         }
-
     }
 
     public enum AuthorizeMode { Normal, Preauth, Finalize };
@@ -89,30 +91,31 @@ namespace AuthorizationClientPlatforms
         }
 
         AuthorizationResponseFields IAuthorizationPlatform.Authorize(AuthorizationRequest request, AuthorizeMode mode)
+        {
+            AuthorizationResponseFields result = Authorize(request, mode);
+            switch (result.resultCode)
             {
-                AuthorizationResponseFields result = Authorize(request, mode);
-                switch (result.resultCode) {
-                    case AuthorizationResultCode.Approved:
-                        Interlocked.Increment(ref totalApproved);
-                        Interlocked.Increment(ref totalProcessed);
-                        break;
-                    case AuthorizationResultCode.ConnectionError:
-                        Interlocked.Increment(ref totalConnectionErrors);
-                        Interlocked.Increment(ref totalErrors);
-                        break;
-                    case AuthorizationResultCode.UnknownError:
-                        Interlocked.Increment(ref totalErrors);
-                        break;
-                    case AuthorizationResultCode.Declined:
-                        Interlocked.Increment(ref totalDeclined);
-                        Interlocked.Increment(ref totalProcessed);
-                        break;
-                    default: throw new Exception("Unexpected code");
-                }
-                if (Changed != null)
-                    Changed(this);
-                return result;
+                case AuthorizationResultCode.Approved:
+                    Interlocked.Increment(ref totalApproved);
+                    Interlocked.Increment(ref totalProcessed);
+                    break;
+                case AuthorizationResultCode.ConnectionError:
+                    Interlocked.Increment(ref totalConnectionErrors);
+                    Interlocked.Increment(ref totalErrors);
+                    break;
+                case AuthorizationResultCode.UnknownError:
+                    Interlocked.Increment(ref totalErrors);
+                    break;
+                case AuthorizationResultCode.Declined:
+                    Interlocked.Increment(ref totalDeclined);
+                    Interlocked.Increment(ref totalProcessed);
+                    break;
+                default: throw new Exception("Unexpected code");
             }
+            if (Changed != null)
+                Changed(this);
+            return result;
+        }
 
         public IAuthorizationStatistics Statistics
         {
@@ -140,24 +143,47 @@ namespace AuthorizationClientPlatforms
     /// <summary>
     /// This structure is returned from the authorization
     /// </summary>
+    [DataContract]
     public class AuthorizationResponseFields
     {
         /// <summary>
         /// Authorizer-independent code indicating result of authorization
         /// </summary>
-        public AuthorizationResultCode resultCode;
+        [DataMember]
+        public AuthorizationResultCode resultCode { get; set; }
+
         /// <summary>
         /// Authorizer-dependent human-readable string indicating result of authorization
         /// </summary>
-        public string authorizationCode;
-        public string cardType;
-        public string receiptReference;
+        [DataMember]
+        public string authorizationCode { get; set; }
+
+        [DataMember]
+        public string cardType { get; set; }
+
+        [DataMember]
+        public string receiptReference { get; set; }
+
         /// <summary>
         /// Any notes about the transaction that should be logged
         /// </summary>
-        public string note;
-        public int Ttid;
-        public short BatchNum;
+        [DataMember]
+        public string note { get; set; }
+
+        [DataMember]
+        public int Ttid { get; set; }
+
+        [DataMember]
+        public short BatchNum { get; set; }
+
+        /// <summary>
+        /// Some processors return back the fee that are added onto the charge amount.
+        /// ONLY use this for when the processor's authorized amount is different
+        /// than the requested amount due to the extra credit card fee being added on
+        /// by the processor.
+        /// </summary>
+        [DataMember]
+        public decimal AdditionalCCFee { get; set; }
 
         public AuthorizationResponseFields(
             AuthorizationResultCode resultCode,
@@ -176,58 +202,164 @@ namespace AuthorizationClientPlatforms
             this.Ttid = ttid;
             this.BatchNum = batchNum;
         }
+
+        public AuthorizationResponseFields()
+        {
+            // Nothing on purpose.
+        }
     }
 
     public class FinalizeResponse
     {
     }
 
-    public enum AuthorizationResultCode {
+    public enum AuthorizationResultCode
+    {
         /// <summary>
         /// The transaction was approved
         /// </summary>
-        Approved, 
+        Approved,
         /// <summary>
         /// The transaction was declined
         /// </summary>
-        Declined,  
+        Declined,
         /// <summary>
         /// The authorizer could not communicate to the remote server - ONLY SPECIFY THIS IF
         /// YOU KNOW THAT THE TRANSACTION WAS NOT SUBMITTED TO THE SERVER (I.E. IT WOULD NOT
         /// BE A PROBLEM IF THE CONTROLLER RETRIES THE TRANSACTION)
         /// </summary>
-        ConnectionError,  
+        ConnectionError,
         /// <summary>
         /// Unspecified error. Details may be given in the AuthorizationResponseFields.authorizationCode and AuthorizationResponseFields.note
         /// </summary>
-        UnknownError 
+        UnknownError
     };
 
     /// <summary>
-    /// This structure is passed to the processor server object with details needed
-    /// to complete the authorization.
+    /// Details needed by an Authorization Processor to complete an authorization.
+    /// NOTE: This is an interface used by both the Authorization Platform and Authorization Processor.
     /// </summary>
+    [DataContract]
     public class AuthorizationRequest
     {
-        public string MeterSerialNumber;
-        public DateTime StartDateTime;
-        public string MerchantID;
-        public string MerchantPassword;
-        public string Pan;
-        public string ExpiryDateMMYY;
-        public decimal AmountDolars;
-        public string OrderNumber;
-        public string TransactionDescription;
-        public string Invoice;
-        public string TrackTwoData;
-        public string FullTrackData;
-        /// <summary>
-        /// Unique string identifying the record as provided by the database
-        /// </summary>
-        public string IDString;
-        public string CustomerReference;
-        public int? PreauthTtid;
+        [DataMember]
+        public string MeterSerialNumber { get; set; }
 
+        [DataMember]
+        public DateTime StartDateTime { get; set; }
+
+        [DataMember]
+        public string MerchantID
+        {
+            /*
+            get
+            {
+                string value;
+                
+                ProcessorSettings.TryGetValue("MerchantID", out value);
+
+                return value;
+            }
+            set
+            {
+                ProcessorSettings["MerchantID"] = value;
+            }
+             */
+
+            get;
+            set;
+        }
+
+        [DataMember]
+        public string MerchantPassword
+        {
+            /*
+            get
+            {
+                string value;
+
+                ProcessorSettings.TryGetValue("MerchantPassword", out value);
+
+                return value;
+            }
+            set
+            {
+                ProcessorSettings["MerchantPassword"] = value;
+            }
+             */
+            get;
+            set;
+        }
+
+        [DataMember]
+        public Dictionary<string, string> ProcessorSettings{ get; set; }
+
+        [DataMember]
+        public string Pan { get; set; }
+
+        [DataMember]
+        public string ExpiryDateMMYY { get; set; }
+
+        [DataMember]
+        public decimal AmountDollars { get; set; }
+
+        [DataMember]
+        public string OrderNumber { get; set; }
+
+        [DataMember]
+        public string TransactionDescription { get; set; }
+
+        [DataMember]
+        public string Invoice { get; set; }
+
+        [DataMember]
+        public string TrackTwoData { get; set; }
+
+        /// <summary>
+        /// Fixed length track 1 and track 2 data.
+        /// NOTE: This is formatted such that it's a fixed length string with Track 1 not having sentinels but Track 2 does.
+        /// </summary>
+        [DataMember]
+        public string FullTrackData { get; set; }
+
+        /// <summary>
+        /// Unique string identifying the transaction record as provided by the database.
+        /// </summary>
+        [DataMember]
+        public string IDString { get; set; }
+
+        [DataMember]
+        public string CustomerReference { get; set; }
+
+        [DataMember]
+        public int? PreauthTtid { get; set; }
+
+        public AuthorizationRequest()
+        {
+            // NOTE: newer processors should be using the processor settings 
+            // dictionary instead of the MerchantID and MerchantPassword 
+            // properties.
+            ProcessorSettings = new Dictionary<string, string>();
+        }
+
+        /// <summary>
+        /// Legacy constructor for authorization request properties.
+        /// </summary>
+        /// <param name="meterID"></param>
+        /// <param name="startDateTime"></param>
+        /// <param name="merchantID">ID identifying the merchant. NOTE: Newer integration should be referencing ProcessorSettings["MerchantID"] instead.</param>
+        /// <param name="merchantPassword">Password credentials of the merchant. NOTE: Newer integration should be referencing ProcessorSettings["MerchantPassword"] instead.</param>
+        /// <param name="pan"></param>
+        /// <param name="expDateMMYY"></param>
+        /// <param name="amount"></param>
+        /// <param name="transactionDesc"></param>
+        /// <param name="invoice"></param>
+        /// <param name="customerReference"></param>
+        /// <param name="trackTwoData"></param>
+        /// <param name="fullTrackData"></param>
+        /// <param name="idString"></param>
+        /// <param name="orderNumber"></param>
+        /// <param name="preauthTtid"></param>
         public AuthorizationRequest(
             string meterID,
             DateTime startDateTime,
@@ -243,23 +375,83 @@ namespace AuthorizationClientPlatforms
             string fullTrackData,
             string idString,
             string orderNumber,
-            int? preauthTtid)
+            int? preauthTtid):this()
         {
-            this.MeterSerialNumber = meterID;
-            this.StartDateTime = startDateTime;
-            this.MerchantID = merchantID;
-            this.MerchantPassword = merchantPassword;
-            this.Pan = pan;
-            this.ExpiryDateMMYY = expDateMMYY;
-            this.AmountDolars = amount;
-            this.TransactionDescription = transactionDesc;
-            this.Invoice = invoice;
-            this.TrackTwoData = trackTwoData;
-            this.FullTrackData = fullTrackData;
-            this.IDString = idString;
-            this.CustomerReference = customerReference;
-            this.OrderNumber = orderNumber;
-            this.PreauthTtid = preauthTtid;
+            MeterSerialNumber = meterID;
+            StartDateTime = startDateTime;
+            MerchantID = merchantID;
+            MerchantPassword = merchantPassword;
+            Pan = pan;
+            ExpiryDateMMYY = expDateMMYY;
+            AmountDollars = amount;
+            TransactionDescription = transactionDesc;
+            Invoice = invoice;
+            TrackTwoData = trackTwoData;
+            FullTrackData = fullTrackData;
+            IDString = idString;
+            CustomerReference = customerReference;
+            OrderNumber = orderNumber;
+            PreauthTtid = preauthTtid;
+
+            // Add support for newer integration code that only looks
+            // at the ProcessorSettings property.
+            ProcessorSettings["MerchantID"] = merchantID;
+            ProcessorSettings["MerchantPassword"] = merchantPassword;
+        }
+
+        /// <summary>
+        /// Constructor for authorization request properties.
+        /// </summary>
+        /// <param name="meterID"></param>
+        /// <param name="startDateTime"></param>
+        /// <param name="processorSettings">Processor-specific data that needs to be sent out as part of the authorization, such as merchant ID and password.</param>
+        /// <param name="pan"></param>
+        /// <param name="expDateMMYY"></param>
+        /// <param name="amount"></param>
+        /// <param name="transactionDesc"></param>
+        /// <param name="invoice"></param>
+        /// <param name="customerReference"></param>
+        /// <param name="trackTwoData"></param>
+        /// <param name="fullTrackData"></param>
+        /// <param name="idString"></param>
+        /// <param name="orderNumber"></param>
+        /// <param name="preauthTtid"></param>
+        public AuthorizationRequest
+            (
+            string meterID,
+            DateTime startDateTime,
+            Dictionary<string, string> processorSettings,
+            string pan,
+            string expDateMMYY,
+            decimal amount,
+            string transactionDesc,
+            string invoice,
+            string customerReference,
+            string trackTwoData,
+            string fullTrackData,
+            string idString,
+            string orderNumber,
+            int? preauthTtid
+            ):this()
+        {
+            MeterSerialNumber = meterID;
+            StartDateTime = startDateTime;
+            ProcessorSettings = processorSettings;
+            Pan = pan;
+            ExpiryDateMMYY = expDateMMYY;
+            AmountDollars = amount;
+            TransactionDescription = transactionDesc;
+            Invoice = invoice;
+            TrackTwoData = trackTwoData;
+            FullTrackData = fullTrackData;
+            IDString = idString;
+            CustomerReference = customerReference;
+            OrderNumber = orderNumber;
+            PreauthTtid = preauthTtid;
+
+            // Add support for any legacy code that references the properties.
+            MerchantID = ProcessorSettings["MerchantID"];
+            MerchantPassword = ProcessorSettings["MerchantPassword"];
         }
     }
 
@@ -301,7 +493,7 @@ namespace AuthorizationClientPlatforms
             AllowRetry = allowRetry;
         }
     }
-    
+
     /// <summary>
     /// Occurs when the authorizer can't establish a connection to the sever and has not attempted the authorization.
     /// </summary>

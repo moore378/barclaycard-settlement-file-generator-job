@@ -58,15 +58,20 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CardEaseXMLClient, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>.\CardEaseXMLClient.dll</HintPath>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.SemanticLogging, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\EnterpriseLibrary.SemanticLogging.2.0.1406.1\lib\net45\Microsoft.Practices.EnterpriseLibrary.SemanticLogging.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Interop.PCCOMLib">
-      <HintPath>.\Interop.PCCOMLib.dll</HintPath>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.SemanticLogging.TextFile, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\EnterpriseLibrary.SemanticLogging.TextFile.2.0.1406.1\lib\net45\Microsoft.Practices.EnterpriseLibrary.SemanticLogging.TextFile.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -83,19 +88,32 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AuthorizationPlatform.cs" />
     <Compile Include="Authorizer.cs" />
     <Compile Include="CreditCall.cs" />
+    <Compile Include="IAuthorizationProcessor.cs" />
     <Compile Include="ICVerify.cs" />
+    <Compile Include="IProcessorPlugin.cs" />
+    <Compile Include="Logging\IpsTextFormatter.cs" />
+    <Compile Include="Logging\IpsTmsEventSource.cs" />
     <Compile Include="IsraelPremium.cs" />
     <Compile Include="libmonetra.cs" />
     <Compile Include="MigsAustralia.cs" />
     <Compile Include="Monetra.cs" />
+    <Compile Include="PingResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service References\IsraelProcessor\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Settings\AuthorizationClientPlatformsSection.cs" />
+    <Compile Include="Settings\AuthorizationProcessorsCollection.cs" />
+    <Compile Include="Settings\ProcessorElement.cs" />
+    <Compile Include="WcfExtensions\ExceptionMarshallingBehavior.cs" />
+    <Compile Include="WcfExtensions\ExceptionMarshallingElement.cs" />
+    <Compile Include="WcfExtensions\ExceptionMarshallingErrorHandler.cs" />
+    <Compile Include="WcfExtensions\ExceptionMarshallingMessageInspector.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -124,6 +142,7 @@
     <WCFMetadataStorage Include="Service References\IsraelProcessor\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
     <None Include="Service References\IsraelProcessor\configuration91.svcinfo" />
   </ItemGroup>
   <ItemGroup>

@@ -1,0 +1,1 @@
+"c:\Program Files\7-Zip\7z.exe" x "S:\TEMP - Will be deleted at regular intervals\FisPayDirectProcessor\FisPayDirectProcessor 1.0.0.0.zip" -o"\\miramesa\c$\Session_MN\FisPayDirectProcessor" -y

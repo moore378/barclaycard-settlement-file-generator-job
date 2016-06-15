@@ -120,9 +120,9 @@ namespace AuthorizationClientPlatforms
                     transaction.custref = request.CustomerReference;
                     transaction.stationid = request.MeterSerialNumber;
                     if (mode == AuthorizeMode.Preauth)
-                        transaction.amount = Math.Max(request.AmountDolars, 1.01m).ToString();
+                        transaction.amount = Math.Max(request.AmountDollars, 1.01m).ToString();
                     else
-                        transaction.amount = request.AmountDolars.ToString();
+                        transaction.amount = request.AmountDollars.ToString();
                     transaction.ordernum = request.OrderNumber;
 
                     if (mode != AuthorizeMode.Finalize)
@@ -195,14 +195,15 @@ namespace AuthorizationClientPlatforms
                         case "CALL":
                         case "DENY":
                         case "PKUP":
+                            string note = "Code=" + response.Code + ", PHardCode=" + response.PHardCode + ", MSoftCode=" + response.MSoftCode + ", Verbiage=" + response.Verbiage;
                             statistics.TotalDeclined++;
-                            log("Transaction declined (phard_code=" + response.PHardCode + ")");
+                            log("Transaction declined " + note);
                             return new AuthorizationResponseFields(
                                     AuthorizationResultCode.Declined,
                                     response.Auth,
                                     response.CardType,
                                     request.IDString,
-                                    "Code=" + response.Code + ", PHardCode=" + response.PHardCode + ", MSoftCode=" + response.MSoftCode + ", Verbiage=" + response.Verbiage,
+                                    note,
                                     ttid,
                                     batch);
 
@@ -1253,7 +1254,7 @@ namespace AuthorizationClientPlatforms
                         
             if (monetra.Connect() == true)
             {
-                log("Connected");                    
+                log("Connected to Monetra");                    
                 _connected = true;
                 monetra.SetTimeout(30);
             }
@@ -1268,7 +1269,7 @@ namespace AuthorizationClientPlatforms
 
                 if (monetra.Connect() == true)
                 {
-                    log("Connected");                    
+                    log("Connected to Monetra");                    
                     _connected = true;
                     monetra.SetTimeout(30);
                 }

@@ -10,6 +10,22 @@ namespace Rtcc.Dummy
 {
     public class DummyDatabase : RtccDatabase
     {
+        private string _merchantID;
+        private string _merchantPassword;
+        private string _clearingPlatform;
+
+        public DummyDatabase( string clearingPlatform, string merchantID, string merchantPassword)
+        {
+            _clearingPlatform = clearingPlatform;
+            _merchantID = merchantID;
+            _merchantPassword = merchantPassword;
+        }
+
+        public DummyDatabase():this("", "DummyMerchant", "DummyPassword")
+        {
+            // Nothing on purpose.
+        }
+
         public override decimal InsertLiveTransactionRecord(
             string TerminalSerNo,
             string ElectronicSerNo,
@@ -49,18 +65,25 @@ namespace Rtcc.Dummy
 
         public override CCProcessorInfo GetRtccProcessorInfo(string terminalSerialNumber)
         {
-            return new CCProcessorInfo()
+            CCProcessorInfo data = new CCProcessorInfo()
             {
                 CompanyName = "DummyCompany",
-                MerchantID = "DummyMerchant",
-                MerchantPassword = "DummyPassword",
+                MerchantID = _merchantID,
+                MerchantPassword = _merchantPassword,
                 TerminalSerialNumber = "DummyTerminal",
                 PoleSerialNumber = "DummyPole",
-                ClearingPlatform = ""
+                ClearingPlatform = _clearingPlatform
             };
+
+            if (data.ClearingPlatform.ToLower() == "fis-paydirect")
+            {
+                data.ProcessorSettings["SettleMerchantCode"] = "50BNA-PUBWK-PARKG-00";
+            }
+
+            return data;
         }
 
-        public override void UpdateLiveTransactionRecord(decimal transactionRecordID, string tracks, string statusString, string authCode, string cardType, string obscuredPan, short batchNum, int ttid, short status)
+        public override void UpdateLiveTransactionRecord(decimal transactionRecordID, string tracks, string statusString, string authCode, string cardType, string obscuredPan, short batchNum, int ttid, short status, decimal ccFee)
         {
             // Do nothing
         }

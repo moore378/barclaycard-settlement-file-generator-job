@@ -305,6 +305,10 @@ namespace Rtcc.Database {
             
             private global::System.Data.DataColumn columnCCFee;
             
+            private global::System.Data.DataColumn columnMerchantNumber;
+            
+            private global::System.Data.DataColumn columnCashierNumber;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public SEL_RTCC_PROCESSORDataTable() {
@@ -444,6 +448,22 @@ namespace Rtcc.Database {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn MerchantNumberColumn {
+                get {
+                    return this.columnMerchantNumber;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn CashierNumberColumn {
+                get {
+                    return this.columnCashierNumber;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -479,7 +499,7 @@ namespace Rtcc.Database {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
-            public SEL_RTCC_PROCESSORRow AddSEL_RTCC_PROCESSORRow(string TerminalSerNo, string CompanyName, string CCTerminalID, string CCTransactionKey, string CCClearingPlatform, decimal PoleID, decimal TimeZoneOffset, decimal DST_Adjust, string PoleSerNo, string PhoneNumber, string IP, decimal CCFee) {
+            public SEL_RTCC_PROCESSORRow AddSEL_RTCC_PROCESSORRow(string TerminalSerNo, string CompanyName, string CCTerminalID, string CCTransactionKey, string CCClearingPlatform, decimal PoleID, decimal TimeZoneOffset, decimal DST_Adjust, string PoleSerNo, string PhoneNumber, string IP, decimal CCFee, string MerchantNumber, string CashierNumber) {
                 SEL_RTCC_PROCESSORRow rowSEL_RTCC_PROCESSORRow = ((SEL_RTCC_PROCESSORRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         TerminalSerNo,
@@ -494,7 +514,9 @@ namespace Rtcc.Database {
                         PoleSerNo,
                         PhoneNumber,
                         IP,
-                        CCFee};
+                        CCFee,
+                        MerchantNumber,
+                        CashierNumber};
                 rowSEL_RTCC_PROCESSORRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowSEL_RTCC_PROCESSORRow);
                 return rowSEL_RTCC_PROCESSORRow;
@@ -537,6 +559,8 @@ namespace Rtcc.Database {
                 this.columnPhoneNumber = base.Columns["PhoneNumber"];
                 this.columnIP = base.Columns["IP"];
                 this.columnCCFee = base.Columns["CCFee"];
+                this.columnMerchantNumber = base.Columns["MerchantNumber"];
+                this.columnCashierNumber = base.Columns["CashierNumber"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -568,6 +592,10 @@ namespace Rtcc.Database {
                 base.Columns.Add(this.columnIP);
                 this.columnCCFee = new global::System.Data.DataColumn("CCFee", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnCCFee);
+                this.columnMerchantNumber = new global::System.Data.DataColumn("MerchantNumber", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnMerchantNumber);
+                this.columnCashierNumber = new global::System.Data.DataColumn("CashierNumber", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCashierNumber);
                 this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
                                 this.columnTerminalID}, true));
                 this.columnTerminalSerNo.AllowDBNull = false;
@@ -588,6 +616,8 @@ namespace Rtcc.Database {
                 this.columnPhoneNumber.MaxLength = 15;
                 this.columnIP.MaxLength = 16;
                 this.columnCCFee.ReadOnly = true;
+                this.columnMerchantNumber.MaxLength = 50;
+                this.columnCashierNumber.MaxLength = 50;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -929,6 +959,38 @@ namespace Rtcc.Database {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string MerchantNumber {
+                get {
+                    try {
+                        return ((string)(this[this.tableSEL_RTCC_PROCESSOR.MerchantNumberColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'MerchantNumber\' in table \'SEL_RTCC_PROCESSOR\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableSEL_RTCC_PROCESSOR.MerchantNumberColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string CashierNumber {
+                get {
+                    try {
+                        return ((string)(this[this.tableSEL_RTCC_PROCESSOR.CashierNumberColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CashierNumber\' in table \'SEL_RTCC_PROCESSOR\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableSEL_RTCC_PROCESSOR.CashierNumberColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsCompanyNameNull() {
                 return this.IsNull(this.tableSEL_RTCC_PROCESSOR.CompanyNameColumn);
             }
@@ -1057,6 +1119,30 @@ namespace Rtcc.Database {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetCCFeeNull() {
                 this[this.tableSEL_RTCC_PROCESSOR.CCFeeColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsMerchantNumberNull() {
+                return this.IsNull(this.tableSEL_RTCC_PROCESSOR.MerchantNumberColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetMerchantNumberNull() {
+                this[this.tableSEL_RTCC_PROCESSOR.MerchantNumberColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCashierNumberNull() {
+                return this.IsNull(this.tableSEL_RTCC_PROCESSOR.CashierNumberColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCashierNumberNull() {
+                this[this.tableSEL_RTCC_PROCESSOR.CashierNumberColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -1232,6 +1318,8 @@ namespace Rtcc.Database.DataSet1TableAdapters {
             tableMapping.ColumnMappings.Add("PhoneNumber", "PhoneNumber");
             tableMapping.ColumnMappings.Add("IP", "IP");
             tableMapping.ColumnMappings.Add("CCFee", "CCFee");
+            tableMapping.ColumnMappings.Add("MerchantNumber", "MerchantNumber");
+            tableMapping.ColumnMappings.Add("CashierNumber", "CashierNumber");
             this._adapter.TableMappings.Add(tableMapping);
         }
         
@@ -1363,6 +1451,7 @@ namespace Rtcc.Database.DataSet1TableAdapters {
             ((global::System.Data.SqlClient.SqlCommand)(this._commandCollection[1])).Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@BatNum", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 5, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             ((global::System.Data.SqlClient.SqlCommand)(this._commandCollection[1])).Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@TTID", global::System.Data.SqlDbType.Decimal, 9, global::System.Data.ParameterDirection.Input, 18, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             ((global::System.Data.SqlClient.SqlCommand)(this._commandCollection[1])).Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Status", global::System.Data.SqlDbType.SmallInt, 2, global::System.Data.ParameterDirection.Input, 5, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            ((global::System.Data.SqlClient.SqlCommand)(this._commandCollection[1])).Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@CCFee", global::System.Data.SqlDbType.Int, 4, global::System.Data.ParameterDirection.Input, 10, 0, null, global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
             this._commandCollection[2] = new global::System.Data.SqlClient.SqlCommand();
             ((global::System.Data.SqlClient.SqlCommand)(this._commandCollection[2])).Connection = new global::System.Data.SqlClient.SqlConnection(global::Rtcc.Properties.Settings.Default.ConnectionString);
             ((global::System.Data.SqlClient.SqlCommand)(this._commandCollection[2])).CommandText = "dbo.SEL_TRANSRECID_FROM_UNIQUEREC";
@@ -1612,7 +1701,7 @@ namespace Rtcc.Database.DataSet1TableAdapters {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual object UPD_LIVE_TRANSACTIONRECORD(global::System.Nullable<decimal> TransactionRecordID, string CCTracks, string CCTransactionStatus, string CreditCallAuthCode, string CreditCallCardScheme, string CreditCallPAN, global::System.Nullable<short> BatNum, global::System.Nullable<decimal> TTID, global::System.Nullable<short> Status) {
+        public virtual object UPD_LIVE_TRANSACTIONRECORD(global::System.Nullable<decimal> TransactionRecordID, string CCTracks, string CCTransactionStatus, string CreditCallAuthCode, string CreditCallCardScheme, string CreditCallPAN, global::System.Nullable<short> BatNum, global::System.Nullable<decimal> TTID, global::System.Nullable<short> Status, global::System.Nullable<int> CCFee) {
             global::System.Data.SqlClient.SqlCommand command = ((global::System.Data.SqlClient.SqlCommand)(this.CommandCollection[1]));
             if ((TransactionRecordID.HasValue == true)) {
                 command.Parameters[1].Value = ((decimal)(TransactionRecordID.Value));
@@ -1667,6 +1756,12 @@ namespace Rtcc.Database.DataSet1TableAdapters {
             }
             else {
                 command.Parameters[9].Value = global::System.DBNull.Value;
+            }
+            if ((CCFee.HasValue == true)) {
+                command.Parameters[10].Value = ((int)(CCFee.Value));
+            }
+            else {
+                command.Parameters[10].Value = global::System.DBNull.Value;
             }
             global::System.Data.ConnectionState previousConnectionState = command.Connection.State;
             if (((command.Connection.State & global::System.Data.ConnectionState.Open) 

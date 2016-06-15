@@ -27,6 +27,8 @@ namespace Cctm.Database
         public String CCTerminalID; // char
         public String CCTransactionKey; // varchar
         public String CCClearingPlatform; // varchar
+        public String MerchantNumber; // Processor-specific setting that also needs to be sent out for every authorization.
+        public String CashierNumber; // Processor-specific setting that also needs to be sent out for every authorization.
         public Int32 PreAuth; // int
         public Int16 Status; // smallint
         public Int16 Mode; // smallint

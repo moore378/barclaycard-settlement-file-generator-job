@@ -94,8 +94,8 @@ namespace Rtcc.Database
             string obscuredPan,
             short batchNum,
             int ttid,
-            short status
-            )
+            short status,
+            decimal ccFee)
         {
             try
             {
@@ -105,9 +105,10 @@ namespace Rtcc.Database
                       + ";CreditCallAuthCode=" + authCode
                       + ";CreditCallCardScheme=" + cardType
                       + ";CreditCallPAN=" + obscuredPan
+                      + ";CCFee=" + ccFee.ToString()
                       + ")");
                 var adapter = new DataSet1TableAdapters.QueriesTableAdapter();
-                adapter.UPD_LIVE_TRANSACTIONRECORD(transactionRecordID, tracks, statusString, authCode, cardType, obscuredPan, batchNum, ttid, status);
+                adapter.UPD_LIVE_TRANSACTIONRECORD(transactionRecordID, tracks, statusString, authCode, cardType, obscuredPan, batchNum, ttid, status, (int) ccFee);
             }
             catch (Exception e)
             {
@@ -125,6 +126,8 @@ namespace Rtcc.Database
 
         public virtual CCProcessorInfo GetRtccProcessorInfo(string terminalSerialNumber)
         {
+            CCProcessorInfo info;
+
             var adapter = new DataSet1TableAdapters.SEL_RTCC_PROCESSORTableAdapter();
             var data = adapter.GetData(terminalSerialNumber);
 
@@ -133,7 +136,7 @@ namespace Rtcc.Database
                 throw new Exception("Error getting processor information from database: No data returned");
 
             // We get the data out of the first row
-            return new CCProcessorInfo(
+            info = new CCProcessorInfo(
                 decimal.ToInt32(data[0].TerminalID),
                 data[0].TerminalSerNo,
                 data[0].CompanyName,
@@ -147,6 +150,24 @@ namespace Rtcc.Database
                 "",//data[0].PhoneNumber,
                 "",
                 data[0].CCFee);//data[0].IP);
+
+            // Normalize the extra processor settings.
+            // TODO: Dynamically set these up via configuration.
+            switch (info.ClearingPlatform.ToLower())
+            {
+                case "israel-premium":
+                    info.ProcessorSettings["MerchantNumber"] = data[0].MerchantNumber;
+                    info.ProcessorSettings["CashierNumber"] = data[0].CashierNumber;
+                    break;
+                case "fis-paydirect":
+                    info.ProcessorSettings["SettleMerchantCode"] = data[0].MerchantNumber;
+                    break;
+                case "monetra":
+                default:
+                    break;
+            }
+
+            return info;
         }
 
         public virtual void UpdatePreauth(

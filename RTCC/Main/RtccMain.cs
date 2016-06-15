@@ -11,6 +11,11 @@ using System.Net;
 using Rtcc.RtsaInterfacing;
 using Rtcc.PayByCell;
 
+using System.Collections;
+
+using System.Configuration;
+using AuthorizationClientPlatforms.Settings;
+
 namespace Rtcc.Main
 {
     class RtccMain : LoggingObject
@@ -42,6 +47,9 @@ namespace Rtcc.Main
         {
             try
             {
+                // Create a collection of authorization platforms.
+                Dictionary<string, IAuthorizationPlatform> platforms = new Dictionary<string, IAuthorizationPlatform>(StringComparer.CurrentCultureIgnoreCase);
+
                 LogDetail("Connecting to Monetra server");
 
                 // Use this authorizer for Monetra
@@ -79,6 +87,9 @@ namespace Rtcc.Main
                         authorizationFailAction
                         ));
 
+                // Add to the list of platforms.
+                platforms["monetra"] = monetraAuthorizer;
+
                 var israelPremiumFactory = new SimpleServerFactory<IAuthorizationPlatform>(() =>
                     {
                         LogImportant("Starting new connection to Israel Premium. " + GetTimeWithMiliseconds());
@@ -107,6 +118,51 @@ namespace Rtcc.Main
                         authorizationFailAction
                         ));
 
+                // Add to the list of platforms.
+                platforms["israel-premium"] = israelPremium;
+
+                // Programmatically add new processors such as FIS PayDirect via configuration.
+                AuthorizationClientPlatformsSection acpSection = (AuthorizationClientPlatformsSection)ConfigurationManager.GetSection("authorizationClientPlatforms");
+
+                // Loop through each processor entry.
+                foreach (ProcessorElement entry in acpSection.AuthorizationProcessors)
+                {
+                    var processorFactory = new SimpleServerFactory<IAuthorizationPlatform>(() =>
+                    {
+                        LogImportant(String.Format("Starting new connection to {0}. {1}", entry.Description, GetTimeWithMiliseconds()));
+                        try
+                        {
+                            Dictionary<string, string> configuration = new Dictionary<string, string>();
+
+                            // TODO: anything that is not Name and Description needs to be added to the configuration dictionary.
+                            configuration["endpoint"] = entry.Endpoint;
+
+                            return new AuthorizationClientPlatforms.AuthorizationPlatform(entry.Server, entry.Name, configuration);
+                        }
+                        catch (Exception e)
+                        {
+                            LogImportant(e.Message);
+                            LogDetail(e.ToString());
+                            throw;
+                        }
+                    });
+
+                    var processorController = new ServerController<IAuthorizationPlatform>(
+                        serverFactory: processorFactory,
+                        updatedStatus: (status) => { },
+                        failedRestart: (error, tries) => { Thread.Sleep(5000); return RestartFailAction.Retry; }
+                    );
+
+                    IAuthorizationPlatform processorPlatform = new DynamicAuthorizationPlatform(
+                        (request, preAuth) => processorController.Perform(
+                            (platform) => platform.Authorize(request, preAuth),
+                            authorizationFailAction
+                            ));
+
+                    // Add to the list of platforms.
+                    platforms[entry.Name] = processorPlatform;
+                }
+
                 // Open the port to listen for connections
                 this.tcpListener.Start();
 
@@ -123,8 +179,8 @@ namespace Rtcc.Main
                     RtsaConnection rtsaConnection = new RtsaConnection(client);
                     rtsaConnection.Logged += ChildLogged;
 
-                    // This ties everything together... reading from the interface and processing using the authorizer
-                    RtccMediator requestProcessor = new RtccMediator(monetraAuthorizer, israelPremium, rtsaConnection, rtccPerformanceCounters);
+                    // This ties everything together... reading from the interface and processing using the authorizer.
+                    RtccMediator requestProcessor = new RtccMediator(platforms, rtsaConnection, rtccPerformanceCounters);
                     requestProcessor.TransactionDone += TransactionDone;
                     requestProcessor.Logged += ChildLogged;
                     // Note: To see what happens next (when a request is received), go to RTCC.RtccMediator.ProcessRequest

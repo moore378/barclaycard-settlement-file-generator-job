@@ -15,6 +15,8 @@ using Rtcc.PayByCell;
 using System.Diagnostics;
 using System.Net;
 
+using System.Collections;
+
 namespace Rtcc.Main
 {
 
@@ -31,21 +33,21 @@ namespace Rtcc.Main
         private RtccRequestInterpreter rtccRequestInterpreter;
         private RtsaConnection rtsaConnection;
         private RtccDatabase rtccDatabase;
-        private IAuthorizationPlatform monetra;
         private PayByCellClient payByCell;
         private RtccPerformanceCounters.SessionStats performanceCounterSession;
         private static ThreadLocal<System.Security.Cryptography.MD5> hasher = new ThreadLocal<System.Security.Cryptography.MD5>(() => System.Security.Cryptography.MD5.Create());
-        private IAuthorizationPlatform israelPremium;
 
-        public RtccMediator(IAuthorizationPlatform monetra, IAuthorizationPlatform israelPremium,
+        // Collection of authorization platforms.
+        private Dictionary<string, IAuthorizationPlatform> platforms;
+
+        public RtccMediator(Dictionary<string,IAuthorizationPlatform> platforms,
             RtsaConnection rtsaConnection,
             RtccPerformanceCounters performanceCounters,
             RtccDatabase database = null,
             RtccRequestInterpreter requestInterpreter = null,
             PayByCellClient payByCell = null)
         {
-            this.monetra = monetra;
-            this.israelPremium = israelPremium;
+            this.platforms = platforms;
 
             this.performanceCounterSession = performanceCounters.NewSession();
 
@@ -68,6 +70,7 @@ namespace Rtcc.Main
             UnencryptedStripe unencryptedUnformattedStripe = null;
             TransactionStatus? status = null;
             int? transactionRecordID = null;
+            IAuthorizationPlatform platform;
 
             try
             {
@@ -122,18 +125,37 @@ namespace Rtcc.Main
 
                 // Check the blacklist here
 
-                
+                // Validate the processor
+
+                // Get the authorization platform for the customer..
+                platforms.TryGetValue(processorInfo.ClearingPlatform, out platform);
+                if (null == platform)
+                {
+                    string message = String.Format("Platform {0} is not configured. Cannot authorize.");
+
+                    // Log this as an error to hopefully alert somebody so that the platform can be configured.
+                    LogError(message);
+
+                    // Send "decline" to meter.
+                    SendReplyToClient(new ClientAuthResponse() { Accepted = 0, AmountDollars = 0, ResponseCode = message });
+                    throw new Exception(message);
+                }
 
                 // Insert the record
+                // Note that the requested amount sent to the database does not include any credit card fees.
+                // The database itself will add the fee but only if it's a flat rate fee...
                 status = TransactionStatus.Authorizing;
                 transactionRecordID = (int)InsertTransactionRecord("Processing_Live", request, creditCardFields, "RTCC Processing", isPreauth ? TransactionMode.RealtimeDualAuth : TransactionMode.RealtimeNormal, status.Value);
 
-                LogDetail("Sending transaction " + transactionRecordID.ToString() + " to processor");
+                LogDetail("Sending transaction " + transactionRecordID.ToString() + " to processor " + processorInfo.ClearingPlatform);
 
-                IAuthorizationPlatform platform = processorInfo.ClearingPlatform == "ISRAEL-PREMIUM" ? israelPremium : monetra;
-
-                // Add the convenience fee
-                request.AmountDollars += processorInfo.CCFee;
+                // Add the convenience fee but ONLY if it's a positive amount.
+                // If the convenince fee is negative, then the value is a percentage that is _NOT_ inclusive.
+                if (0 < processorInfo.CCFee)
+                {
+                    // The fee is flat rate, add the value as-is.
+                    request.AmountDollars += processorInfo.CCFee;
+                }
 
                 // Perform the authorization
                 AuthorizationResponseFields authorizationResponse = AuthorizeRequest(transactionRecordID.Value, request, tracks, unencryptedStripe, creditCardFields, processorInfo, request.UniqueRecordNumber, isPreauth, platform);
@@ -152,9 +174,28 @@ namespace Rtcc.Main
                 LogDetail("Updating database for " + transactionRecordID.ToString() + ": " + newStatus.ToString());
                 status = newStatus;
                 if (isPreauth)
+                {
                     rtccDatabase.UpdatePreauth(transactionRecordID.Value, DateTime.Now, authorizationResponse.receiptReference, authorizationResponse.authorizationCode, obscuredPan.ToString(), creditCardFields.ExpDateYYMM, authorizationResponse.cardType, creditCardFields.Pan.FirstSixDigits, creditCardFields.Pan.LastFourDigits, authorizationResponse.BatchNum, authorizationResponse.Ttid, (short)status.Value);
+                }
                 else
-                    rtccDatabase.UpdateLiveTransactionRecord(transactionRecordID.Value, "Processed_Live", newStatus.ToString(), authorizationResponse.authorizationCode, authorizationResponse.cardType, obscuredPan.ToString(), authorizationResponse.BatchNum, authorizationResponse.Ttid, (short)status.Value);
+                {
+                    rtccDatabase.UpdateLiveTransactionRecord(transactionRecordID.Value, 
+                        "Processed_Live", 
+                        newStatus.ToString(), 
+                        authorizationResponse.authorizationCode,
+                        authorizationResponse.cardType,
+                        obscuredPan.ToString(),
+                        authorizationResponse.BatchNum,
+                        authorizationResponse.Ttid,
+                        (short)status.Value,
+                        // When the processor charges an extra credit card
+                        // fee and that value was not reflected with the
+                        // requested amount, pass in the value as a negative
+                        // number to trigger the database to update the total
+                        // card and credit charge values.
+                        authorizationResponse.AdditionalCCFee * -100
+                        );
+                }
 
                 try
                 {
@@ -322,7 +363,7 @@ namespace Rtcc.Main
                 decimal AmountCents = AmountDollars * 100; // Convert to cents
 
                 CreditCardPan.ObscurationMethod panObscurationMethod = CreditCardPan.ObscurationMethod.FirstSixLastFour;
-                
+
                 return rtccDatabase.InsertLiveTransactionRecord(
                         request.TerminalSerialNumber, //string TerminalSerNo, 
                         null, //string ElectronicSerNo, 
@@ -371,8 +412,7 @@ namespace Rtcc.Main
             AuthorizationRequest authorizationRequest = new AuthorizationRequest(
                 request.TerminalSerialNumber,
                 request.StartDateTime,
-                processorInfo.MerchantID,
-                processorInfo.MerchantPassword,
+                processorInfo.ProcessorSettings,
                 creditCardFields.Pan.ToString(),
                 creditCardFields.ExpDateMMYY,
                 request.AmountDollars,
@@ -387,6 +427,11 @@ namespace Rtcc.Main
 
             // Perform the authorization and get a response
             AuthorizationResponseFields authorizationResponse = platform.Authorize(authorizationRequest, isPreauth ? AuthorizeMode.Preauth : AuthorizeMode.Normal);
+
+            // Be consistent with flat rate credit card fees. If the processor
+            // adds in an extra credit card fee, then update the requested
+            // amount too.
+            authorizationRequest.AmountDollars += authorizationResponse.AdditionalCCFee;            
 
             return authorizationResponse;
         }

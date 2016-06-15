@@ -16,8 +16,92 @@ using Rtcc.Dummy;
 using Rtcc.Database;
 using Rtcc.PayByCell;
 
+using AuthorizationClientPlatforms.Settings;
+
 namespace UnitTests
 {
+
+    public class UnitTestDatabase : RtccDatabase
+    {
+        private string _testDataName;
+
+        public UnitTestDatabase(string testDataName)
+        {
+            _testDataName = testDataName;
+        }
+
+        public UnitTestDatabase()
+            : this("Monetra DB5")
+        {
+            // Nothing on purpose.
+        }
+
+        public override decimal InsertLiveTransactionRecord(
+            string TerminalSerNo,
+            string ElectronicSerNo,
+            decimal? TransactionType,
+            DateTime? StartDateTime,
+            decimal? TotalCreditCents,
+            decimal? TimePurchased,
+            decimal? TotalParkingTime,
+            decimal? AmountCents,
+            string CCTracks,
+            string CCTransactionStatus,
+            decimal? CCTransactionIndex,
+            string CoinCount,
+            decimal? EncryptionVer,
+            decimal? KeyVer,
+            string UniqueRecordNumber,
+            long UniqueRecordNumber2,
+            string CreditCallCardEaseReference,
+            string CreditCallAuthCode,
+            string CreditCallPAN,
+            string CreditCallExpiryDate,
+            string CreditCallCardScheme,
+            string FirstSixDigits,
+            string LastFourDigits,
+            short mode,
+            short status)
+        {
+            // Do nothing
+            return 0;
+        }
+
+        public override void UpdateTransactionStatus(
+            int transactionRecordID, TransactionStatus oldStatus, TransactionStatus newStatus, string newStatusStr)
+        {
+
+        }
+
+        public override CCProcessorInfo GetRtccProcessorInfo(string terminalSerialNumber)
+        {
+            ClearingPlatform processorInfo = TestData.Processors[_testDataName];
+
+            CCProcessorInfo data = new CCProcessorInfo()
+            {
+                CompanyName = "DummyCompany",
+                MerchantID = processorInfo.MerchantId,
+                MerchantPassword = processorInfo.MerchantPassword,
+                TerminalSerialNumber = "DummyTerminal",
+                PoleSerialNumber = "DummyPole",
+                ClearingPlatform = processorInfo.Name
+            };
+
+            if (data.ClearingPlatform.ToLower() == "fis-paydirect")
+            {
+                // Hack. Todo need to be done better.
+                data.ProcessorSettings["SettleMerchantCode"] = "50BNA-PUBWK-PARKG-00";
+            }
+
+            return data;
+        }
+
+        public override void UpdateLiveTransactionRecord(decimal transactionRecordID, string tracks, string statusString, string authCode, string cardType, string obscuredPan, short batchNum, int ttid, short status, decimal ccFee)
+        {
+            // Do nothing
+        }
+    }
+
     /// <summary>
     /// Summary description for UnitTest1
     /// </summary>
@@ -189,6 +273,19 @@ namespace UnitTests
 
             // Encrypt it
             byte[] encryptedStripe = ipsEncryptStripe(plainStripe, info, 1);
+
+
+            // NOTE: The following TransactionInfo properties need to be 
+            // the same value between encryption and decryption:
+            // - MeterSerialNumber
+            // - TransactionIndex
+            // - RefDateTime
+
+            //info.AmountDollars += 50;
+            //info.MeterSerialNumber = "2323";
+            //info.StartDateTime = DateTime.Now;
+            //info.TransactionIndex += 2323;
+            //info.RefDateTime = DateTime.Now;
             
             // Decrypt it
             string decryptedStripe = ipsDecryptStripe(encryptedStripe, info, 1);
@@ -242,30 +339,58 @@ namespace UnitTests
         [TestMethod]
         public void RtccMediator()
         {
+            string testName = "FIS PayDirect Test"; // Monetra DB5
+            string testData = "FIS Certification"; // Monetra
+
+            ClearingPlatform processorInfo = TestData.Processors[testName];
+
+            AuthorizationRequestEntry entry = TestData.AuthRequests[testData][0];
+
+            //byte[] original = Convert.FromBase64String("50XIzZeEdzG07Er4meKc057l3sWg8Sax7Aug3H/l44m3+lGg4+Nu7ZLL3ZZm2ZPQslEdqirkW+modxQ8M7KyYbASjCjDrqE2DdqApMicH0ao5TEaUAV5+k1zK22b6UT1w8s1k0cA2dPp3pN3xW6PvVhG4cHlFmuoX12CSpODcWc=");
+
+            DateTime dtNow = DateTime.Now; // DateTime.SpecifyKind(DateTime.Parse("2016-04-19T11:07:09+00:00").ToUniversalTime(), DateTimeKind.Unspecified);
+
+            // Generate the track data.
+            
+
+            TransactionInfo info = new TransactionInfo(
+                amountDollars: 0.75m,
+                meterSerialNumber: entry.MeterId,
+                startDateTime: dtNow,
+                transactionIndex: 6,
+                refDateTime: dtNow);
+            
+            // After all that work to add the starting and ending sentinels... remove them for this track format.
+            string tracksFormatted = entry.CreditCard.Track1.Substring(1, entry.CreditCard.Track1.Length - 2).PadRight(88, '\0') 
+                + entry.CreditCard.Track2.Substring(1, entry.CreditCard.Track2.Length - 2).PadRight(40, '\0');
+
+            byte[] encryptedData = ipsEncryptStripe(tracksFormatted, info, 1);
+
             // Create a dummy message source
             var rtsaConnection = new DummyRtsaConnection();
             // Create a dummy interpretter
             DummyInterpreter interpreter = new DummyInterpreter();
             interpreter.Request = new ClientAuthRequest(
-                "35189",
-                DateTime.SpecifyKind(DateTime.Parse("2010-04-19T11:07:09+00:00").ToUniversalTime(), DateTimeKind.Unspecified),
+                info.MeterSerialNumber,
+                dtNow,
                 0,
-                6,
+                (int) info.TransactionIndex,
                 EncryptionMethod.IpsEncryption,
                 1,
                 0,
                 "000003518920100419110709",
-                0.75m,
+                info.AmountDollars,
                 "",
-                "",
-                Convert.FromBase64String("50XIzZeEdzG07Er4meKc057l3sWg8Sax7Aug3H/l44m3+lGg4+Nu7ZLL3ZZm2ZPQslEdqirkW+modxQ8M7KyYbASjCjDrqE2DdqApMicH0ao5TEaUAV5+k1zK22b6UT1w8s1k0cA2dPp3pN3xW6PvVhG4cHlFmuoX12CSpODcWc="),
+                TestData.GenerateUniqueId(),
+                encryptedData,
                 0,
                 0,
                 0
             );
             interpreter.onResponse = dummyResponseReceived;
             // Create a dummy database
-            RtccDatabase dummyDatabase = new DummyDatabase();
+            //RtccDatabase dummyDatabase = new DummyDatabase();
+            RtccDatabase dummyDatabase = new UnitTestDatabase(testName);
             // Create a dummy authorization platform
             AuthorizationClientPlatforms.IAuthorizationPlatform dummyPlatform = new DummyAuthorizationPlatform();
             // Create a dummy PayByCell
@@ -273,8 +398,37 @@ namespace UnitTests
             // Create dummy performance counters
             var dummyPerformanceCounters = new DummyPerformanceCounters();
             
+            Dictionary<string, IAuthorizationPlatform> platforms = new Dictionary<string,IAuthorizationPlatform>();
+
+            switch (processorInfo.Name.ToLower())
+            {
+                case "monetra":
+                    // Create the monetra platform
+                    MonetraClient _monetraClient = new MonetraDotNetNativeClient(processorInfo.Server, (ushort)processorInfo.Port, (log) => { System.Diagnostics.Debug.WriteLine(log); });
+                    // The logic that uses the client to make authorizations
+                    IAuthorizationPlatform monetraAuthorizer = new Monetra(_monetraClient, (log) => { System.Diagnostics.Debug.WriteLine(log); });
+                    platforms["monetra"] = monetraAuthorizer;
+                    break;
+
+                case "fis-paydirect":
+                    AuthorizationClientPlatformsSection acpSection = (AuthorizationClientPlatformsSection)System.Configuration.ConfigurationManager.GetSection("authorizationClientPlatforms");
+
+                    AuthorizationProcessorsCollection apCollection = acpSection.AuthorizationProcessors;
+
+                    ProcessorElement fisPayDirect = apCollection["fis-paydirect"];
+
+                    Dictionary<string, string> configuration = new Dictionary<string, string>();
+                    configuration["endpoint"] = fisPayDirect.Endpoint;
+
+                    platforms["fis-paydirect"] = new AuthorizationPlatform(System.Net.Dns.GetHostName(), fisPayDirect.Name, configuration);
+                    break;
+
+                default:
+                    break;
+            }
+            
             // Create the mediator
-            RtccMediator mediator = new RtccMediator(dummyPlatform, dummyPlatform, rtsaConnection, dummyPerformanceCounters,
+            RtccMediator mediator = new RtccMediator(platforms, rtsaConnection, dummyPerformanceCounters,
                 dummyDatabase, interpreter, dummyPayByCell);
             mediator.Logged += Log;
 
@@ -282,7 +436,7 @@ namespace UnitTests
             rtsaConnection.SimulateMessageReceived(new byte[0]);
             
             Assert.IsTrue(dummyResponse.Accepted == 1);
-            Assert.AreEqual(dummyResponse.ResponseCode, "DummyAuthCode");
+            //Assert.AreEqual(dummyResponse.ResponseCode, "DummyAuthCode");
         }
 
 

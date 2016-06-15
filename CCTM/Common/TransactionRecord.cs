@@ -40,6 +40,12 @@ namespace Cctm.Common
         public string MerchantID;
         public string MerchantPassword;
         public string ClearingPlatform;
+
+        // Extra processor settings.
+        // NOTE: Every different processor will have different meanings
+        // These are fields that are overloaded for generic processing.
+        public string MerchantNumber;
+        public string CashierNumber;
         
         public int? PreauthTtid;
         //public string AuthCode;

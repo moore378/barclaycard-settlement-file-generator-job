@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Rtcc.Database
 {
-    public struct CCProcessorInfo
+    public class CCProcessorInfo
     {
         /// <summary>
         /// Terminal ID (internal use - could omit)
@@ -19,18 +19,59 @@ namespace Rtcc.Database
         /// City Name for receipt
         /// </summary>
         public string CompanyName;
+
         /// <summary>
         /// Username for Monetra
+        /// NOTE: Legacy property. Utilize "MerchantID" from  ProcessorSettings instead.
         /// </summary>
-        public string MerchantID;
+        public string MerchantID
+        {
+            // Use the ProcessorSettings' version under the covers.
+            get
+            {
+                string value;
+
+                ProcessorSettings.TryGetValue("MerchantID", out value);
+
+                return value;
+            }
+            set
+            {
+                ProcessorSettings["MerchantID"] = value;
+            }
+        }
+
         /// <summary>
         /// Password for Monetra
+        /// NOTE: Legacy property. Utilize "MerchantPassword" from ProcessorSettings instead.
         /// </summary>
-        public string MerchantPassword;
+        public string MerchantPassword
+        {
+            // Use the ProcessorSettings' version under the covers.
+            get
+            {
+                string value;
+
+                ProcessorSettings.TryGetValue("MerchantPassword", out value);
+
+                return value;
+            }
+            set
+            {
+                ProcessorSettings["MerchantPassword"] = value;
+            }
+        }
+
         /// <summary>
-        /// 'Monetra' only 
+        /// Processor-specific data that needs to be sent out.
+        /// </summary>
+        public Dictionary<string, string> ProcessorSettings;
+
+        /// <summary>
+        /// 'Monetra', Israel-Premium, Fis-PayDirect
         /// </summary>
         public string ClearingPlatform;
+
         /// <summary>
         /// Pole Ser No for receipt (returns null if not associated to pole)
         /// </summary>
@@ -60,6 +101,13 @@ namespace Rtcc.Database
         /// </summary>
         public decimal CCFee;
 
+        public CCProcessorInfo()
+        {
+            // If this is called then that means that the caller will try to access the properties
+            // directly. Instantiate the dictionary.
+            ProcessorSettings = new Dictionary<string, string>();
+        }
+
         public CCProcessorInfo(
             int terminalID,
             string terminalSerialNumber,
@@ -74,6 +122,7 @@ namespace Rtcc.Database
             string phoneNumber,
             string ip,
             decimal ccfee)
+            :this()
         {
             this.TerminalID = terminalID;
             this.TerminalSerialNumber = terminalSerialNumber;

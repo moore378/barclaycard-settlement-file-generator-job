@@ -1,0 +1,390 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="ApiService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsp:Policy wsu:Id="BasicHttpBinding_IApiService_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:TransportToken>
+              <wsp:Policy>
+                <sp:HttpsToken RequireClientCertificate="false" />
+              </wsp:Policy>
+            </sp:TransportToken>
+            <sp:AlgorithmSuite>
+              <wsp:Policy>
+                <sp:Basic256 />
+              </wsp:Policy>
+            </sp:AlgorithmSuite>
+            <sp:Layout>
+              <wsp:Policy>
+                <sp:Strict />
+              </wsp:Policy>
+            </sp:Layout>
+          </wsp:Policy>
+        </sp:TransportBinding>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="https://paydirectapi.link2gov.com/ApiService.svc?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="https://paydirectapi.link2gov.com/ApiService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="https://paydirectapi.link2gov.com/ApiService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/PayDirect.Api.ServiceInterface.WCFContract" />
+      <xsd:import schemaLocation="https://paydirectapi.link2gov.com/ApiService.svc?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xsd:import schemaLocation="https://paydirectapi.link2gov.com/ApiService.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/PayDirect.Api.ServiceInterface.Enumerations" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IApiService_ProcessHeartbeat_InputMessage">
+    <wsdl:part name="parameters" element="tns:ProcessHeartbeat" />
+  </wsdl:message>
+  <wsdl:message name="IApiService_ProcessHeartbeat_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ProcessHeartbeatResponse" />
+  </wsdl:message>
+  <wsdl:message name="IApiService_GetAvailablePaymentMethods_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAvailablePaymentMethods" />
+  </wsdl:message>
+  <wsdl:message name="IApiService_GetAvailablePaymentMethods_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAvailablePaymentMethodsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IApiService_AssessFeesForCard_InputMessage">
+    <wsdl:part name="parameters" element="tns:AssessFeesForCard" />
+  </wsdl:message>
+  <wsdl:message name="IApiService_AssessFeesForCard_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AssessFeesForCardResponse" />
+  </wsdl:message>
+  <wsdl:message name="IApiService_AssessFeesForECheck_InputMessage">
+    <wsdl:part name="parameters" element="tns:AssessFeesForECheck" />
+  </wsdl:message>
+  <wsdl:message name="IApiService_AssessFeesForECheck_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AssessFeesForECheckResponse" />
+  </wsdl:message>
+  <wsdl:message name="IApiService_AssessFeesForECheckACH_InputMessage">
+    <wsdl:part name="parameters" element="tns:AssessFeesForECheckACH" />
+  </wsdl:message>
+  <wsdl:message name="IApiService_AssessFeesForECheckACH_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AssessFeesForECheckACHResponse" />
+  </wsdl:message>
+  <wsdl:message name="IApiService_AssessFeesForTokenizedPaymentMethod_InputMessage">
+    <wsdl:part name="parameters" element="tns:AssessFeesForTokenizedPaymentMethod" />
+  </wsdl:message>
+  <wsdl:message name="IApiService_AssessFeesForTokenizedPaymentMethod_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AssessFeesForTokenizedPaymentMethodResponse" />
+  </wsdl:message>
+  <wsdl:message name="IApiService_SubmitPayment_InputMessage">
+    <wsdl:part name="parameters" element="tns:SubmitPayment" />
+  </wsdl:message>
+  <wsdl:message name="IApiService_SubmitPayment_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SubmitPaymentResponse" />
+  </wsdl:message>
+  <wsdl:message name="IApiService_TokenizePaymentMethodECheck_InputMessage">
+    <wsdl:part name="parameters" element="tns:TokenizePaymentMethodECheck" />
+  </wsdl:message>
+  <wsdl:message name="IApiService_TokenizePaymentMethodECheck_OutputMessage">
+    <wsdl:part name="parameters" element="tns:TokenizePaymentMethodECheckResponse" />
+  </wsdl:message>
+  <wsdl:message name="IApiService_TokenizePaymentMethodACH_InputMessage">
+    <wsdl:part name="parameters" element="tns:TokenizePaymentMethodACH" />
+  </wsdl:message>
+  <wsdl:message name="IApiService_TokenizePaymentMethodACH_OutputMessage">
+    <wsdl:part name="parameters" element="tns:TokenizePaymentMethodACHResponse" />
+  </wsdl:message>
+  <wsdl:message name="IApiService_TokenizePaymentMethodCard_InputMessage">
+    <wsdl:part name="parameters" element="tns:TokenizePaymentMethodCard" />
+  </wsdl:message>
+  <wsdl:message name="IApiService_TokenizePaymentMethodCard_OutputMessage">
+    <wsdl:part name="parameters" element="tns:TokenizePaymentMethodCardResponse" />
+  </wsdl:message>
+  <wsdl:message name="IApiService_GetTransactionStatus_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetTransactionStatus" />
+  </wsdl:message>
+  <wsdl:message name="IApiService_GetTransactionStatus_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetTransactionStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="IApiService_CanReverseTransaction_InputMessage">
+    <wsdl:part name="parameters" element="tns:CanReverseTransaction" />
+  </wsdl:message>
+  <wsdl:message name="IApiService_CanReverseTransaction_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CanReverseTransactionResponse" />
+  </wsdl:message>
+  <wsdl:message name="IApiService_CanReversePayment_InputMessage">
+    <wsdl:part name="parameters" element="tns:CanReversePayment" />
+  </wsdl:message>
+  <wsdl:message name="IApiService_CanReversePayment_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CanReversePaymentResponse" />
+  </wsdl:message>
+  <wsdl:message name="IApiService_ProcessTransactionReversal_InputMessage">
+    <wsdl:part name="parameters" element="tns:ProcessTransactionReversal" />
+  </wsdl:message>
+  <wsdl:message name="IApiService_ProcessTransactionReversal_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ProcessTransactionReversalResponse" />
+  </wsdl:message>
+  <wsdl:message name="IApiService_ProcessPaymentReversal_InputMessage">
+    <wsdl:part name="parameters" element="tns:ProcessPaymentReversal" />
+  </wsdl:message>
+  <wsdl:message name="IApiService_ProcessPaymentReversal_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ProcessPaymentReversalResponse" />
+  </wsdl:message>
+  <wsdl:message name="IApiService_GetTerminalTotalForPeriod_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetTerminalTotalForPeriod" />
+  </wsdl:message>
+  <wsdl:message name="IApiService_GetTerminalTotalForPeriod_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetTerminalTotalForPeriodResponse" />
+  </wsdl:message>
+  <wsdl:message name="IApiService_GetTerminalInformation_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetTerminalInformation" />
+  </wsdl:message>
+  <wsdl:message name="IApiService_GetTerminalInformation_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetTerminalInformationResponse" />
+  </wsdl:message>
+  <wsdl:message name="IApiService_GetTerminalHistoryForPeriod_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetTerminalHistoryForPeriod" />
+  </wsdl:message>
+  <wsdl:message name="IApiService_GetTerminalHistoryForPeriod_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetTerminalHistoryForPeriodResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IApiService">
+    <wsdl:operation name="ProcessHeartbeat">
+      <wsdl:input wsaw:Action="http://tempuri.org/IApiService/ProcessHeartbeat" message="tns:IApiService_ProcessHeartbeat_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IApiService/ProcessHeartbeatResponse" message="tns:IApiService_ProcessHeartbeat_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAvailablePaymentMethods">
+      <wsdl:input wsaw:Action="http://tempuri.org/IApiService/GetAvailablePaymentMethods" message="tns:IApiService_GetAvailablePaymentMethods_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IApiService/GetAvailablePaymentMethodsResponse" message="tns:IApiService_GetAvailablePaymentMethods_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AssessFeesForCard">
+      <wsdl:input wsaw:Action="http://tempuri.org/IApiService/AssessFeesForCard" message="tns:IApiService_AssessFeesForCard_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IApiService/AssessFeesForCardResponse" message="tns:IApiService_AssessFeesForCard_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AssessFeesForECheck">
+      <wsdl:input wsaw:Action="http://tempuri.org/IApiService/AssessFeesForECheck" message="tns:IApiService_AssessFeesForECheck_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IApiService/AssessFeesForECheckResponse" message="tns:IApiService_AssessFeesForECheck_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AssessFeesForECheckACH">
+      <wsdl:input wsaw:Action="http://tempuri.org/IApiService/AssessFeesForECheckACH" message="tns:IApiService_AssessFeesForECheckACH_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IApiService/AssessFeesForECheckACHResponse" message="tns:IApiService_AssessFeesForECheckACH_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AssessFeesForTokenizedPaymentMethod">
+      <wsdl:input wsaw:Action="http://tempuri.org/IApiService/AssessFeesForTokenizedPaymentMethod" message="tns:IApiService_AssessFeesForTokenizedPaymentMethod_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IApiService/AssessFeesForTokenizedPaymentMethodResponse" message="tns:IApiService_AssessFeesForTokenizedPaymentMethod_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SubmitPayment">
+      <wsdl:input wsaw:Action="http://tempuri.org/IApiService/SubmitPayment" message="tns:IApiService_SubmitPayment_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IApiService/SubmitPaymentResponse" message="tns:IApiService_SubmitPayment_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="TokenizePaymentMethodECheck">
+      <wsdl:input wsaw:Action="http://tempuri.org/IApiService/TokenizePaymentMethodECheck" message="tns:IApiService_TokenizePaymentMethodECheck_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IApiService/TokenizePaymentMethodECheckResponse" message="tns:IApiService_TokenizePaymentMethodECheck_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="TokenizePaymentMethodACH">
+      <wsdl:input wsaw:Action="http://tempuri.org/IApiService/TokenizePaymentMethodACH" message="tns:IApiService_TokenizePaymentMethodACH_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IApiService/TokenizePaymentMethodACHResponse" message="tns:IApiService_TokenizePaymentMethodACH_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="TokenizePaymentMethodCard">
+      <wsdl:input wsaw:Action="http://tempuri.org/IApiService/TokenizePaymentMethodCard" message="tns:IApiService_TokenizePaymentMethodCard_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IApiService/TokenizePaymentMethodCardResponse" message="tns:IApiService_TokenizePaymentMethodCard_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTransactionStatus">
+      <wsdl:input wsaw:Action="http://tempuri.org/IApiService/GetTransactionStatus" message="tns:IApiService_GetTransactionStatus_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IApiService/GetTransactionStatusResponse" message="tns:IApiService_GetTransactionStatus_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CanReverseTransaction">
+      <wsdl:input wsaw:Action="http://tempuri.org/IApiService/CanReverseTransaction" message="tns:IApiService_CanReverseTransaction_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IApiService/CanReverseTransactionResponse" message="tns:IApiService_CanReverseTransaction_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CanReversePayment">
+      <wsdl:input wsaw:Action="http://tempuri.org/IApiService/CanReversePayment" message="tns:IApiService_CanReversePayment_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IApiService/CanReversePaymentResponse" message="tns:IApiService_CanReversePayment_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ProcessTransactionReversal">
+      <wsdl:input wsaw:Action="http://tempuri.org/IApiService/ProcessTransactionReversal" message="tns:IApiService_ProcessTransactionReversal_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IApiService/ProcessTransactionReversalResponse" message="tns:IApiService_ProcessTransactionReversal_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ProcessPaymentReversal">
+      <wsdl:input wsaw:Action="http://tempuri.org/IApiService/ProcessPaymentReversal" message="tns:IApiService_ProcessPaymentReversal_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IApiService/ProcessPaymentReversalResponse" message="tns:IApiService_ProcessPaymentReversal_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTerminalTotalForPeriod">
+      <wsdl:input wsaw:Action="http://tempuri.org/IApiService/GetTerminalTotalForPeriod" message="tns:IApiService_GetTerminalTotalForPeriod_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IApiService/GetTerminalTotalForPeriodResponse" message="tns:IApiService_GetTerminalTotalForPeriod_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTerminalInformation">
+      <wsdl:input wsaw:Action="http://tempuri.org/IApiService/GetTerminalInformation" message="tns:IApiService_GetTerminalInformation_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IApiService/GetTerminalInformationResponse" message="tns:IApiService_GetTerminalInformation_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetTerminalHistoryForPeriod">
+      <wsdl:input wsaw:Action="http://tempuri.org/IApiService/GetTerminalHistoryForPeriod" message="tns:IApiService_GetTerminalHistoryForPeriod_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IApiService/GetTerminalHistoryForPeriodResponse" message="tns:IApiService_GetTerminalHistoryForPeriod_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IApiService" type="tns:IApiService">
+    <wsp:PolicyReference URI="#BasicHttpBinding_IApiService_policy" />
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ProcessHeartbeat">
+      <soap:operation soapAction="http://tempuri.org/IApiService/ProcessHeartbeat" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAvailablePaymentMethods">
+      <soap:operation soapAction="http://tempuri.org/IApiService/GetAvailablePaymentMethods" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AssessFeesForCard">
+      <soap:operation soapAction="http://tempuri.org/IApiService/AssessFeesForCard" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AssessFeesForECheck">
+      <soap:operation soapAction="http://tempuri.org/IApiService/AssessFeesForECheck" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AssessFeesForECheckACH">
+      <soap:operation soapAction="http://tempuri.org/IApiService/AssessFeesForECheckACH" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AssessFeesForTokenizedPaymentMethod">
+      <soap:operation soapAction="http://tempuri.org/IApiService/AssessFeesForTokenizedPaymentMethod" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SubmitPayment">
+      <soap:operation soapAction="http://tempuri.org/IApiService/SubmitPayment" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TokenizePaymentMethodECheck">
+      <soap:operation soapAction="http://tempuri.org/IApiService/TokenizePaymentMethodECheck" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TokenizePaymentMethodACH">
+      <soap:operation soapAction="http://tempuri.org/IApiService/TokenizePaymentMethodACH" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TokenizePaymentMethodCard">
+      <soap:operation soapAction="http://tempuri.org/IApiService/TokenizePaymentMethodCard" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTransactionStatus">
+      <soap:operation soapAction="http://tempuri.org/IApiService/GetTransactionStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CanReverseTransaction">
+      <soap:operation soapAction="http://tempuri.org/IApiService/CanReverseTransaction" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CanReversePayment">
+      <soap:operation soapAction="http://tempuri.org/IApiService/CanReversePayment" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ProcessTransactionReversal">
+      <soap:operation soapAction="http://tempuri.org/IApiService/ProcessTransactionReversal" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ProcessPaymentReversal">
+      <soap:operation soapAction="http://tempuri.org/IApiService/ProcessPaymentReversal" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTerminalTotalForPeriod">
+      <soap:operation soapAction="http://tempuri.org/IApiService/GetTerminalTotalForPeriod" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTerminalInformation">
+      <soap:operation soapAction="http://tempuri.org/IApiService/GetTerminalInformation" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetTerminalHistoryForPeriod">
+      <soap:operation soapAction="http://tempuri.org/IApiService/GetTerminalHistoryForPeriod" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ApiService">
+    <wsdl:port name="BasicHttpBinding_IApiService" binding="tns:BasicHttpBinding_IApiService">
+      <soap:address location="https://paydirectapi.link2gov.com/ApiService.svc/ApiService.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

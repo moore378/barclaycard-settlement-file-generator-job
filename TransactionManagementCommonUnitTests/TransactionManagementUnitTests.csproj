@@ -55,6 +55,7 @@
   <ItemGroup>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -75,6 +76,10 @@
       <Project>{5AE1B5BD-C0AE-46E2-8E55-6960FAF3A846}</Project>
       <Name>AuthorizationClientPlatforms</Name>
     </ProjectReference>
+    <ProjectReference Include="..\AuthorizationProcessor\AuthorizationProcessor.csproj">
+      <Project>{afd07aa0-1136-4475-882c-50069963332b}</Project>
+      <Name>AuthorizationProcessor</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CCTM\CCTM.csproj">
       <Project>{EB6FE2F9-897D-41B8-96EC-E3F1035DA4B6}</Project>
       <Name>CCTM</Name>
@@ -86,6 +91,10 @@
     <ProjectReference Include="..\CryptographicPlatforms\CryptographicPlatforms.csproj">
       <Project>{C57D09F3-983C-4508-8E34-FAD3B081B79F}</Project>
       <Name>CryptographicPlatforms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\FisPayDirectPlugin\FisPayDirectPlugin.csproj">
+      <Project>{6d6cc9b7-491a-4fc1-bb3b-63e238bbde95}</Project>
+      <Name>FisPayDirectPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\RTCC\RTCC.csproj">
       <Project>{A9102F53-8F96-4F3A-8FF8-FB5F0B5BC609}</Project>
@@ -117,6 +126,11 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

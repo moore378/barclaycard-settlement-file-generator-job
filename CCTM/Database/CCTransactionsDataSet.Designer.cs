@@ -337,6 +337,8 @@ namespace Cctm.Database {
             
             private global::System.Data.DataColumn columnAuthCCAmount;
             
+            private global::System.Data.DataColumn columnCashierNumber;
+            
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public SEL_NEW_TRANSACTIONRECORDSDataTable() {
@@ -604,6 +606,14 @@ namespace Cctm.Database {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public global::System.Data.DataColumn CashierNumberColumn {
+                get {
+                    return this.columnCashierNumber;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             [global::System.ComponentModel.Browsable(false)]
             public int Count {
                 get {
@@ -667,7 +677,8 @@ namespace Cctm.Database {
                         decimal AuthTTID, 
                         System.DateTime ReferenceDateTime, 
                         decimal AuthCCTransactionIndex, 
-                        decimal AuthCCAmount) {
+                        decimal AuthCCAmount, 
+                        string CashierNumber) {
                 SEL_NEW_TRANSACTIONRECORDSRow rowSEL_NEW_TRANSACTIONRECORDSRow = ((SEL_NEW_TRANSACTIONRECORDSRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         null,
@@ -698,7 +709,8 @@ namespace Cctm.Database {
                         AuthTTID,
                         ReferenceDateTime,
                         AuthCCTransactionIndex,
-                        AuthCCAmount};
+                        AuthCCAmount,
+                        CashierNumber};
                 rowSEL_NEW_TRANSACTIONRECORDSRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowSEL_NEW_TRANSACTIONRECORDSRow);
                 return rowSEL_NEW_TRANSACTIONRECORDSRow;
@@ -757,6 +769,7 @@ namespace Cctm.Database {
                 this.columnReferenceDateTime = base.Columns["ReferenceDateTime"];
                 this.columnAuthCCTransactionIndex = base.Columns["AuthCCTransactionIndex"];
                 this.columnAuthCCAmount = base.Columns["AuthCCAmount"];
+                this.columnCashierNumber = base.Columns["CashierNumber"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -820,25 +833,25 @@ namespace Cctm.Database {
                 base.Columns.Add(this.columnAuthCCTransactionIndex);
                 this.columnAuthCCAmount = new global::System.Data.DataColumn("AuthCCAmount", typeof(decimal), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnAuthCCAmount);
+                this.columnCashierNumber = new global::System.Data.DataColumn("CashierNumber", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCashierNumber);
                 this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
                                 this.columnTransactionRecordID}, true));
                 this.columnTransactionRecordID.AutoIncrement = true;
                 this.columnTransactionRecordID.AllowDBNull = false;
                 this.columnTransactionRecordID.ReadOnly = true;
                 this.columnTransactionRecordID.Unique = true;
-                this.columnPoleID.AllowDBNull = false;
-                this.columnTerminalID.AllowDBNull = false;
                 this.columnCCTracks.MaxLength = 256;
                 this.columnCCTransactionStatus.MaxLength = 20;
-                this.columnUniqueRecordNumber.AllowDBNull = false;
                 this.columnUniqueRecordNumber.MaxLength = 50;
                 this.columnMerchantNumber.MaxLength = 50;
-                this.columnTerminalSerNo.AllowDBNull = false;
                 this.columnTerminalSerNo.MaxLength = 50;
                 this.columnCCTerminalID.MaxLength = 8;
                 this.columnCCClearingPlatform.MaxLength = 10;
                 this.columnCCTransactionKey.MaxLength = 20;
                 this.columnPreAuth.ReadOnly = true;
+                this.columnCashierNumber.ReadOnly = true;
+                this.columnCashierNumber.MaxLength = 50;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -994,7 +1007,12 @@ namespace Cctm.Database {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public decimal PoleID {
                 get {
-                    return ((decimal)(this[this.tableSEL_NEW_TRANSACTIONRECORDS.PoleIDColumn]));
+                    try {
+                        return ((decimal)(this[this.tableSEL_NEW_TRANSACTIONRECORDS.PoleIDColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'PoleID\' in table \'SEL_NEW_TRANSACTIONRECORDS\' is DBNull.", e);
+                    }
                 }
                 set {
                     this[this.tableSEL_NEW_TRANSACTIONRECORDS.PoleIDColumn] = value;
@@ -1005,7 +1023,13 @@ namespace Cctm.Database {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public decimal TerminalID {
                 get {
-                    return ((decimal)(this[this.tableSEL_NEW_TRANSACTIONRECORDS.TerminalIDColumn]));
+                    try {
+                        return ((decimal)(this[this.tableSEL_NEW_TRANSACTIONRECORDS.TerminalIDColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TerminalID\' in table \'SEL_NEW_TRANSACTIONRECORDS\' is DBNull" +
+                                ".", e);
+                    }
                 }
                 set {
                     this[this.tableSEL_NEW_TRANSACTIONRECORDS.TerminalIDColumn] = value;
@@ -1183,7 +1207,13 @@ namespace Cctm.Database {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public string UniqueRecordNumber {
                 get {
-                    return ((string)(this[this.tableSEL_NEW_TRANSACTIONRECORDS.UniqueRecordNumberColumn]));
+                    try {
+                        return ((string)(this[this.tableSEL_NEW_TRANSACTIONRECORDS.UniqueRecordNumberColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'UniqueRecordNumber\' in table \'SEL_NEW_TRANSACTIONRECORDS\' i" +
+                                "s DBNull.", e);
+                    }
                 }
                 set {
                     this[this.tableSEL_NEW_TRANSACTIONRECORDS.UniqueRecordNumberColumn] = value;
@@ -1245,7 +1275,13 @@ namespace Cctm.Database {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public string TerminalSerNo {
                 get {
-                    return ((string)(this[this.tableSEL_NEW_TRANSACTIONRECORDS.TerminalSerNoColumn]));
+                    try {
+                        return ((string)(this[this.tableSEL_NEW_TRANSACTIONRECORDS.TerminalSerNoColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'TerminalSerNo\' in table \'SEL_NEW_TRANSACTIONRECORDS\' is DBN" +
+                                "ull.", e);
+                    }
                 }
                 set {
                     this[this.tableSEL_NEW_TRANSACTIONRECORDS.TerminalSerNoColumn] = value;
@@ -1437,6 +1473,47 @@ namespace Cctm.Database {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public string CashierNumber {
+                get {
+                    try {
+                        return ((string)(this[this.tableSEL_NEW_TRANSACTIONRECORDS.CashierNumberColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CashierNumber\' in table \'SEL_NEW_TRANSACTIONRECORDS\' is DBN" +
+                                "ull.", e);
+                    }
+                }
+                set {
+                    this[this.tableSEL_NEW_TRANSACTIONRECORDS.CashierNumberColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsPoleIDNull() {
+                return this.IsNull(this.tableSEL_NEW_TRANSACTIONRECORDS.PoleIDColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetPoleIDNull() {
+                this[this.tableSEL_NEW_TRANSACTIONRECORDS.PoleIDColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsTerminalIDNull() {
+                return this.IsNull(this.tableSEL_NEW_TRANSACTIONRECORDS.TerminalIDColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetTerminalIDNull() {
+                this[this.tableSEL_NEW_TRANSACTIONRECORDS.TerminalIDColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsStartDateTimeNull() {
                 return this.IsNull(this.tableSEL_NEW_TRANSACTIONRECORDS.StartDateTimeColumn);
             }
@@ -1557,6 +1634,18 @@ namespace Cctm.Database {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsUniqueRecordNumberNull() {
+                return this.IsNull(this.tableSEL_NEW_TRANSACTIONRECORDS.UniqueRecordNumberColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetUniqueRecordNumberNull() {
+                this[this.tableSEL_NEW_TRANSACTIONRECORDS.UniqueRecordNumberColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public bool IsDateTimeCreatedNull() {
                 return this.IsNull(this.tableSEL_NEW_TRANSACTIONRECORDS.DateTimeCreatedColumn);
             }
@@ -1589,6 +1678,18 @@ namespace Cctm.Database {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetMerchantNumberNull() {
                 this[this.tableSEL_NEW_TRANSACTIONRECORDS.MerchantNumberColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsTerminalSerNoNull() {
+                return this.IsNull(this.tableSEL_NEW_TRANSACTIONRECORDS.TerminalSerNoColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetTerminalSerNoNull() {
+                this[this.tableSEL_NEW_TRANSACTIONRECORDS.TerminalSerNoColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -1721,6 +1822,18 @@ namespace Cctm.Database {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
             public void SetAuthCCAmountNull() {
                 this[this.tableSEL_NEW_TRANSACTIONRECORDS.AuthCCAmountColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public bool IsCashierNumberNull() {
+                return this.IsNull(this.tableSEL_NEW_TRANSACTIONRECORDS.CashierNumberColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")]
+            public void SetCashierNumberNull() {
+                this[this.tableSEL_NEW_TRANSACTIONRECORDS.CashierNumberColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -1884,6 +1997,7 @@ namespace Cctm.Database.CCTransactionsDataSetTableAdapters {
             tableMapping.ColumnMappings.Add("ReferenceDateTime", "ReferenceDateTime");
             tableMapping.ColumnMappings.Add("AuthCCTransactionIndex", "AuthCCTransactionIndex");
             tableMapping.ColumnMappings.Add("AuthCCAmount", "AuthCCAmount");
+            tableMapping.ColumnMappings.Add("CashierNumber", "CashierNumber");
             this._adapter.TableMappings.Add(tableMapping);
         }
         

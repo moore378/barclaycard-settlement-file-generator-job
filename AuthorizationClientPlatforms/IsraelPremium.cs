@@ -34,7 +34,7 @@ namespace AuthorizationClientPlatforms
             string track2 = request.TrackTwoData.Trim(';','?');
             string cardNum = request.Pan;
             string expDate_YYMM = request.ExpiryDateMMYY.Substring(2, 2) + request.ExpiryDateMMYY.Substring(0, 2);
-            string amount = ((int)(request.AmountDolars * 100)).ToString();
+            string amount = ((int)(request.AmountDollars * 100)).ToString();
             string transactionType = "01";
             string creditTerms = "1";
             string currency = "1";

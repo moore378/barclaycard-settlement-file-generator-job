@@ -41,6 +41,8 @@ using Cctm.Behavior;
 using Cctm.DualAuth;
 using AutoDatabase;
 
+using AuthorizationClientPlatforms.Settings;
+
 namespace Cctm
 {
     public partial class CctmForm : Form
@@ -93,10 +95,8 @@ namespace Cctm
             databaseStatus = listView1.Items.Add("Database").SubItems.Add("-");
             monetraStatus = listView1.Items.Add("Monetra").SubItems.Add("-");
             israelPremiumStatus = listView1.Items.Add("Israel Premium").SubItems.Add("-");
-            creditCallLiveStatus = listView1.Items.Add("Credit Call Live").SubItems.Add("-");
-            creditCallTestStatus = listView1.Items.Add("Credit Call Test").SubItems.Add("-");
-            migsLiveStatus = listView1.Items.Add("MIGS Live").SubItems.Add("-");
-            migsTestStatus = listView1.Items.Add("MIGS Test").SubItems.Add("-");
+
+            // NOTE: Removed unused authorization platforms.
         }
 
         /// <summary>
@@ -151,8 +151,8 @@ namespace Cctm
             // Initialize the database
             Lazy<ICctmDatabase> database = prepareDatabase();
 
-            // Initialize the authorization suite
-            AuthorizationSuite authorizationSuite = prepareAuthorizationSuite(testMode: false);
+            // Initialize the authorization suite, now in dictionary form.
+            Dictionary<string, Lazy<IAuthorizationPlatform>> platforms = prepareAuthorizationSuite(testMode: false);
 
             int maxSimultaneous = Properties.Settings.Default.MaxSimultaneous;
 
@@ -165,7 +165,7 @@ namespace Cctm
                     var databaseTracker = new DatabaseTracker(fileLog, extendedDatabaseLogging);
                     var cctmDatabase2 = dualAuthDatabaseBuilder.CreateInstance(connectionSource, databaseTracker);
                     // Create the mediator
-                    CctmMediator mediator = new CctmMediator(database.Value, cctmDatabase2, authorizationSuite, statisticsChanged, generalLog, fileLog, (x) => tickWatchDog(), detailedLog, maxSimultaneous, performanceCounters);
+                    CctmMediator mediator = new CctmMediator(database.Value, cctmDatabase2, platforms, statisticsChanged, generalLog, fileLog, (x) => tickWatchDog(), detailedLog, maxSimultaneous, performanceCounters);
                     mediator.PollIntervalSeconds = PollIntervalSeconds;
                     // Set up the events for the mediator
                     mediator.StartingTransaction += StartingTransaction;
@@ -202,6 +202,22 @@ namespace Cctm
             return new IsraelPremium(Properties.Settings.Default.IsraelMerchantNumber, Properties.Settings.Default.IsraelCashierNumber); 
         }
 
+        /// <summary>
+        /// Helper method for setting up a authorization platform using the authorization processor interface.
+        /// </summary>
+        /// <param name="processor">Name of authorization processor to load</param>
+        /// <param name="testMode">unused</param>
+        /// <returns></returns>
+        private IAuthorizationPlatform prepareAuthorizationProcessorServer(ProcessorElement processor, bool testMode)
+        {
+            Dictionary<string, string> configuration = new Dictionary<string, string>();
+
+            // TODO: anything that is not Name and Description needs to be added to the configuration dictionary.
+            configuration["endpoint"] = processor.Endpoint;
+
+            return new AuthorizationClientPlatforms.AuthorizationPlatform(processor.Server, processor.Name, configuration);
+        }
+
         private Lazy<ICctmDatabase> prepareDatabase()
         {
             /* Create a factory for the database - here we decide the specific type of database object to 
@@ -235,9 +251,9 @@ namespace Cctm
         /// <returns>
         /// A suite of authorization servers
         /// </returns>
-        private AuthorizationSuite prepareAuthorizationSuite(bool testMode)
+        private Dictionary<string, Lazy<IAuthorizationPlatform>> prepareAuthorizationSuite(bool testMode)
         {
-            AuthorizationSuite suite = new AuthorizationSuite();
+            Dictionary<string, Lazy<IAuthorizationPlatform>> platforms = new Dictionary<string, Lazy<IAuthorizationPlatform>>(StringComparer.CurrentCultureIgnoreCase);
 
             /* This creates a factory for creating authorization-platform wrappers.
              * Using a factory to create wrappers is convenient because there many 
@@ -255,7 +271,7 @@ namespace Cctm
                     );
 
             // Monetra
-            suite.Monetra = authorizationPlatformFactory.CreateControllerWrapper(
+            platforms["monetra"] = authorizationPlatformFactory.CreateControllerWrapper(
                 "MontraFactory",
                 // How do we create the monetra server?
                 factoryMethod: () => prepareMonetraServer(testMode),
@@ -264,60 +280,35 @@ namespace Cctm
                 );
 
             // Israel Premium
-            suite.IsraelPremium = authorizationPlatformFactory.CreateControllerWrapper(
-                "IsraelPreium",
+            platforms["israel-premium"] = authorizationPlatformFactory.CreateControllerWrapper(
+                "IsraelPremium",
                 // How do we create the Israel premium server?
                 factoryMethod: () => prepareIsraelServer(testMode),
                 // What does it use to update the server status?
                 statusUpdate: (status) => updateServerStatus(israelPremiumStatus, status)
                     );
 
-            // Credit Call live server
-            /*suite.CreditCallLive =
-                authorizationPlatformFactory.CreateControllerWrapper(
-                "CreditCallLive Factory",
-                // How do we create the server?
-                factoryMethod: () => 
-                    new CreditCall(testMode?CreditCall.AuthorizationMode.Test:CreditCall.AuthorizationMode.Live, ProductName, ProductVersion),
-                // What does it use to update the server status?
-                statusUpdate: (status) => updateServerStatus(creditCallLiveStatus, status)
-                );*/
 
-            // Credit Call test server
-            /*suite.CreditCallTest =
-                authorizationPlatformFactory.CreateControllerWrapper(
-                "CreditCallTest Factory",
-                // How do we create the server?
-                factoryMethod: () => new CreditCall(CreditCall.AuthorizationMode.Test, ProductName, ProductVersion),
-                // What does it use to update the server status?
-                statusUpdate: (status) => updateServerStatus(creditCallTestStatus, status)
-                );*/
+            // Programmatically add new processors via configuration.
+            AuthorizationClientPlatformsSection acpSection = (AuthorizationClientPlatformsSection)ConfigurationManager.GetSection("authorizationClientPlatforms");
 
-            // IC verify live server
-            //suite.ICVerifyLive = null;
+            // Loop through each processor entry.
+            foreach (ProcessorElement entry in acpSection.AuthorizationProcessors)
+            {
+                // Add the processor to the status display.
+                ListViewItem.ListViewSubItem processorStatus = listView1.Items.Add(entry.Description).SubItems.Add("-"); ;
 
-            // IC-verify test server
-            //suite.ICVerifyTest = null;
+                // Create controller for the configured authorization processor.
+                platforms[entry.Name] = authorizationPlatformFactory.CreateControllerWrapper(
+                    entry.Description,
+                    // How do we create the Israel premium server?
+                    factoryMethod: () => prepareAuthorizationProcessorServer(entry, testMode),
+                    // What does it use to update the server status?
+                    statusUpdate: (status) => updateServerStatus(processorStatus, status)
+                        );
+            }
 
-            // Migs
-            /*suite.MigsLive =
-                authorizationPlatformFactory.CreateControllerWrapper(
-                "MIGSLive Factory",
-                // How do we create the server?
-                factoryMethod: () => new MigsAustralia(generalLog, onlyForTesting: false),
-                // What does it use to update the server status?
-                statusUpdate: (status) => updateServerStatus(migsLiveStatus, status)
-                );
-            suite.MigsTest =
-                authorizationPlatformFactory.CreateControllerWrapper(
-                "MIGSLive Factory",
-                // How do we create the server?
-                factoryMethod: () => new MigsAustralia(generalLog, onlyForTesting: true),
-                // What does it use to update the server status?
-                statusUpdate: (status) => updateServerStatus(migsTestStatus, status)
-                );*/
-
-            return suite;
+            return platforms;
         }
 
         #endregion
@@ -632,11 +623,9 @@ namespace Cctm
             mediatorStatus,
             databaseStatus,
             monetraStatus,
-            israelPremiumStatus,
-            creditCallLiveStatus,
-            creditCallTestStatus,
-            migsLiveStatus,
-            migsTestStatus;
+            israelPremiumStatus;
+            // NOTE: Removed unused authorization platforms.
+
         // Forms
         private Lazy<EventLogForm> eventLogForm = new Lazy<EventLogForm>();
         private Lazy<AboutForm> aboutForm = new Lazy<AboutForm>(new Func<AboutForm>(() => new AboutForm(launchedAt)));

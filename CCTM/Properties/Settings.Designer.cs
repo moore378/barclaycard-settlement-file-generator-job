@@ -26,8 +26,8 @@ namespace Cctm.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=DB5;Initial Catalog=SSPM-DB;Persist Security Info=True;User ID=mike;P" +
-            "assword=mike")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=vayu;Initial Catalog=SSPM-DB;Persist Security Info=True;Integrated Se" +
+            "curity=True")]
         public string SSPM_DBConnectionString {
             get {
                 return ((string)(this["SSPM_DBConnectionString"]));

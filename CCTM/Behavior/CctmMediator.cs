@@ -35,7 +35,7 @@ namespace Cctm.Behavior
         private DetailedLogDelegate detailedLog;
         private static long totalStarted = 0;
         private ICctmDatabase database;
-        private AuthorizationSuite authorizationSuite;
+        private Dictionary<string, Lazy<IAuthorizationPlatform>> platforms; // Holds all the supported authorization platforms.
         private CctmPerformanceCounters performanceCounters;
         private static System.Security.Cryptography.MD5 hasher = System.Security.Cryptography.MD5.Create();
 
@@ -53,11 +53,11 @@ namespace Cctm.Behavior
         /// 
         /// </summary>
         /// <param name="database"></param>
-        /// <param name="authorizationSuite"></param>
+        /// <param name="platforms"></param>
         /// <param name="statisticsChanged">Delegate signalled when there is a change in the statistics record.</param>
         public CctmMediator(ICctmDatabase database,
             ICctmDatabase2 cctmDatabase2,
-            AuthorizationSuite authorizationSuite,
+            Dictionary<string, Lazy<IAuthorizationPlatform>> platforms,
             Action<IStatistics> statisticsChanged,
             Action<string> log,
             Action<string> fileLog,
@@ -70,7 +70,7 @@ namespace Cctm.Behavior
             this.performanceCounters = performanceCounters;
             this.throttle = new AsyncSemaphore(maxSimultaneous);
             this.database = database;
-            this.authorizationSuite = authorizationSuite;
+            this.platforms = platforms; // collection of authorization platforms.
             this.statistics = new CctmStatistics(statisticsChanged);
             this.statistics.Changed += new Action<IStatistics>((stats) => { if (StatisticsChanged != null) StatisticsChanged(stats); });
             this.runningTasks = new List<Task>();
@@ -207,7 +207,7 @@ namespace Cctm.Behavior
                         tracks = new CreditCardTracks();
 
                     // Choose the authorization platform
-                    IAuthorizationPlatform authorizationPlatform = ChooseAuthorizationPlatform(dbTransactionRecord, authorizationSuite, "Err: Clearing platform");
+                    IAuthorizationPlatform authorizationPlatform = ChooseAuthorizationPlatform(dbTransactionRecord, "Err: Clearing platform");
 
                     // Update the record to be authorizing
                     await UpdateTransactionStatus(dbTransactionRecord, TransactionStatus.Authorizing, isPreAuth);
@@ -260,8 +260,8 @@ namespace Cctm.Behavior
                     UpdatedTransactionRecord updatedRecord = new UpdatedTransactionRecord()
                     {
                         AuthorizationCode = authorizationResponse.authorizationCode,
-                        CardEaseReference = authorizationResponse.receiptReference,
-                        CardScheme = authorizationResponse.cardType,
+                        CardEaseReference = authorizationResponse.receiptReference ?? "", // Optional. Some processors do not support sending these for declines.
+                        CardScheme = authorizationResponse.cardType ?? "", // Optional. Some processors do not support sending these for declines.
                         ExpiryDate = (mode != AuthorizeMode.Finalize) ? creditCardFields.ExpDateYYMM : "",
                         FirstSix = (mode != AuthorizeMode.Finalize) ? creditCardFields.Pan.FirstSixDigits : "",
                         LastFour = (mode != AuthorizeMode.Finalize) ? creditCardFields.Pan.LastFourDigits : "",
@@ -325,7 +325,14 @@ namespace Cctm.Behavior
 	                            BatNum = updatedRecord.BatchNum,
 	                            TTID = updatedRecord.Ttid,
 	                            Status = (short)updatedRecord.Status,
-	                            OldStatus = dbTransactionRecord.Status
+	                            OldStatus = dbTransactionRecord.Status,
+                                // When the processor charges an extra credit 
+                                // card fee and that value was not reflected
+                                // with the requested amount, pass in the value
+                                // as a negative number to trigger the 
+                                // database to update the total card and credit
+                                // charge values.
+                                CCFee = (short) (authorizationResponse.AdditionalCCFee * -100m)
                             }); 
                             break;
                     }
@@ -690,46 +697,30 @@ namespace Cctm.Behavior
                 throw mediationException;
         }
 
-        private static IAuthorizationPlatform ChooseAuthorizationPlatform(
+        /// <summary>
+        /// Determine the authorization platform for a single transaction.
+        /// </summary>
+        /// <param name="transaction"></param>
+        /// <param name="failStatus"></param>
+        /// <returns>Authorization Platform associated to the customer for the transaction.</returns>
+        private IAuthorizationPlatform ChooseAuthorizationPlatform(
             DbTransactionRecord transaction,
-            AuthorizationSuite authorizationSuite,
             string failStatus)
         {
             IAuthorizationPlatform authorizationPlatform = null;
 
-            switch (transaction.CCClearingPlatform.ToUpper())
+            // Holder for an authorization platform since it's not created until it's first used.
+            Lazy<IAuthorizationPlatform> authorizationPlatformEntry;
+
+            // Verify that the authorization platform is configured in the system.
+            platforms.TryGetValue(transaction.CCClearingPlatform, out authorizationPlatformEntry);
+            if (null == authorizationPlatformEntry)
             {
-                case "LIVE":
-                    throw new StripeErrorException("Credit-Call no longer supported");
-                    //authorizationPlatform = authorizationSuite.CreditCallLive.Value; break;
-                case "TEST":
-                    //authorizationPlatform = authorizationSuite.CreditCallTest.Value; break;
-                    throw new StripeErrorException("Credit-Call no longer supported");
-                case "ICVFDMS":
-                    //authorizationPlatform = authorizationSuite.ICVerifyLive.Value; break;
-                    throw new StripeErrorException("ICVerifiy no longer supported");
-                case "ICV_TEST":
-                    throw new StripeErrorException("ICVerifiy no longer supported");
-                    //authorizationPlatform = authorizationSuite.ICVerifyTest.Value; Break;
-                case "MONETRA":
-                    authorizationPlatform = authorizationSuite.Monetra.Value;
-                    break;
-                case "LIVE-MIGS":
-                    // authorizationPlatform = authorizationSuite.MigsLive.Value; Break;
-                    throw new StripeErrorException("MIGS no longer supported");
-                case "TEST-MIGS":
-                    //authorizationPlatform = authorizationSuite.MigsTest.Value; Break;
-                    throw new StripeErrorException("MIGS no longer supported");
-                case "ISRAEL-PREMIUM":
-                    authorizationPlatform = authorizationSuite.IsraelPremium.Value; 
-                    break;
-                default:
-                    authorizationPlatform = null;
-                    break;
+                throw new StripeErrorException("Clearing platform not supported: \"" + transaction.CCClearingPlatform + "\"", failStatus);
             }
 
-            if (authorizationPlatform == null)
-                throw new StripeErrorException("Clearing platform not supported: \"" + transaction.CCClearingPlatform + "\"", failStatus);
+            // Get the actual authorization platform.
+            authorizationPlatform = authorizationPlatformEntry.Value;
 
             return authorizationPlatform;
         }
@@ -737,7 +728,8 @@ namespace Cctm.Behavior
         private AuthorizationResponseFields AuthorizeRequest(DbTransactionRecord transaction, CreditCardTracks tracks, CreditCardStripe unencryptedStripe, CreditCardTrackFields creditCardFields,
             IAuthorizationPlatform authorizationPlatform, string orderNumber, AuthorizeMode mode, int? preauthTtid)
         {
-            
+            Dictionary<string, string> processorSettings = new Dictionary<string, string>();
+
             AuthorizationRequest authorizationRequest = new AuthorizationRequest(
                 transaction.TerminalSerNo,
                 transaction.StartDateTime,
@@ -754,6 +746,23 @@ namespace Cctm.Behavior
                 transaction.TransactionRecordID.ToString(),
                 orderNumber,
                 preauthTtid);
+
+            // Normalize the extra processor settings since they are 
+            // overloaded and have different meanings based on the processor.
+            switch (transaction.CCClearingPlatform.ToLower())
+            {
+                case "israel-premium":
+                    authorizationRequest.ProcessorSettings["MerchantNumber"] = transaction.MerchantNumber;
+                    authorizationRequest.ProcessorSettings["CashierNumber"] = transaction.CashierNumber;
+                    break;
+                case "fis-paydirect":
+                    authorizationRequest.ProcessorSettings["SettleMerchantCode"] = transaction.MerchantNumber;
+                    break;
+                case "monetra":
+                    // Falls through on purpose.
+                default:
+                    break;
+            }
 
             // Perform the authorization and get a response
             AuthorizationResponseFields authorizationResponse = authorizationPlatform.Authorize(authorizationRequest, mode);

@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="https://paydirectapi.link2gov.com/ApiService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/PayDirect.Api.ServiceInterface.WCFContract" />
+  <xs:element name="ProcessHeartbeat">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/PayDirect.Api.ServiceInterface.WCFContract" minOccurs="0" name="request" nillable="true" type="q1:ProcessHeartbeatRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ProcessHeartbeatResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/PayDirect.Api.ServiceInterface.WCFContract" minOccurs="0" name="ProcessHeartbeatResult" nillable="true" type="q2:ProcessHeartbeatResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetAvailablePaymentMethods">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/PayDirect.Api.ServiceInterface.WCFContract" minOccurs="0" name="request" nillable="true" type="q3:GetAvailablePaymentMethodsRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetAvailablePaymentMethodsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/PayDirect.Api.ServiceInterface.WCFContract" minOccurs="0" name="GetAvailablePaymentMethodsResult" nillable="true" type="q4:GetAvailablePaymentMethodsResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AssessFeesForCard">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/PayDirect.Api.ServiceInterface.WCFContract" minOccurs="0" name="request" nillable="true" type="q5:AssessFeesForCardRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AssessFeesForCardResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/PayDirect.Api.ServiceInterface.WCFContract" minOccurs="0" name="AssessFeesForCardResult" nillable="true" type="q6:AssessFeesResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AssessFeesForECheck">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/PayDirect.Api.ServiceInterface.WCFContract" minOccurs="0" name="request" nillable="true" type="q7:AssessFeesForECheckRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AssessFeesForECheckResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/PayDirect.Api.ServiceInterface.WCFContract" minOccurs="0" name="AssessFeesForECheckResult" nillable="true" type="q8:AssessFeesResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AssessFeesForECheckACH">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/PayDirect.Api.ServiceInterface.WCFContract" minOccurs="0" name="request" nillable="true" type="q9:AssessFeesForECheckACHRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AssessFeesForECheckACHResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/PayDirect.Api.ServiceInterface.WCFContract" minOccurs="0" name="AssessFeesForECheckACHResult" nillable="true" type="q10:AssessFeesResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AssessFeesForTokenizedPaymentMethod">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/PayDirect.Api.ServiceInterface.WCFContract" minOccurs="0" name="request" nillable="true" type="q11:AssessFeesForTokenizedPaymentMethodRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AssessFeesForTokenizedPaymentMethodResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q12="http://schemas.datacontract.org/2004/07/PayDirect.Api.ServiceInterface.WCFContract" minOccurs="0" name="AssessFeesForTokenizedPaymentMethodResult" nillable="true" type="q12:AssessFeesForTokenizedPaymentMethodResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SubmitPayment">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q13="http://schemas.datacontract.org/2004/07/PayDirect.Api.ServiceInterface.WCFContract" minOccurs="0" name="request" nillable="true" type="q13:SubmitPaymentRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SubmitPaymentResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/PayDirect.Api.ServiceInterface.WCFContract" minOccurs="0" name="SubmitPaymentResult" nillable="true" type="q14:SubmitPaymentResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="TokenizePaymentMethodECheck">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q15="http://schemas.datacontract.org/2004/07/PayDirect.Api.ServiceInterface.WCFContract" minOccurs="0" name="request" nillable="true" type="q15:TokenizePaymentMethodECheckRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="TokenizePaymentMethodECheckResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q16="http://schemas.datacontract.org/2004/07/PayDirect.Api.ServiceInterface.WCFContract" minOccurs="0" name="TokenizePaymentMethodECheckResult" nillable="true" type="q16:TokenizePaymentMethodECheckResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="TokenizePaymentMethodACH">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q17="http://schemas.datacontract.org/2004/07/PayDirect.Api.ServiceInterface.WCFContract" minOccurs="0" name="request" nillable="true" type="q17:TokenizePaymentMethodACHRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="TokenizePaymentMethodACHResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q18="http://schemas.datacontract.org/2004/07/PayDirect.Api.ServiceInterface.WCFContract" minOccurs="0" name="TokenizePaymentMethodACHResult" nillable="true" type="q18:TokenizePaymentMethodACHResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="TokenizePaymentMethodCard">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q19="http://schemas.datacontract.org/2004/07/PayDirect.Api.ServiceInterface.WCFContract" minOccurs="0" name="request" nillable="true" type="q19:TokenizePaymentMethodCardRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="TokenizePaymentMethodCardResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q20="http://schemas.datacontract.org/2004/07/PayDirect.Api.ServiceInterface.WCFContract" minOccurs="0" name="TokenizePaymentMethodCardResult" nillable="true" type="q20:TokenizePaymentMethodCardResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetTransactionStatus">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q21="http://schemas.datacontract.org/2004/07/PayDirect.Api.ServiceInterface.WCFContract" minOccurs="0" name="request" nillable="true" type="q21:GetTransactionStatusRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetTransactionStatusResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q22="http://schemas.datacontract.org/2004/07/PayDirect.Api.ServiceInterface.WCFContract" minOccurs="0" name="GetTransactionStatusResult" nillable="true" type="q22:GetTransactionStatusResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CanReverseTransaction">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q23="http://schemas.datacontract.org/2004/07/PayDirect.Api.ServiceInterface.WCFContract" minOccurs="0" name="request" nillable="true" type="q23:CanReverseTransactionRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CanReverseTransactionResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q24="http://schemas.datacontract.org/2004/07/PayDirect.Api.ServiceInterface.WCFContract" minOccurs="0" name="CanReverseTransactionResult" nillable="true" type="q24:CanReverseTransactionResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CanReversePayment">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q25="http://schemas.datacontract.org/2004/07/PayDirect.Api.ServiceInterface.WCFContract" minOccurs="0" name="request" nillable="true" type="q25:CanReversePaymentRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CanReversePaymentResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q26="http://schemas.datacontract.org/2004/07/PayDirect.Api.ServiceInterface.WCFContract" minOccurs="0" name="CanReversePaymentResult" nillable="true" type="q26:CanReversePaymentResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ProcessTransactionReversal">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q27="http://schemas.datacontract.org/2004/07/PayDirect.Api.ServiceInterface.WCFContract" minOccurs="0" name="request" nillable="true" type="q27:ProcessTransactionReversalRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ProcessTransactionReversalResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q28="http://schemas.datacontract.org/2004/07/PayDirect.Api.ServiceInterface.WCFContract" minOccurs="0" name="ProcessTransactionReversalResult" nillable="true" type="q28:ProcessTransactionReversalResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ProcessPaymentReversal">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q29="http://schemas.datacontract.org/2004/07/PayDirect.Api.ServiceInterface.WCFContract" minOccurs="0" name="request" nillable="true" type="q29:ProcessPaymentReversalRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ProcessPaymentReversalResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q30="http://schemas.datacontract.org/2004/07/PayDirect.Api.ServiceInterface.WCFContract" minOccurs="0" name="ProcessPaymentReversalResult" nillable="true" type="q30:ProcessPaymentReversalResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetTerminalTotalForPeriod">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q31="http://schemas.datacontract.org/2004/07/PayDirect.Api.ServiceInterface.WCFContract" minOccurs="0" name="request" nillable="true" type="q31:GetTerminalTotalForPeriodRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetTerminalTotalForPeriodResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q32="http://schemas.datacontract.org/2004/07/PayDirect.Api.ServiceInterface.WCFContract" minOccurs="0" name="GetTerminalTotalForPeriodResult" nillable="true" type="q32:GetTerminalTotalForPeriodResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetTerminalInformation">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q33="http://schemas.datacontract.org/2004/07/PayDirect.Api.ServiceInterface.WCFContract" minOccurs="0" name="request" nillable="true" type="q33:GetTerminalInformationRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetTerminalInformationResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q34="http://schemas.datacontract.org/2004/07/PayDirect.Api.ServiceInterface.WCFContract" minOccurs="0" name="GetTerminalInformationResult" nillable="true" type="q34:GetTerminalInformationResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetTerminalHistoryForPeriod">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q35="http://schemas.datacontract.org/2004/07/PayDirect.Api.ServiceInterface.WCFContract" minOccurs="0" name="request" nillable="true" type="q35:GetTerminalHistoryForPeriodRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetTerminalHistoryForPeriodResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q36="http://schemas.datacontract.org/2004/07/PayDirect.Api.ServiceInterface.WCFContract" minOccurs="0" name="GetTerminalHistoryForPeriodResult" nillable="true" type="q36:GetTerminalHistoryForPeriodResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

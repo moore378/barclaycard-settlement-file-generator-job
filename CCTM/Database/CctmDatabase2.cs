@@ -65,6 +65,8 @@ namespace Cctm.Database
                         PreauthStatus = (data[i].IsNull("AuthStatus")) ? (TransactionStatus?)null : ((TransactionStatus)data[i].AuthStatus),
                         PreauthTtid = (data[i].IsNull("AuthTTID")) ? (int?)null : ((int)data[i].AuthTTID),
                         PreauthTransactionIndex = (data[i].IsNull("AuthCCTransactionIndex")) ? (int?)null : ((int)data[i].AuthCCTransactionIndex),
+                        MerchantNumber = data[i].MerchantNumber, // Processor-specific setting that also needs to be sent out for every authorization.
+                        CashierNumber = data[i].CashierNumber // Processor-specific setting that also needs to be sent out for every authorization.
                     });
                 }
                 catch (Exception error)

@@ -35,3 +35,10 @@ namespace Rtcc.Database
         }
     }
 }
+
+namespace Rtcc.Database.DataSet1TableAdapters {
+    
+    
+    public partial class QueriesTableAdapter {
+    }
+}

@@ -26,8 +26,8 @@ namespace Rtcc.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=DB5;Initial Catalog=SSPM-DB;Persist Security Info=True;User ID=mike;P" +
-            "assword=mike;TrustServerCertificate=True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=VAYU;Initial Catalog=SSPM-DB;Persist Security Info=True;Integrated Se" +
+            "curity=True;TrustServerCertificate=True")]
         public string ConnectionString {
             get {
                 return ((string)(this["ConnectionString"]));

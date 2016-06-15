@@ -21,5 +21,12 @@ namespace Cctm.Database
         public Decimal TTID; // Decimal
         public Int16 Status; // SmallInt
         public Int16 OldStatus; // SmallInt
+
+        /// <summary>
+        /// If there are any additional credit card fees that were added on 
+        /// by the processor which makes the authorization request value
+        /// different than the authorized amount value.
+        /// </summary>
+        public Int16 CCFee; // SmallInt 
     }
 }
