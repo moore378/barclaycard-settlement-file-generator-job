@@ -112,8 +112,12 @@ namespace AuthorizationClientPlatforms.Plugins
             }
             else
             {
-                // TODO: Get the track 1 handling.
-                accountUsed = "Track 1";
+                // NOTE: this code would never be exercised since RTCC and 
+                // CCTM will throw away cards that do not have Track 2.
+                // If it ever comes to this situation, then FIS PayDirect
+                // should return a decline due to track/account not being
+                // populated on the request message.
+                accountUsed = "Track 1...";
             }
 
             // Make the web service call to gather the fee details.
@@ -176,7 +180,7 @@ namespace AuthorizationClientPlatforms.Plugins
                     return response;
                 }
 
-                // Cheap hack for the time being until DB integration.
+                // Cheap hack for hardcoding of values for testing purposes.
                 /*
                 request.ProcessorSettings["MerchantID"] = "50BNA-PUBWK-PARKG-G";
                 request.ProcessorSettings["MerchantPassword"] = "test2346";

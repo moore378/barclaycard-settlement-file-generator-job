@@ -361,10 +361,39 @@ namespace UnitTests
                 refDateTime: dtNow);
             
             // After all that work to add the starting and ending sentinels... remove them for this track format.
-            string tracksFormatted = entry.CreditCard.Track1.Substring(1, entry.CreditCard.Track1.Length - 2).PadRight(88, '\0') 
+            string tracksUnformatted = entry.CreditCard.Track1.Substring(1, entry.CreditCard.Track1.Length - 2).PadRight(88, '\0') 
                 + entry.CreditCard.Track2.Substring(1, entry.CreditCard.Track2.Length - 2).PadRight(40, '\0');
 
-            byte[] encryptedData = ipsEncryptStripe(tracksFormatted, info, 1);
+
+            // Forcing only track 2.
+            //tracksUnformatted = "".PadRight(88, '\0') + entry.CreditCard.Track2.Substring(1, entry.CreditCard.Track2.Length - 2).PadRight(40, '\0');
+
+            // Forcing only Track 1.
+            //tracksUnformatted = entry.CreditCard.Track1.Substring(1, entry.CreditCard.Track1.Length - 2).PadRight(88, '\0') + "".PadRight(40, '\0');
+
+            // Cheap test code for verifying / validating the data being sent out.
+            {
+                byte[] encodedBytes = System.Text.Encoding.ASCII.GetBytes(tracksUnformatted);
+
+                string encodedBase64 = Convert.ToBase64String(encodedBytes);
+
+                // Track 1 and Track 2
+                //encodedBase64 = "QjQwNTUwMTExMTExMTExMTFeVEVTVCBDQVJEL1ZTXjE4MDYxMDE1NDMyMTEyMzQ1Njc4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADQwNTUwMTExMTExMTExMTE9MTgwNjEwMTU0MzIxMTIzNDU2NwAAAAA=";
+
+                // Track 2 only
+                //encodedBase64 = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADQwNTUwMTExMTExMTExMTE9MTgwNjEwMTU0MzIxMTIzNDU2NwAAAAA=";
+
+                // Track 1 only
+                encodedBase64 = "QjU0NTQ1NDU0NTQ1NDU0NTReVEVTVCBDQVJEL01DXjE4MDYxMDE1NDMyMTEyMzQ1Njc4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADU0NTQ1NDU0NTQ1NDU0NTQ9MTgwNjEwMTU0MzIxMTIzNDU2NwAAAAA=";
+
+                System.Diagnostics.Debug.WriteLine("Base 64 encoded {0}", encodedBase64);
+
+                byte[] decodedBytes = Convert.FromBase64String(encodedBase64);
+
+                string decodedBase64 = new String(System.Text.Encoding.ASCII.GetChars(decodedBytes));
+            }
+
+            byte[] encryptedData = ipsEncryptStripe(tracksUnformatted, info, 1);
 
             // Create a dummy message source
             var rtsaConnection = new DummyRtsaConnection();
