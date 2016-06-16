@@ -295,8 +295,12 @@ namespace Cctm
             // Loop through each processor entry.
             foreach (ProcessorElement entry in acpSection.AuthorizationProcessors)
             {
-                // Add the processor to the status display.
-                ListViewItem.ListViewSubItem processorStatus = listView1.Items.Add(entry.Description).SubItems.Add("-"); ;
+                // Add the processor to the status display... only if it's running in GUI mode.
+                ListViewItem.ListViewSubItem processorStatus = null;
+                if (!hidden)
+                {
+                    listView1.Items.Add(entry.Description).SubItems.Add("-"); ;
+                }
 
                 // Create controller for the configured authorization processor.
                 platforms[entry.Name] = authorizationPlatformFactory.CreateControllerWrapper(
