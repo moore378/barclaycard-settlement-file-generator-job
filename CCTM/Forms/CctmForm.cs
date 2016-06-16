@@ -299,7 +299,7 @@ namespace Cctm
                 ListViewItem.ListViewSubItem processorStatus = null;
                 if (!hidden)
                 {
-                    listView1.Items.Add(entry.Description).SubItems.Add("-"); ;
+                    processorStatus = listView1.Items.Add(entry.Description).SubItems.Add("-"); ;
                 }
 
                 // Create controller for the configured authorization processor.
