@@ -18,6 +18,8 @@ using Rtcc.PayByCell;
 
 using AuthorizationClientPlatforms.Settings;
 
+using System.Threading;
+
 namespace UnitTests
 {
 
@@ -101,6 +103,7 @@ namespace UnitTests
             // Do nothing
         }
     }
+
 
     /// <summary>
     /// Summary description for UnitTest1
@@ -209,6 +212,46 @@ namespace UnitTests
             return CryptographicPlatforms.RsaCipher.Encrypt(stripe, keyVersion);
         }
 
+
+        [TestMethod]
+        public void TestCCCryptoHashPan()
+        {
+            string pan = "4444333322221111";
+
+            string hash = CreditCardHashing.HashPAN(pan);
+
+            Console.WriteLine(hash);
+
+            System.Security.Cryptography.MD5 hasher = System.Security.Cryptography.MD5.Create();
+
+            byte[] newhash = hasher.ComputeHash(Encoding.ASCII.GetBytes(pan));
+
+            System.Diagnostics.Debug.WriteLine("testsad");
+            System.Diagnostics.Debug.WriteLine("hello");
+
+            System.Diagnostics.Debug.WriteLine(hasher);
+
+            System.Diagnostics.Debug.WriteLine("world");
+        }
+
+        [TestMethod]
+        public void TestHash()
+        {
+            string pan = "4012000033330026";
+            string expiry = "2012";
+
+
+            ThreadLocal<System.Security.Cryptography.MD5> hasher = new ThreadLocal<System.Security.Cryptography.MD5>(() => System.Security.Cryptography.MD5.Create());
+
+            string hash = String.Concat(hasher.Value.ComputeHash(Encoding.ASCII.GetBytes(";" + pan + "=" + expiry + "?")).Select(b => b.ToString("X2")));
+
+            System.Diagnostics.Debug.WriteLine(hash);
+
+            string newhash = String.Concat(hasher.Value.ComputeHash(Encoding.ASCII.GetBytes("4444333322221111")).Select(b => b.ToString("X2")));
+
+            System.Diagnostics.Debug.WriteLine(newhash);
+
+        }
 
         [TestMethod]
         public void UnencryptedStripe()
