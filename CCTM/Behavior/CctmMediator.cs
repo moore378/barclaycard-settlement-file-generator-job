@@ -34,7 +34,8 @@ namespace Cctm.Behavior
         public AsyncSemaphore throttle;
         private DetailedLogDelegate detailedLog;
         private static long totalStarted = 0;
-        private ICctmDatabase database;
+        // NOTE: Removed older data set model for database interfacing since
+        // it has been replaced fully by ICctmDatabase2.
         private Dictionary<string, Lazy<IAuthorizationPlatform>> platforms; // Holds all the supported authorization platforms.
         private CctmPerformanceCounters performanceCounters;
         private static System.Security.Cryptography.MD5 hasher = System.Security.Cryptography.MD5.Create();
@@ -52,11 +53,12 @@ namespace Cctm.Behavior
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="database"></param>
+        /// <param name="database2"></param>
         /// <param name="platforms"></param>
         /// <param name="statisticsChanged">Delegate signalled when there is a change in the statistics record.</param>
-        public CctmMediator(ICctmDatabase database,
-            ICctmDatabase2 cctmDatabase2,
+        // NOTE: Removed older data set model for database interfacing since
+        // it has been replaced fully by ICctmDatabase2.
+        public CctmMediator(ICctmDatabase2 cctmDatabase2,
             Dictionary<string, Lazy<IAuthorizationPlatform>> platforms,
             Action<IStatistics> statisticsChanged,
             Action<string> log,
@@ -69,7 +71,6 @@ namespace Cctm.Behavior
             this.database2 = cctmDatabase2;
             this.performanceCounters = performanceCounters;
             this.throttle = new AsyncSemaphore(maxSimultaneous);
-            this.database = database;
             this.platforms = platforms; // collection of authorization platforms.
             this.statistics = new CctmStatistics(statisticsChanged);
             this.statistics.Changed += new Action<IStatistics>((stats) => { if (StatisticsChanged != null) StatisticsChanged(stats); });
@@ -253,7 +254,6 @@ namespace Cctm.Behavior
                     if ((authorizationResponse.resultCode == AuthorizationResultCode.Approved) || (authorizationResponse.resultCode == AuthorizationResultCode.Declined))
                     {
                         newTrackText = "CCTM2 - " + authorizationResponse.note;
-                        //database.UpdateTrack(transactionRecord.ID, newTrackText);
                     }
 
                     // Send the updated record information to the database
@@ -294,7 +294,6 @@ namespace Cctm.Behavior
                                 }); 
                             break;
                         case AuthorizeMode.Finalize: 
-                            //database.UpdateFinalizeRecord(transactionRecord, updatedRecord);
                             await database2.UpdTransactionrecordCctmFinalization(new DbUpdTransactionrecordcctmFinalizationParams
                                 {
                                     BatNum = authorizationResponse.BatchNum,
@@ -336,10 +335,7 @@ namespace Cctm.Behavior
                             }); 
                             break;
                     }
-                    /*if (!isPreAuth)
-                        database.UpdateTransactionRecordCctm(transactionRecord, updatedRecord);
-                    else
-                        database.UpdatePreauthRecord(transactionRecord, updatedRecord);*/
+
                     dbTransactionRecord.Status = (short)updatedRecord.Status;
                     UpdatedTransaction(dbTransactionRecord);
 

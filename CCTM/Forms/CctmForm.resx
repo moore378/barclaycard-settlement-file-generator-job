@@ -117,17 +117,8 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="sEL_NEW_TRANSACTIONRECORDSBindingSource.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>183, 17</value>
-  </metadata>
-  <metadata name="cCTransactionsDataSet.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
   <metadata name="tmrOneSec.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>482, 17</value>
-  </metadata>
-  <metadata name="sEL_NEW_TRANSACTIONRECORDSTableAdapter.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 56</value>
   </metadata>
   <metadata name="menuStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>667, 56</value>
@@ -140,16 +131,16 @@
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAACE
-        AgAAAk1TRnQBSQFMAwEBAAGQAQABkAEAARABAAEQAQAE/wEhAQAI/wFCAU0BNgcAATYDAAEoAwABQAMA
+        AgAAAk1TRnQBSQFMAwEBAAGYAQABmAEAARABAAEQAQAE/wEhAQAI/wFCAU0BNgcAATYDAAEoAwABQAMA
         ARADAAEBAQABIAYAARASABz/A/wB/wP8Hf/AABD/A/EJ/wPeAf8D3gn/A/YR/8AAEP8DvAH/A8QF/wPL
         Af8DygX/A90B/wPYEf/AABD/A90B/wOFAf8D2wH/A8cB/wPFAf8D7AH/A7wB/wPrEf/AAAT/A/IB/wOp
         Af8DxgH/A/MB/wOkAf8DuQH/A+gB/wPnAf8D1wH/A8sB/wP5Af8D6AH/A9wB/wP5Bf/AAAT/A/4B/wPG
-        Af8DXQH/A4UB/wPmAf8D/Qn/A/0B/wPxAf8DzwH/A8gB/wPoCf/AAAz/A98B/wO0Af8D/hX/A+AB/wPx
-        Df/AAAP5Af8DtwH/A4cB/wNoAf8D1Rn/A/QB/wPcAf8D3wH/A+oB/wP8Af/AAAP6Af8DxgH/A5wB/wOR
-        Af8D3Rn/A/QB/wPgAf8D5AH/A+8B/wP9Af/AAAz/A8MB/wOZGf8D7gH/A/YN/8AABP8D/AH/A54B/wMn
-        Af8DXwH/A+YN/wP+Af8D+QH/A+oB/wPkAf8D8AH/A/4F/8AABP8D7gH/A54B/wPLAf8D8QH/AzgB/wOW
-        Af8DygH/A8YB/wP3Af8D8AH/A/0B/wP2Af8D7wH/A/sF/8AAEP8DsAH/AwsB/wPJAf8DKAH/AyAF/wPv
-        Af8D+BH/wAAQ/wOEAf8DowX/A0EB/wNABf8D9wH/A/QR/8AAEP8D7wn/A6QB/wOjCf8D/RH/wAAc/wP+
+        Af8DXAH/A4UB/wPmAf8D/Qn/A/0B/wPxAf8DzwH/A8gB/wPoCf/AAAz/A98B/wO0Af8D/hX/A+AB/wPx
+        Df/AAAP5Af8DtwH/A4cB/wNnAf8D1Rn/A/QB/wPcAf8D3wH/A+oB/wP8Af/AAAP6Af8DxgH/A5wB/wOR
+        Af8D3Rn/A/QB/wPgAf8D5AH/A+8B/wP9Af/AAAz/A8MB/wOZGf8D7gH/A/YN/8AABP8D/AH/A54B/wMm
+        Af8DXgH/A+YN/wP+Af8D+QH/A+oB/wPkAf8D8AH/A/4F/8AABP8D7gH/A54B/wPLAf8D8QH/AzcB/wOW
+        Af8DygH/A8YB/wP3Af8D8AH/A/0B/wP2Af8D7wH/A/sF/8AAEP8DsAH/AwoB/wPJAf8DJwH/Ax8F/wPv
+        Af8D+BH/wAAQ/wOEAf8DowX/A0AB/wM/Bf8D9wH/A/QR/8AAEP8D7wn/A6QB/wOjCf8D/RH/wAAc/wP+
         Af8D/R3/wAABQgFNAT4HAAE+AwABKAMAAUADAAEQAwABAQEAAQEFAAGAFwAD/4EACw==
 </value>
   </data>
@@ -164,7 +155,7 @@
         AAEAAAD/////AQAAAAAAAAAMAgAAAFdTeXN0ZW0uV2luZG93cy5Gb3JtcywgVmVyc2lvbj00LjAuMC4w
         LCBDdWx0dXJlPW5ldXRyYWwsIFB1YmxpY0tleVRva2VuPWI3N2E1YzU2MTkzNGUwODkFAQAAACZTeXN0
         ZW0uV2luZG93cy5Gb3Jtcy5JbWFnZUxpc3RTdHJlYW1lcgEAAAAERGF0YQcCAgAAAAkDAAAADwMAAAA4
-        CQAAAk1TRnQBSQFMAgEBBAEAAUgBAAFIAQABEAEAARABAAT/ARkBAAj/AUIBTQE2BwABNgMAASgDAAFA
+        CQAAAk1TRnQBSQFMAgEBBAEAAVABAAFQAQABEAEAARABAAT/ARkBAAj/AUIBTQE2BwABNgMAASgDAAFA
         AwABIAMAAQEBAAEYBgABGP8A/wD/AP8A/wD/AP8A/wD/AP8A/wD/AE4AA/8G/gP/Ae8B7gHvAdQB0wHU
         Kv8D/gP3A+8D6QPqA/AD+QP+DP8D9xL6A/YD8RL6A/cwAAP+Bv8BzwHKAc8BNAFMATQBEgE6ARIBzwHN
         Ac8D/wP+Hv8D+QPgA7UDhQNxA3UDkQO8A+UD+wn/A/oJAAP5A5YDQAMCAwADJQN0A+UJAAP6FQAD9QP0

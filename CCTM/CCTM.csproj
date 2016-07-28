@@ -98,19 +98,8 @@
     <Compile Include="Common\DelayedDoer.cs" />
     <Compile Include="Common\SpecialCardException.cs" />
     <Compile Include="DatabaseTracker.cs" />
-    <Compile Include="Database\CCTransactionsDataSet.cs">
-      <DependentUpon>CCTransactionsDataSet.xsd</DependentUpon>
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Database\CCTransactionsDataSet.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CCTransactionsDataSet.xsd</DependentUpon>
-    </Compile>
-    <Compile Include="Database\CctmDatabase2.cs" />
     <Compile Include="Database\DbTransactionRecord.cs" />
     <Compile Include="Database\DbUpdTransactionrecordCctmParams.cs" />
-    <Compile Include="Database\ICctmDatabase.cs" />
     <Compile Include="Database\ICctmDatabase2.cs" />
     <Compile Include="DualAuth\DbUpdTransactionauthorizationParams.cs" />
     <Compile Include="DualAuth\DbUpdTransactionrecordcctmFinalizationParams.cs" />
@@ -178,17 +167,6 @@
       <DependentUpon>WaitForFinishForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
-    <None Include="Database\CCTransactionsDataSet.xsc">
-      <DependentUpon>CCTransactionsDataSet.xsd</DependentUpon>
-    </None>
-    <None Include="Database\CCTransactionsDataSet.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>CCTransactionsDataSet.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Database\CCTransactionsDataSet.xss">
-      <DependentUpon>CCTransactionsDataSet.xsd</DependentUpon>
-    </None>
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
