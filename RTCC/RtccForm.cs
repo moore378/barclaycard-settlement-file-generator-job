@@ -17,7 +17,6 @@ using System.Xml.Serialization;
 using System.IO;
 using CCCrypto;
 using AuthorizationClientPlatforms;
-using Rtcc.Database.DataSet1TableAdapters;
 using System.Runtime.InteropServices;
 using Rtcc.Main;
 using TransactionManagementCommon;

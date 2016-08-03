@@ -9,13 +9,13 @@ namespace UnitTests
     {
         public override SessionStats NewSession()
         {
-            return new DummySessionStats();
+            return new DummySessionStats(this);
         }
 
         private class DummySessionStats : SessionStats
         {
-            public DummySessionStats()
-                : base (null)
+            public DummySessionStats(Rtcc.RtccPerformanceCounters stats)
+                : base (stats)
             {
                 base.done = 1; // Prevent destructor
             }

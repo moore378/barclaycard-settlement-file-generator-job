@@ -48,30 +48,6 @@ namespace Rtcc.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("DB5")]
-        public string MontraHostName {
-            get {
-                return ((string)(this["MontraHostName"]));
-            }
-            set {
-                this["MontraHostName"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("8444")]
-        public ushort MonetraPort {
-            get {
-                return ((ushort)(this["MonetraPort"]));
-            }
-            set {
-                this["MonetraPort"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool DetailedLoggingEnabled {
             get {
@@ -96,7 +72,7 @@ namespace Rtcc.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://db5:1111/ValidateCard.svc/SubmitRequest")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://10.1.20.26:1111/ValidateCard.svc/SubmitRequest")]
         public string ReceiptServer {
             get {
                 return ((string)(this["ReceiptServer"]));
@@ -127,6 +103,30 @@ namespace Rtcc.Properties {
             }
             set {
                 this["IsraelCashierNumber"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("8665")]
+        public ushort MonetraPort {
+            get {
+                return ((ushort)(this["MonetraPort"]));
+            }
+            set {
+                this["MonetraPort"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("DB5")]
+        public string MontraHostName {
+            get {
+                return ((string)(this["MontraHostName"]));
+            }
+            set {
+                this["MontraHostName"] = value;
             }
         }
     }

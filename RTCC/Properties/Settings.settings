@@ -13,12 +13,6 @@
     <Setting Name="ListenPort" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">3002</Value>
     </Setting>
-    <Setting Name="MontraHostName" Type="System.String" Scope="User">
-      <Value Profile="(Default)">DB5</Value>
-    </Setting>
-    <Setting Name="MonetraPort" Type="System.UInt16" Scope="User">
-      <Value Profile="(Default)">8444</Value>
-    </Setting>
     <Setting Name="DetailedLoggingEnabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
@@ -26,13 +20,19 @@
       <Value Profile="(Default)">Logs</Value>
     </Setting>
     <Setting Name="ReceiptServer" Type="System.String" Scope="User">
-      <Value Profile="(Default)">http://db5:1111/ValidateCard.svc/SubmitRequest</Value>
+      <Value Profile="(Default)">http://10.1.20.26:1111/ValidateCard.svc/SubmitRequest</Value>
     </Setting>
     <Setting Name="IsraelMerchantNumber" Type="System.String" Scope="User">
       <Value Profile="(Default)">0963185013</Value>
     </Setting>
     <Setting Name="IsraelCashierNumber" Type="System.String" Scope="User">
       <Value Profile="(Default)">01</Value>
+    </Setting>
+    <Setting Name="MonetraPort" Type="System.UInt16" Scope="User">
+      <Value Profile="(Default)">8665</Value>
+    </Setting>
+    <Setting Name="MontraHostName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">DB5</Value>
     </Setting>
   </Settings>
 </SettingsFile>

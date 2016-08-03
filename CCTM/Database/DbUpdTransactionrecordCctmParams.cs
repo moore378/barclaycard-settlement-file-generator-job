@@ -27,6 +27,8 @@ namespace Cctm.Database
         /// by the processor which makes the authorization request value
         /// different than the authorized amount value.
         /// </summary>
-        public Int16 CCFee; // SmallInt 
+        public Int16 CCFee; // SmallInt,
+
+        public Int64 CCHash; // BigInt
     }
 }

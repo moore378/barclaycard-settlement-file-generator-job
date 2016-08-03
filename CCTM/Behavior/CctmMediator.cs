@@ -38,7 +38,7 @@ namespace Cctm.Behavior
         // it has been replaced fully by ICctmDatabase2.
         private Dictionary<string, Lazy<IAuthorizationPlatform>> platforms; // Holds all the supported authorization platforms.
         private CctmPerformanceCounters performanceCounters;
-        private static System.Security.Cryptography.MD5 hasher = System.Security.Cryptography.MD5.Create();
+        // Removed hasher to use the standard function.
 
         /// <summary>
         /// List of running or queued transaction processing tasks
@@ -256,6 +256,8 @@ namespace Cctm.Behavior
                         newTrackText = "CCTM2 - " + authorizationResponse.note;
                     }
 
+                    Int64 hash = CreditCardHashing.HashPANToInt64(creditCardFields.Pan.ToString());
+
                     // Send the updated record information to the database
                     UpdatedTransactionRecord updatedRecord = new UpdatedTransactionRecord()
                     {
@@ -304,7 +306,8 @@ namespace Cctm.Behavior
                                     OldStatus = (short)dbTransactionRecord.Status, 
                                     Status = (short)newStatus,
                                     TransactionRecordID = dbTransactionRecord.TransactionRecordID,
-                                    TTID = authorizationResponse.Ttid
+                                    TTID = authorizationResponse.Ttid,
+                                    CCHash = hash
                                 });
 
                             break;
@@ -331,7 +334,8 @@ namespace Cctm.Behavior
                                 // as a negative number to trigger the 
                                 // database to update the total card and credit
                                 // charge values.
-                                CCFee = (short) (authorizationResponse.AdditionalCCFee * -100m)
+                                CCFee = (short) (authorizationResponse.AdditionalCCFee * -100m),
+                                CCHash = hash
                             }); 
                             break;
                     }
@@ -356,9 +360,7 @@ namespace Cctm.Behavior
                             //objTrans.CCHash = ;
                             //objTrans.TransactionRecordID = transactionRecordID.GetValueOrDefault().ToString();
                             //objClient.SubmitReqest(objTrans);
-
-                            string hash = String.Concat(hasher.ComputeHash(Encoding.ASCII.GetBytes(";" + creditCardFields.Pan + "=" + creditCardFields.ExpDateYYMM + "?")).Select(b => b.ToString("X2")));
-                            SendToReceiptServer(hash, dbTransactionRecord.TransactionRecordID.ToString(), "1");
+                            SendToReceiptServer(hash.ToString(), dbTransactionRecord.TransactionRecordID.ToString(), "1");
                         }
                         catch (Exception e)
                         {
@@ -655,7 +657,7 @@ namespace Cctm.Behavior
 
                     // Add it to the task list
                     DateTime queueTime = DateTime.Now;
-                    Task transactionTask = new Task(() => ProcessTransaction(transactionRecord, queueTime));
+                    Task transactionTask = ProcessTransaction(transactionRecord, queueTime);
                     lock (runningTasks) { runningTasks.Add(transactionTask); }
                     // It'll need to be removed when it's done
                     transactionTask.ContinueWith((task) =>
@@ -673,7 +675,6 @@ namespace Cctm.Behavior
                         transactionQueue.Enqueue(transactionTask);
                         transactionQueueNotEmpty.Set();
                     }
-
                 }
             }
             catch (Exception exception)

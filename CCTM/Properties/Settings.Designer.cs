@@ -72,7 +72,7 @@ namespace Cctm.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://db5:1111/ValidateCard.svc/SubmitRequest")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://10.1.20.26:1111/ValidateCard.svc/SubmitRequest")]
         public string Setting {
             get {
                 return ((string)(this["Setting"]));

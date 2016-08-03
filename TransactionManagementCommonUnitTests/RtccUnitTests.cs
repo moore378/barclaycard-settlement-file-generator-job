@@ -41,18 +41,18 @@ namespace UnitTests
         public override decimal InsertLiveTransactionRecord(
             string TerminalSerNo,
             string ElectronicSerNo,
-            decimal? TransactionType,
-            DateTime? StartDateTime,
-            decimal? TotalCreditCents,
-            decimal? TimePurchased,
-            decimal? TotalParkingTime,
-            decimal? AmountCents,
+            decimal TransactionType,
+            DateTime StartDateTime,
+            decimal TotalCreditCents,
+            decimal TimePurchased,
+            decimal TotalParkingTime,
+            decimal AmountCents,
             string CCTracks,
             string CCTransactionStatus,
-            decimal? CCTransactionIndex,
+            decimal CCTransactionIndex,
             string CoinCount,
-            decimal? EncryptionVer,
-            decimal? KeyVer,
+            decimal EncryptionVer,
+            decimal KeyVer,
             string UniqueRecordNumber,
             long UniqueRecordNumber2,
             string CreditCallCardEaseReference,
@@ -98,7 +98,7 @@ namespace UnitTests
             return data;
         }
 
-        public override void UpdateLiveTransactionRecord(decimal transactionRecordID, string tracks, string statusString, string authCode, string cardType, string obscuredPan, short batchNum, int ttid, short status, decimal ccFee)
+        public override void UpdateLiveTransactionRecord(decimal transactionRecordID, string tracks, string statusString, string authCode, string cardType, string obscuredPan, short batchNum, int ttid, short status, decimal ccFee, Int64 ccHash)
         {
             // Do nothing
         }
@@ -382,8 +382,8 @@ namespace UnitTests
         [TestMethod]
         public void RtccMediator()
         {
-            string testName = "FIS PayDirect Test"; // Monetra DB5
-            string testData = "FIS Certification"; // Monetra
+            string testName = "Monetra DB5"; // FIS PayDirect Test
+            string testData = "Monetra"; // FIS Certification
 
             ClearingPlatform processorInfo = TestData.Processors[testName];
 
@@ -427,7 +427,7 @@ namespace UnitTests
                 //encodedBase64 = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADQwNTUwMTExMTExMTExMTE9MTgwNjEwMTU0MzIxMTIzNDU2NwAAAAA=";
 
                 // Track 1 only
-                encodedBase64 = "QjU0NTQ1NDU0NTQ1NDU0NTReVEVTVCBDQVJEL01DXjE4MDYxMDE1NDMyMTEyMzQ1Njc4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADU0NTQ1NDU0NTQ1NDU0NTQ9MTgwNjEwMTU0MzIxMTIzNDU2NwAAAAA=";
+                //encodedBase64 = "QjU0NTQ1NDU0NTQ1NDU0NTReVEVTVCBDQVJEL01DXjE4MDYxMDE1NDMyMTEyMzQ1Njc4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADU0NTQ1NDU0NTQ1NDU0NTQ9MTgwNjEwMTU0MzIxMTIzNDU2NwAAAAA=";
 
                 System.Diagnostics.Debug.WriteLine("Base 64 encoded {0}", encodedBase64);
 
@@ -442,6 +442,8 @@ namespace UnitTests
             var rtsaConnection = new DummyRtsaConnection();
             // Create a dummy interpretter
             DummyInterpreter interpreter = new DummyInterpreter();
+
+            string uniqueID = TestData.GenerateUniqueId();
             interpreter.Request = new ClientAuthRequest(
                 info.MeterSerialNumber,
                 dtNow,
@@ -453,16 +455,16 @@ namespace UnitTests
                 "000003518920100419110709",
                 info.AmountDollars,
                 "",
-                TestData.GenerateUniqueId(),
+                uniqueID,
                 encryptedData,
                 0,
-                0,
+                long.Parse(uniqueID),
                 0
             );
             interpreter.onResponse = dummyResponseReceived;
             // Create a dummy database
             //RtccDatabase dummyDatabase = new DummyDatabase();
-            RtccDatabase dummyDatabase = new UnitTestDatabase(testName);
+            RtccDatabase dummyDatabase = null; // new UnitTestDatabase(testName);
             // Create a dummy authorization platform
             AuthorizationClientPlatforms.IAuthorizationPlatform dummyPlatform = new DummyAuthorizationPlatform();
             // Create a dummy PayByCell
@@ -506,7 +508,7 @@ namespace UnitTests
 
             // Simulate a blank request from the client (the dummy interpreter will pretend that this blank request contains useful information)
             rtsaConnection.SimulateMessageReceived(new byte[0]);
-            
+
             Assert.IsTrue(dummyResponse.Accepted == 1);
             //Assert.AreEqual(dummyResponse.ResponseCode, "DummyAuthCode");
         }

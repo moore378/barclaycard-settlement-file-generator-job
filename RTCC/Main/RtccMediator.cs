@@ -35,7 +35,7 @@ namespace Rtcc.Main
         private RtccDatabase rtccDatabase;
         private PayByCellClient payByCell;
         private RtccPerformanceCounters.SessionStats performanceCounterSession;
-        private static ThreadLocal<System.Security.Cryptography.MD5> hasher = new ThreadLocal<System.Security.Cryptography.MD5>(() => System.Security.Cryptography.MD5.Create());
+        //private static ThreadLocal<System.Security.Cryptography.MD5> hasher = new ThreadLocal<System.Security.Cryptography.MD5>(() => System.Security.Cryptography.MD5.Create());
 
         // Collection of authorization platforms.
         private Dictionary<string, IAuthorizationPlatform> platforms;
@@ -69,7 +69,7 @@ namespace Rtcc.Main
             ClientAuthRequest request = null;
             UnencryptedStripe unencryptedUnformattedStripe = null;
             TransactionStatus? status = null;
-            int? transactionRecordID = null;
+            int transactionRecordID = 0;
             IAuthorizationPlatform platform;
 
             try
@@ -158,7 +158,7 @@ namespace Rtcc.Main
                 }
 
                 // Perform the authorization
-                AuthorizationResponseFields authorizationResponse = AuthorizeRequest(transactionRecordID.Value, request, tracks, unencryptedStripe, creditCardFields, processorInfo, request.UniqueRecordNumber, isPreauth, platform);
+                AuthorizationResponseFields authorizationResponse = AuthorizeRequest(transactionRecordID, request, tracks, unencryptedStripe, creditCardFields, processorInfo, request.UniqueRecordNumber, isPreauth, platform);
 
                 LogImportant("Sending response result for " + transactionRecordID.ToString() + ": " + authorizationResponse.resultCode.ToString());
 
@@ -171,15 +171,17 @@ namespace Rtcc.Main
                 // --- Send a reply to the parking meter ---
                 SendReplyToClient(request, authorizationResponse, "Err: Sending client response");
 
+                Int64 hash = CreditCardHashing.HashPANToInt64(creditCardFields.Pan.ToString());
+
                 LogDetail("Updating database for " + transactionRecordID.ToString() + ": " + newStatus.ToString());
                 status = newStatus;
                 if (isPreauth)
                 {
-                    rtccDatabase.UpdatePreauth(transactionRecordID.Value, DateTime.Now, authorizationResponse.receiptReference, authorizationResponse.authorizationCode, obscuredPan.ToString(), creditCardFields.ExpDateYYMM, authorizationResponse.cardType, creditCardFields.Pan.FirstSixDigits, creditCardFields.Pan.LastFourDigits, authorizationResponse.BatchNum, authorizationResponse.Ttid, (short)status.Value);
+                    rtccDatabase.UpdatePreauth(transactionRecordID, DateTime.Now, authorizationResponse.receiptReference, authorizationResponse.authorizationCode, obscuredPan.ToString(), creditCardFields.ExpDateYYMM, authorizationResponse.cardType, creditCardFields.Pan.FirstSixDigits, creditCardFields.Pan.LastFourDigits, authorizationResponse.BatchNum, authorizationResponse.Ttid, (short)status.Value);
                 }
                 else
                 {
-                    rtccDatabase.UpdateLiveTransactionRecord(transactionRecordID.Value, 
+                    rtccDatabase.UpdateLiveTransactionRecord(transactionRecordID, 
                         "Processed_Live", 
                         newStatus.ToString(), 
                         authorizationResponse.authorizationCode,
@@ -193,7 +195,8 @@ namespace Rtcc.Main
                         // requested amount, pass in the value as a negative
                         // number to trigger the database to update the total
                         // card and credit charge values.
-                        authorizationResponse.AdditionalCCFee * -100
+                        authorizationResponse.AdditionalCCFee * -100,
+                        hash
                         );
                 }
 
@@ -205,8 +208,7 @@ namespace Rtcc.Main
                     //objTrans.TransactionRecordID = transactionRecordID.GetValueOrDefault().ToString();
                     //objClient.SubmitReqest(objTrans);
 
-                    string hash = String.Concat(hasher.Value.ComputeHash(Encoding.ASCII.GetBytes(";" + creditCardFields.Pan + "=" + creditCardFields.ExpDateYYMM + "?")).Select(b => b.ToString("X2")));
-                    SendToReceiptServer(hash, transactionRecordID.GetValueOrDefault().ToString(), "1");
+                    SendToReceiptServer(hash.ToString(), transactionRecordID.ToString(), "1");
                 }
                 catch (Exception e)
                 {
@@ -240,8 +242,8 @@ namespace Rtcc.Main
             catch (ParseException exception) // If there is a problem parsing at one of the steps
             {
                 LogError("Parse error: " + exception.Message, exception);
-                if (status != null && transactionRecordID != null)
-                    rtccDatabase.UpdateTransactionStatus(transactionRecordID.Value, status.Value, TransactionStatus.StripeError, exception.FailStatus);
+                if (status != null && transactionRecordID != 0)
+                    rtccDatabase.UpdateTransactionStatus(transactionRecordID, status.Value, TransactionStatus.StripeError, exception.FailStatus);
                 performanceCounterSession.FailedSession(stopwatch.ElapsedTicks);
                 return false;
             }

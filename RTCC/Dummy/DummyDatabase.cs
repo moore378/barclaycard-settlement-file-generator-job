@@ -29,18 +29,18 @@ namespace Rtcc.Dummy
         public override decimal InsertLiveTransactionRecord(
             string TerminalSerNo,
             string ElectronicSerNo,
-            decimal? TransactionType,
-            DateTime? StartDateTime,
-            decimal? TotalCreditCents,
-            decimal? TimePurchased,
-            decimal? TotalParkingTime,
-            decimal? AmountCents,
+            decimal TransactionType,
+            DateTime StartDateTime,
+            decimal TotalCreditCents,
+            decimal TimePurchased,
+            decimal TotalParkingTime,
+            decimal AmountCents,
             string CCTracks,
             string CCTransactionStatus,
-            decimal? CCTransactionIndex,
+            decimal CCTransactionIndex,
             string CoinCount,
-            decimal? EncryptionVer,
-            decimal? KeyVer,
+            decimal EncryptionVer,
+            decimal KeyVer,
             string UniqueRecordNumber,
             long UniqueRecordNumber2,
             string CreditCallCardEaseReference,
@@ -83,7 +83,7 @@ namespace Rtcc.Dummy
             return data;
         }
 
-        public override void UpdateLiveTransactionRecord(decimal transactionRecordID, string tracks, string statusString, string authCode, string cardType, string obscuredPan, short batchNum, int ttid, short status, decimal ccFee)
+        public override void UpdateLiveTransactionRecord(decimal transactionRecordID, string tracks, string statusString, string authCode, string cardType, string obscuredPan, short batchNum, int ttid, short status, decimal ccFee, Int64 ccHash)
         {
             // Do nothing
         }
