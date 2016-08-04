@@ -657,7 +657,8 @@ namespace Cctm.Behavior
 
                     // Add it to the task list
                     DateTime queueTime = DateTime.Now;
-                    Task transactionTask = ProcessTransaction(transactionRecord, queueTime);
+                    // Use async / await lambda expression to allow the task to only complete when the method finishes.
+                    Task transactionTask = new Task(async () => await ProcessTransaction(transactionRecord, queueTime));
                     lock (runningTasks) { runningTasks.Add(transactionTask); }
                     // It'll need to be removed when it's done
                     transactionTask.ContinueWith((task) =>
