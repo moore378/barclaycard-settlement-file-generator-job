@@ -17,6 +17,7 @@
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
     <UpgradeBackupLocation />
+    <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -31,7 +32,6 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -52,11 +52,9 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CCCrypto, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\CCCrypto.dll</HintPath>
+    <Reference Include="CryptographicPlatforms">
+      <HintPath>..\Dependencies\CryptographicPlatforms.dll</HintPath>
     </Reference>
-    <Reference Include="RsaUtils, Version=1.0.0.5, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Configuration.Install" />
@@ -152,6 +150,9 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <None Include="RsaUtils.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Service References\PayByCell\GetActiveParkingInformation.wsdl" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -220,10 +221,6 @@
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{BA9EFA9B-8E6C-4680-AE58-37C8442E7DF0}</Project>
       <Name>Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CryptographicPlatforms\CryptographicPlatforms.csproj">
-      <Project>{C57D09F3-983C-4508-8E34-FAD3B081B79F}</Project>
-      <Name>CryptographicPlatforms</Name>
     </ProjectReference>
     <ProjectReference Include="..\TransactionManagmentCommon\TransactionManagementCommon.csproj">
       <Project>{A8DC7A1F-25AF-4935-9A23-96C610F4DE95}</Project>

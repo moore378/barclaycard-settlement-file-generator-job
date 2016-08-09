@@ -22,8 +22,6 @@ using System.Windows.Forms;
 using System.Collections.Specialized;
 using System.Configuration;
 using System.Runtime.InteropServices;
-using CCCrypto;
-using RsaUtils;
 using System.IO;
 using System.Reflection;
 using AuthorizationClientPlatforms;
@@ -308,6 +306,9 @@ namespace Cctm
         {
             if (!hidden)
                 eventLogForm.Value.log(message);
+
+            // Persist in log file too.
+            fileLog(message);
         }
 
         /// <summary>

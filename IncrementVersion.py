@@ -37,5 +37,5 @@ with open(file1, "w") as f:
 with open(file2, "w") as f:
     f.write(assemblyInfo2)
 
-subprocess.check_output("msbuild RTCC\RTCC.csproj")
-subprocess.check_output("msbuild CCTM\CCTM.csproj")
+subprocess.check_output("msbuild TransactionManagement.sln /t:RTCC")
+subprocess.check_output("msbuild TransactionManagement.sln /t:CCTM")

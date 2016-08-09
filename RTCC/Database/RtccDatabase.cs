@@ -42,7 +42,8 @@ namespace Rtcc.Database
             string CCLastFour,
             long UniqueNumber2,
             short Mode,
-            short Status);
+            short Status,
+            Int64 CardHash);
 
         [return: DatabaseReturn(ColumnIndex = 0)]
         Task<decimal> SelTransrecidFromUniquerec(string UniqueRecordNumber, long UniqueNumber2);
@@ -57,8 +58,7 @@ namespace Rtcc.Database
             short BatNum,
             int TTID,
             short Status,
-            decimal CCFee,
-            Int64 CCHash
+            decimal CCFee
             );
 
         Task UpdTransactionrecordStatus(int TransactionRecordID, string CCTransactionStatus, short Status, short OldStatus);
@@ -76,6 +76,7 @@ namespace Rtcc.Database
             short BatNum,
             int TTID,
             short Status
+            // NOTE: Although CCHash is a parameter, RTCC does not use it.
             );
     }
 
@@ -144,12 +145,11 @@ namespace Rtcc.Database
             string FirstSixDigits,
             string LastFourDigits,
             short mode,
-            short status)
+            short status,
+            Int64 CardHash)
         {
             decimal transactionRecordID = 0;
 
-            //var adapter = new DataSet1TableAdapters.QueriesTableAdapter();
-            //adapter.INS_LIVE_TRANSACTIONRECORD(
             var insertTask = database.InsLiveTransactionrecord(
                 TerminalSerNo,
                 ElectronicSerNo ?? "",
@@ -175,7 +175,8 @@ namespace Rtcc.Database
                 LastFourDigits,
                 UniqueRecordNumber2,
                 mode,
-                status);
+                status,
+                CardHash);
 
             Task.WaitAll(insertTask);
 
@@ -215,8 +216,7 @@ namespace Rtcc.Database
             short batchNum,
             int ttid,
             short status,
-            decimal ccFee,
-            Int64 ccHash )
+            decimal ccFee)
         {
             try
             {
@@ -229,7 +229,7 @@ namespace Rtcc.Database
                       + ";CCFee=" + ccFee.ToString()
                       + ")");
 
-                var task = database.UpdLiveTransactionrecord(transactionRecordID, tracks, statusString, authCode, cardType, obscuredPan, batchNum, ttid, status, (int) ccFee, ccHash);
+                var task = database.UpdLiveTransactionrecord(transactionRecordID, tracks, statusString, authCode, cardType, obscuredPan, batchNum, ttid, status, (int) ccFee);
 
                 task.Wait();
             }

@@ -1,0 +1,29 @@
+commit 680f6a731a755ddf32c7f96d4357ef781b8cf512
+Author: Manirith Nuth <manirith.nuth@ipsgroupinc.com>
+Date:   Mon Aug 8 10:55:52 2016 -0700
+
+    Moved projects around to allow CCCrypto and RsaUtils to be built from the same solution.
+
+commit e4271abcb311cc38c4bf187a919df944d187615f
+Author: Manirith Nuth <manirith.nuth@ipsgroupinc.com>
+Date:   Thu Aug 4 19:42:42 2016 -0700
+
+    Add ability for hashing a PAN into a 64-bit number.
+
+commit f740df5fb97422c89010f895afe43c13572de2d8
+Author: Manirith Nuth <manirith.nuth@ipsgroupinc.com>
+Date:   Thu Aug 4 19:37:04 2016 -0700
+
+    Upgrade solution and projects to Visual Studio 2013.
+
+commit ae95736c8d4482329d925573ee45cb3c2fe7959b
+Author: Manirith Nuth <manirith.nuth@ipsgroupinc.com>
+Date:   Thu Aug 4 19:15:42 2016 -0700
+
+    Remove user files.
+
+commit 5b60e96cd776945de8022b06e11f03a91c50c2e9
+Author: Manirith Nuth <manirith.nuth@ipsgroupinc.com>
+Date:   Thu Aug 4 19:12:35 2016 -0700
+
+    Use a real .gitignore that handles Visual Studio files.

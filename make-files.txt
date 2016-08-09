@@ -1,0 +1,5 @@
+solution=TransactionManagement.sln
+platform=Mixed Platforms
+RTCC
+CCTM
+FisPayDirectProcessor

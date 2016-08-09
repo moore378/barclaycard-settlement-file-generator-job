@@ -19,6 +19,5 @@ namespace Cctm.DualAuth
         public Decimal TTID; // Decimal
         public Int16 Status; // SmallInt
         public Int16 OldStatus; // SmallInt
-        public Int64 CCHash; // BigInt
     }
 }

@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("IPS Group Inc")]
 [assembly: AssemblyProduct("Credit Card Transaction Manager 2")] // to Clearing Platform - String 50
-[assembly: AssemblyCopyright("Copyright © Private 2007")]
+[assembly: AssemblyCopyright("Copyright © Private 2016")]
 [assembly: AssemblyTrademark("IPS")]
 [assembly: AssemblyCulture("")]
 
@@ -29,8 +29,8 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("3.0.17.0")]
-[assembly: AssemblyFileVersion("3.0.17.0")]  // sent to Clearing Platform
+[assembly: AssemblyVersion("4.2.1.0")]
+[assembly: AssemblyFileVersion("4.2.1.0")]  // sent to Clearing Platform
 
 // Release History (Most Recent on top)
 // Note: Remember to update the following Version references.

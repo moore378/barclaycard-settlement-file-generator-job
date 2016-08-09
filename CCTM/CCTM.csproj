@@ -66,10 +66,11 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CCCrypto, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="CryptographicPlatforms">
+      <HintPath>..\Dependencies\CryptographicPlatforms.dll</HintPath>
+    </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="RsaUtils, Version=1.0.0.5, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Configuration.Install" />
@@ -178,6 +179,9 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Settings.cs" />
+    <None Include="RsaUtils.ini">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -229,10 +233,6 @@
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{BA9EFA9B-8E6C-4680-AE58-37C8442E7DF0}</Project>
       <Name>Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CryptographicPlatforms\CryptographicPlatforms.csproj">
-      <Project>{C57D09F3-983C-4508-8E34-FAD3B081B79F}</Project>
-      <Name>CryptographicPlatforms</Name>
     </ProjectReference>
     <ProjectReference Include="..\MjhGeneral\MjhGeneral.csproj">
       <Project>{8681d9bc-c6aa-4feb-8121-6f3f0d2d292c}</Project>

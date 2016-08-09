@@ -15,7 +15,6 @@ using System.Net;
 using System.Xml;
 using System.Xml.Serialization;
 using System.IO;
-using CCCrypto;
 using AuthorizationClientPlatforms;
 using System.Runtime.InteropServices;
 using Rtcc.Main;

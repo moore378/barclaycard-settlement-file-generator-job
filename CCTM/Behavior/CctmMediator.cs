@@ -148,6 +148,7 @@ namespace Cctm.Behavior
                     }
 
                     CreditCardTracks tracks;
+                    Int64 hash = 0;
 
                     // Finalize doesnt have a track
                     if (mode != AuthorizeMode.Finalize)
@@ -195,7 +196,7 @@ namespace Cctm.Behavior
                         // Split track two into fields
                         if (dbTransactionRecord.CCClearingPlatform.ToUpper() != "ISRAEL-PREMIUM"
                             || !TrackFormat.ParseTrackTwoIsraelSpecial(tracks.TrackTwo, "Err: Israel track parse error", out creditCardFields))
-                                creditCardFields = TrackFormat.ParseTrackTwoIso7813(tracks.TrackTwo, "Err: Track parse error");
+                            creditCardFields = TrackFormat.ParseTrackTwoIso7813(tracks.TrackTwo, "Err: Track parse error");
 
                         // Validate the fields
                         creditCardFields.Validate("Err: Invalid Track Fields");
@@ -203,9 +204,22 @@ namespace Cctm.Behavior
                         // If this isn't a normal card, then we have an exceptional circumstance of this being a special card
                         if (creditCardFields.CardType != CardType.Normal && creditCardFields.CardType != CardType.IsraelSpecial)
                             throw new SpecialCardException();
+
+                        // Calculate the hash for the receipt server
+                        // Get the hash from the account number.
+                        hash = CCCrypt.HashPANToInt64(creditCardFields.Pan.ToString());
                     }
                     else
+                    {
                         tracks = new CreditCardTracks();
+
+                        // Calculate the hash for the receipt server
+                        // Get the hash as it was from the DB.
+                        if (dbTransactionRecord.CCHash.HasValue)
+                        {
+                            hash = dbTransactionRecord.CCHash.Value;
+                        }
+                    }
 
                     // Choose the authorization platform
                     IAuthorizationPlatform authorizationPlatform = ChooseAuthorizationPlatform(dbTransactionRecord, "Err: Clearing platform");
@@ -215,9 +229,6 @@ namespace Cctm.Behavior
 
                     // Perform the authorization
                     authorizationResponse = AuthorizeRequest(dbTransactionRecord, tracks, unencryptedStripe, creditCardFields, authorizationPlatform, dbTransactionRecord.UniqueRecordNumber, mode, dbTransactionRecord.AuthTTID.Transform(a => (int?)a));
-                    
-                    // Calculate the hash for the receipt server
-                    byte[] hashData = System.Security.Cryptography.MD5.Create().ComputeHash(Encoding.ASCII.GetBytes(";" + creditCardFields.Pan + "=" + creditCardFields.ExpDateYYMM + "?"));
 
                     // Decide the status according to the response and update the database
                     TransactionStatus newStatus = (TransactionStatus)dbTransactionRecord.Status;
@@ -256,14 +267,12 @@ namespace Cctm.Behavior
                         newTrackText = "CCTM2 - " + authorizationResponse.note;
                     }
 
-                    Int64 hash = CreditCardHashing.HashPANToInt64(creditCardFields.Pan.ToString());
-
                     // Send the updated record information to the database
                     UpdatedTransactionRecord updatedRecord = new UpdatedTransactionRecord()
                     {
                         AuthorizationCode = authorizationResponse.authorizationCode,
-                        CardEaseReference = authorizationResponse.receiptReference ?? "", // Optional. Some processors do not support sending these for declines.
-                        CardScheme = authorizationResponse.cardType ?? "", // Optional. Some processors do not support sending these for declines.
+                        CardEaseReference = authorizationResponse.receiptReference, // Optional. Some processors do not support sending these for declines.
+                        CardScheme = authorizationResponse.cardType, // Optional. Some processors do not support sending these for declines.
                         ExpiryDate = (mode != AuthorizeMode.Finalize) ? creditCardFields.ExpDateYYMM : "",
                         FirstSix = (mode != AuthorizeMode.Finalize) ? creditCardFields.Pan.FirstSixDigits : "",
                         LastFour = (mode != AuthorizeMode.Finalize) ? creditCardFields.Pan.LastFourDigits : "",
@@ -292,7 +301,8 @@ namespace Cctm.Behavior
 	                                CCLastFour = updatedRecord.LastFour,
 	                                BatNum = updatedRecord.BatchNum,
 	                                TTID = updatedRecord.Ttid,
-	                                Status = (short)updatedRecord.Status
+	                                Status = (short)updatedRecord.Status,
+                                    CCHash = hash
                                 }); 
                             break;
                         case AuthorizeMode.Finalize: 
@@ -301,13 +311,12 @@ namespace Cctm.Behavior
                                     BatNum = authorizationResponse.BatchNum,
                                     CCTrackStatus = newTrackText,
                                     CCTransactionStatus = newStatus.ToText(),
-                                    CreditCallAuthCode = authorizationResponse.authorizationCode ?? "",
+                                    CreditCallAuthCode = authorizationResponse.authorizationCode,
                                     CreditCallCardEaseReference = authorizationResponse.receiptReference,
                                     OldStatus = (short)dbTransactionRecord.Status, 
                                     Status = (short)newStatus,
                                     TransactionRecordID = dbTransactionRecord.TransactionRecordID,
-                                    TTID = authorizationResponse.Ttid,
-                                    CCHash = hash
+                                    TTID = authorizationResponse.Ttid
                                 });
 
                             break;
@@ -317,7 +326,7 @@ namespace Cctm.Behavior
                                 TransactionRecordID = dbTransactionRecord.TransactionRecordID,
                                 CreditCallCardEaseReference = updatedRecord.CardEaseReference,
                                 CCTrackStatus = updatedRecord.TrackText,
-                                CreditCallAuthCode = updatedRecord.AuthorizationCode ?? "",
+                                CreditCallAuthCode = updatedRecord.AuthorizationCode,
 	                            CreditCallPAN = updatedRecord.PAN,
 	                            CreditCallExpiryDate = updatedRecord.ExpiryDate,
 	                            CreditCallCardScheme = updatedRecord.CardScheme,
@@ -336,7 +345,7 @@ namespace Cctm.Behavior
                                 // charge values.
                                 CCFee = (short) (authorizationResponse.AdditionalCCFee * -100m),
                                 CCHash = hash
-                            }); 
+                            });
                             break;
                     }
 
@@ -351,7 +360,8 @@ namespace Cctm.Behavior
                         + "; Notes: " + authorizationResponse.note
                         );
 
-                    if (authorizationResponse.resultCode == AuthorizationResultCode.Approved)
+                    if ((authorizationResponse.resultCode == AuthorizationResultCode.Approved)
+                        && (0 != hash)) // Only send to the receipt server if there is a hash value.
                     {
                         try
                         {

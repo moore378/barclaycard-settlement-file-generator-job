@@ -63,7 +63,8 @@ namespace UnitTests
             string FirstSixDigits,
             string LastFourDigits,
             short mode,
-            short status)
+            short status,
+            Int64 cardHash)
         {
             // Do nothing
             return 0;
@@ -98,7 +99,7 @@ namespace UnitTests
             return data;
         }
 
-        public override void UpdateLiveTransactionRecord(decimal transactionRecordID, string tracks, string statusString, string authCode, string cardType, string obscuredPan, short batchNum, int ttid, short status, decimal ccFee, Int64 ccHash)
+        public override void UpdateLiveTransactionRecord(decimal transactionRecordID, string tracks, string statusString, string authCode, string cardType, string obscuredPan, short batchNum, int ttid, short status, decimal ccFee)
         {
             // Do nothing
         }
@@ -218,7 +219,7 @@ namespace UnitTests
         {
             string pan = "4444333322221111";
 
-            string hash = CreditCardHashing.HashPAN(pan);
+            string hash = CCCrypt.HashPAN(pan);
 
             Console.WriteLine(hash);
 

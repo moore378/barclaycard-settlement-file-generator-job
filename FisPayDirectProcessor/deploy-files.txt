@@ -1,4 +1,4 @@
-version=../../../FisPayDirectProcessor/Properties/AssemblyInfo.cs=^\[assembly: AssemblyVersion\("(\d+\.\d+\.\d+\.\d+)"\)\]$
+version=../../../FisPayDirectProcessor/Properties/AssemblyInfo.cs=^\[assembly: AssemblyFileVersion\("(\d+\.\d+\.\d+\.\d+)"\)\]$
 filename=FisPayDirectProcessor \1.zip
 copy-to=S:\TEMP - Will be deleted at regular intervals\FisPayDirectProcessor
 mail-to=alex.schwarz@ipsgroupinc.com

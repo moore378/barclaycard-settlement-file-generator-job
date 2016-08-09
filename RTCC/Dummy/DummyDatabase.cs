@@ -51,7 +51,8 @@ namespace Rtcc.Dummy
             string FirstSixDigits,
             string LastFourDigits,
             short mode,
-            short status)
+            short status,
+            Int64 CardHash)
         {
             // Do nothing
             return 0;
@@ -83,7 +84,7 @@ namespace Rtcc.Dummy
             return data;
         }
 
-        public override void UpdateLiveTransactionRecord(decimal transactionRecordID, string tracks, string statusString, string authCode, string cardType, string obscuredPan, short batchNum, int ttid, short status, decimal ccFee, Int64 ccHash)
+        public override void UpdateLiveTransactionRecord(decimal transactionRecordID, string tracks, string statusString, string authCode, string cardType, string obscuredPan, short batchNum, int ttid, short status, decimal ccFee)
         {
             // Do nothing
         }

@@ -56,6 +56,9 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CryptographicPlatforms">
+      <HintPath>..\Dependencies\CryptographicPlatforms.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -110,10 +113,6 @@
       <Project>{BA9EFA9B-8E6C-4680-AE58-37C8442E7DF0}</Project>
       <Name>Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CryptographicPlatforms\CryptographicPlatforms.csproj">
-      <Project>{C57D09F3-983C-4508-8E34-FAD3B081B79F}</Project>
-      <Name>CryptographicPlatforms</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -131,6 +130,12 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\Dependencies\Track.dll">
+      <Link>Track.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -71,10 +71,6 @@
       <Project>{ba9efa9b-8e6c-4680-ae58-37c8442e7df0}</Project>
       <Name>Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CryptographicPlatforms\CryptographicPlatforms.csproj">
-      <Project>{C57D09F3-983C-4508-8E34-FAD3B081B79F}</Project>
-      <Name>CryptographicPlatforms</Name>
-    </ProjectReference>
     <ProjectReference Include="..\RTCC\RTCC.csproj">
       <Project>{a9102f53-8f96-4f3a-8ff8-fb5f0b5bc609}</Project>
       <Name>RTCC</Name>

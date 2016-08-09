@@ -53,6 +53,9 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CryptographicPlatforms">
+      <HintPath>..\Dependencies\CryptographicPlatforms.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -88,10 +91,6 @@
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{BA9EFA9B-8E6C-4680-AE58-37C8442E7DF0}</Project>
       <Name>Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CryptographicPlatforms\CryptographicPlatforms.csproj">
-      <Project>{C57D09F3-983C-4508-8E34-FAD3B081B79F}</Project>
-      <Name>CryptographicPlatforms</Name>
     </ProjectReference>
     <ProjectReference Include="..\FisPayDirectPlugin\FisPayDirectPlugin.csproj">
       <Project>{6d6cc9b7-491a-4fc1-bb3b-63e238bbde95}</Project>

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using RsaUtils;
 using TransactionManagementCommon;
 using CryptographicPlatforms;
 using AuthorizationClientPlatforms;
@@ -141,13 +140,17 @@ namespace Rtcc.Main
                     throw new Exception(message);
                 }
 
+                Int64 hash = CCCrypt.HashPANToInt64(creditCardFields.Pan.ToString());
+
                 // Insert the record
                 // Note that the requested amount sent to the database does not include any credit card fees.
                 // The database itself will add the fee but only if it's a flat rate fee...
                 status = TransactionStatus.Authorizing;
-                transactionRecordID = (int)InsertTransactionRecord("Processing_Live", request, creditCardFields, "RTCC Processing", isPreauth ? TransactionMode.RealtimeDualAuth : TransactionMode.RealtimeNormal, status.Value);
+                transactionRecordID = (int)InsertTransactionRecord("Processing_Live", request, creditCardFields, "RTCC Processing", isPreauth ? TransactionMode.RealtimeDualAuth : TransactionMode.RealtimeNormal, status.Value, hash);
 
                 LogDetail("Sending transaction " + transactionRecordID.ToString() + " to processor " + processorInfo.ClearingPlatform);
+
+                //request.AmountDollars = 6.01m; // Hack for decline testing.
 
                 // Add the convenience fee but ONLY if it's a positive amount.
                 // If the convenince fee is negative, then the value is a percentage that is _NOT_ inclusive.
@@ -171,8 +174,6 @@ namespace Rtcc.Main
                 // --- Send a reply to the parking meter ---
                 SendReplyToClient(request, authorizationResponse, "Err: Sending client response");
 
-                Int64 hash = CreditCardHashing.HashPANToInt64(creditCardFields.Pan.ToString());
-
                 LogDetail("Updating database for " + transactionRecordID.ToString() + ": " + newStatus.ToString());
                 status = newStatus;
                 if (isPreauth)
@@ -195,8 +196,7 @@ namespace Rtcc.Main
                         // requested amount, pass in the value as a negative
                         // number to trigger the database to update the total
                         // card and credit charge values.
-                        authorizationResponse.AdditionalCCFee * -100,
-                        hash
+                        authorizationResponse.AdditionalCCFee * -100
                         );
                 }
 
@@ -208,6 +208,8 @@ namespace Rtcc.Main
                     //objTrans.TransactionRecordID = transactionRecordID.GetValueOrDefault().ToString();
                     //objClient.SubmitReqest(objTrans);
 
+                    // NOTE: This is not consistent with CCTM processing. 
+                    // There, receipts are only sent when approved...
                     SendToReceiptServer(hash.ToString(), transactionRecordID.ToString(), "1");
                 }
                 catch (Exception e)
@@ -357,7 +359,8 @@ namespace Rtcc.Main
             CreditCardTrackFields creditCardFields,
             string statusString,
             TransactionMode mode,
-            TransactionStatus status)
+            TransactionStatus status,
+            Int64 ccHash)
         {
             try
             {
@@ -391,7 +394,8 @@ namespace Rtcc.Main
                         creditCardFields.Pan.FirstSixDigits,
                         creditCardFields.Pan.LastFourDigits,
                         (short)mode,
-                        (short)status
+                        (short)status,
+                        ccHash
                     );
             }
             catch (Exception exception)
