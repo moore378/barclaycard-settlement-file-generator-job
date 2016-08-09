@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using RsaUtils;
 using TransactionManagementCommon;
 using CryptographicPlatforms;
 using AuthorizationClientPlatforms;
@@ -35,7 +34,7 @@ namespace Rtcc.Main
         private RtccDatabase rtccDatabase;
         private PayByCellClient payByCell;
         private RtccPerformanceCounters.SessionStats performanceCounterSession;
-        private static ThreadLocal<System.Security.Cryptography.MD5> hasher = new ThreadLocal<System.Security.Cryptography.MD5>(() => System.Security.Cryptography.MD5.Create());
+        //private static ThreadLocal<System.Security.Cryptography.MD5> hasher = new ThreadLocal<System.Security.Cryptography.MD5>(() => System.Security.Cryptography.MD5.Create());
 
         // Collection of authorization platforms.
         private Dictionary<string, IAuthorizationPlatform> platforms;
@@ -69,7 +68,7 @@ namespace Rtcc.Main
             ClientAuthRequest request = null;
             UnencryptedStripe unencryptedUnformattedStripe = null;
             TransactionStatus? status = null;
-            int? transactionRecordID = null;
+            int transactionRecordID = 0;
             IAuthorizationPlatform platform;
 
             try
@@ -141,13 +140,17 @@ namespace Rtcc.Main
                     throw new Exception(message);
                 }
 
+                Int64 hash = CCCrypt.HashPANToInt64(creditCardFields.Pan.ToString());
+
                 // Insert the record
                 // Note that the requested amount sent to the database does not include any credit card fees.
                 // The database itself will add the fee but only if it's a flat rate fee...
                 status = TransactionStatus.Authorizing;
-                transactionRecordID = (int)InsertTransactionRecord("Processing_Live", request, creditCardFields, "RTCC Processing", isPreauth ? TransactionMode.RealtimeDualAuth : TransactionMode.RealtimeNormal, status.Value);
+                transactionRecordID = (int)InsertTransactionRecord("Processing_Live", request, creditCardFields, "RTCC Processing", isPreauth ? TransactionMode.RealtimeDualAuth : TransactionMode.RealtimeNormal, status.Value, hash);
 
                 LogDetail("Sending transaction " + transactionRecordID.ToString() + " to processor " + processorInfo.ClearingPlatform);
+
+                //request.AmountDollars = 6.01m; // Hack for decline testing.
 
                 // Add the convenience fee but ONLY if it's a positive amount.
                 // If the convenince fee is negative, then the value is a percentage that is _NOT_ inclusive.
@@ -158,7 +161,7 @@ namespace Rtcc.Main
                 }
 
                 // Perform the authorization
-                AuthorizationResponseFields authorizationResponse = AuthorizeRequest(transactionRecordID.Value, request, tracks, unencryptedStripe, creditCardFields, processorInfo, request.UniqueRecordNumber, isPreauth, platform);
+                AuthorizationResponseFields authorizationResponse = AuthorizeRequest(transactionRecordID, request, tracks, unencryptedStripe, creditCardFields, processorInfo, request.UniqueRecordNumber, isPreauth, platform);
 
                 LogImportant("Sending response result for " + transactionRecordID.ToString() + ": " + authorizationResponse.resultCode.ToString());
 
@@ -175,11 +178,11 @@ namespace Rtcc.Main
                 status = newStatus;
                 if (isPreauth)
                 {
-                    rtccDatabase.UpdatePreauth(transactionRecordID.Value, DateTime.Now, authorizationResponse.receiptReference, authorizationResponse.authorizationCode, obscuredPan.ToString(), creditCardFields.ExpDateYYMM, authorizationResponse.cardType, creditCardFields.Pan.FirstSixDigits, creditCardFields.Pan.LastFourDigits, authorizationResponse.BatchNum, authorizationResponse.Ttid, (short)status.Value);
+                    rtccDatabase.UpdatePreauth(transactionRecordID, DateTime.Now, authorizationResponse.receiptReference, authorizationResponse.authorizationCode, obscuredPan.ToString(), creditCardFields.ExpDateYYMM, authorizationResponse.cardType, creditCardFields.Pan.FirstSixDigits, creditCardFields.Pan.LastFourDigits, authorizationResponse.BatchNum, authorizationResponse.Ttid, (short)status.Value);
                 }
                 else
                 {
-                    rtccDatabase.UpdateLiveTransactionRecord(transactionRecordID.Value, 
+                    rtccDatabase.UpdateLiveTransactionRecord(transactionRecordID, 
                         "Processed_Live", 
                         newStatus.ToString(), 
                         authorizationResponse.authorizationCode,
@@ -205,8 +208,9 @@ namespace Rtcc.Main
                     //objTrans.TransactionRecordID = transactionRecordID.GetValueOrDefault().ToString();
                     //objClient.SubmitReqest(objTrans);
 
-                    string hash = String.Concat(hasher.Value.ComputeHash(Encoding.ASCII.GetBytes(";" + creditCardFields.Pan + "=" + creditCardFields.ExpDateYYMM + "?")).Select(b => b.ToString("X2")));
-                    SendToReceiptServer(hash, transactionRecordID.GetValueOrDefault().ToString(), "1");
+                    // NOTE: This is not consistent with CCTM processing. 
+                    // There, receipts are only sent when approved...
+                    SendToReceiptServer(hash.ToString(), transactionRecordID.ToString(), "1");
                 }
                 catch (Exception e)
                 {
@@ -240,8 +244,8 @@ namespace Rtcc.Main
             catch (ParseException exception) // If there is a problem parsing at one of the steps
             {
                 LogError("Parse error: " + exception.Message, exception);
-                if (status != null && transactionRecordID != null)
-                    rtccDatabase.UpdateTransactionStatus(transactionRecordID.Value, status.Value, TransactionStatus.StripeError, exception.FailStatus);
+                if (status != null && transactionRecordID != 0)
+                    rtccDatabase.UpdateTransactionStatus(transactionRecordID, status.Value, TransactionStatus.StripeError, exception.FailStatus);
                 performanceCounterSession.FailedSession(stopwatch.ElapsedTicks);
                 return false;
             }
@@ -355,7 +359,8 @@ namespace Rtcc.Main
             CreditCardTrackFields creditCardFields,
             string statusString,
             TransactionMode mode,
-            TransactionStatus status)
+            TransactionStatus status,
+            Int64 ccHash)
         {
             try
             {
@@ -389,7 +394,8 @@ namespace Rtcc.Main
                         creditCardFields.Pan.FirstSixDigits,
                         creditCardFields.Pan.LastFourDigits,
                         (short)mode,
-                        (short)status
+                        (short)status,
+                        ccHash
                     );
             }
             catch (Exception exception)

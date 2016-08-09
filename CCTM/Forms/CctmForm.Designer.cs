@@ -1,5 +1,4 @@
 using Cctm.Database;
-using Cctm.Database.CCTransactionsDataSetTableAdapters;
 namespace Cctm
 {
   partial class CctmForm
@@ -32,11 +31,8 @@ namespace Cctm
     {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CctmForm));
-            this.sEL_NEW_TRANSACTIONRECORDSBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.cCTransactionsDataSet = new CCTransactionsDataSet();
             this.tmrOneSec = new System.Windows.Forms.Timer(this.components);
             this.lblProcessIndicator = new System.Windows.Forms.Label();
-            this.sEL_NEW_TRANSACTIONRECORDSTableAdapter = new SEL_NEW_TRANSACTIONRECORDSTableAdapter();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.testingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.windowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -61,8 +57,6 @@ namespace Cctm
             this.imageList2 = new System.Windows.Forms.ImageList(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.pageSetupDialog1 = new System.Windows.Forms.PageSetupDialog();
-            ((System.ComponentModel.ISupportInitialize)(this.sEL_NEW_TRANSACTIONRECORDSBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cCTransactionsDataSet)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -74,16 +68,6 @@ namespace Cctm
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // sEL_NEW_TRANSACTIONRECORDSBindingSource
-            // 
-            this.sEL_NEW_TRANSACTIONRECORDSBindingSource.DataMember = "SEL_NEW_TRANSACTIONRECORDS";
-            this.sEL_NEW_TRANSACTIONRECORDSBindingSource.DataSource = this.cCTransactionsDataSet;
-            // 
-            // cCTransactionsDataSet
-            // 
-            this.cCTransactionsDataSet.DataSetName = "CCTransactionsDataSet";
-            this.cCTransactionsDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
             // tmrOneSec
             // 
@@ -99,10 +83,6 @@ namespace Cctm
             this.lblProcessIndicator.Name = "lblProcessIndicator";
             this.lblProcessIndicator.Size = new System.Drawing.Size(0, 13);
             this.lblProcessIndicator.TabIndex = 10;
-            // 
-            // sEL_NEW_TRANSACTIONRECORDSTableAdapter
-            // 
-            this.sEL_NEW_TRANSACTIONRECORDSTableAdapter.ClearBeforeFill = true;
             // 
             // menuStrip1
             // 
@@ -133,7 +113,7 @@ namespace Cctm
             // eventLogToolStripMenuItem
             // 
             this.eventLogToolStripMenuItem.Name = "eventLogToolStripMenuItem";
-            this.eventLogToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.eventLogToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
             this.eventLogToolStripMenuItem.Text = "Event Log";
             this.eventLogToolStripMenuItem.Click += new System.EventHandler(this.eventLogToolStripMenuItem_Click);
             // 
@@ -148,7 +128,7 @@ namespace Cctm
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -327,8 +307,6 @@ namespace Cctm
             this.Text = "Credit Card Transaction Processor (CCTM2)";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.CctmForm_FormClosing);
             this.Load += new System.EventHandler(this.CctmForm_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.sEL_NEW_TRANSACTIONRECORDSBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cCTransactionsDataSet)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
@@ -348,9 +326,6 @@ namespace Cctm
 
     #endregion
 
-    private CCTransactionsDataSet cCTransactionsDataSet;
-    private System.Windows.Forms.BindingSource sEL_NEW_TRANSACTIONRECORDSBindingSource;
-    private SEL_NEW_TRANSACTIONRECORDSTableAdapter sEL_NEW_TRANSACTIONRECORDSTableAdapter;
     private System.Windows.Forms.Timer tmrOneSec;
     private System.Windows.Forms.Label lblProcessIndicator;
     private System.Windows.Forms.MenuStrip menuStrip1;

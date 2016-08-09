@@ -5,25 +5,136 @@ using System.Text;
 using TransactionManagementCommon;
 using Rtcc.Main;
 
+using System.Threading.Tasks;
+
+using AutoDatabase;
+
 namespace Rtcc.Database
 {
+    [DatabaseInterface(StoredProcNameConverter = typeof(PascalCaseToUnderscoreConverter))]
+    public interface IRtccDatabase
+    {
+        Task<CCProcessorInfo> SelRtccProcessor(string TerminalSerNo);
+
+        Task InsLiveTransactionrecord
+            (
+            string TerminalSerNo,
+            string ElectronicSerNo,
+            decimal TransactionType,
+            DateTime StartDateTime,
+            decimal TotalCredit,
+            decimal TimePurchased,
+            decimal TotalParkingTime,
+            decimal CCAmount,
+            string CCTracks,
+            string CCTransactionStatus,
+            decimal CCTransactionIndex,
+            string CoinCount,
+            decimal EncryptionVer,
+            decimal KeyVer,
+            string UniqueRecordNumber,
+            string CreditCallCardEaseReference,
+            string CreditCallAuthCode,
+            string CreditCallPAN,
+            string CreditCallExpiryDate,
+            string CreditCallCardScheme,
+            string CCFirstSix,
+            string CCLastFour,
+            long UniqueNumber2,
+            short Mode,
+            short Status,
+            Int64 CardHash);
+
+        [return: DatabaseReturn(ColumnIndex = 0)]
+        Task<decimal> SelTransrecidFromUniquerec(string UniqueRecordNumber, long UniqueNumber2);
+
+        Task UpdLiveTransactionrecord(
+            decimal TransactionRecordID,
+            string CCTracks,
+            string CCTransactionStatus,
+            string CreditCallAuthCode,
+            string CreditCallCardScheme,
+            string CreditCallPAN,
+            short BatNum,
+            int TTID,
+            short Status,
+            decimal CCFee
+            );
+
+        Task UpdTransactionrecordStatus(int TransactionRecordID, string CCTransactionStatus, short Status, short OldStatus);
+
+        Task UpdTransactionauthorization(
+            int TransactionRecordID,
+            DateTime SettlementDateTime,
+            string CreditCallCardEaseReference,
+            string CreditCallAuthCode,
+            string CreditCallPAN,
+            string CreditCallExpiryDate,
+            string CreditCallCardScheme,
+            string CCFirstSix,
+            string CCLastFour,
+            short BatNum,
+            int TTID,
+            short Status
+            // NOTE: Although CCHash is a parameter, RTCC does not use it.
+            );
+    }
+
+    class DatabaseDebugLog : IDatabaseTracker
+    {
+        class MethodLog : IDatabaseMethodTracker
+        {
+            private string name;
+
+            public MethodLog(string name)
+            {
+                this.name = name;
+            }
+
+            public void Successful(object result)
+            {
+                System.Diagnostics.Debug.WriteLine(name + " was successful");
+            }
+
+            public void Failed()
+            {
+                System.Diagnostics.Debug.WriteLine(name + " failed");
+            }
+        }
+
+        public IDatabaseMethodTracker StartingQuery(string name, params object[] args)
+        {
+            System.Diagnostics.Debug.WriteLine("-> " + name);
+            return new MethodLog(name);
+        }
+    }
+
     public class RtccDatabase : LoggingObject
     {
+        private IRtccDatabase database;
+
+        public RtccDatabase()
+        {
+            var connectionSource = new ConnectionSource(Properties.Settings.Default.ConnectionString);
+
+            database = AutoDatabaseBuilder.CreateInstance<IRtccDatabase>(connectionSource, new DatabaseDebugLog());
+        }
+
         public virtual decimal InsertLiveTransactionRecord(
             string TerminalSerNo,
             string ElectronicSerNo,
-            decimal? TransactionType,
-            DateTime? StartDateTime,
-            decimal? TotalCredit,
-            decimal? TimePurchased,
-            decimal? TotalParkingTime,
-            decimal? CCAmount,
+            decimal TransactionType,
+            DateTime StartDateTime,
+            decimal TotalCredit,
+            decimal TimePurchased,
+            decimal TotalParkingTime,
+            decimal CCAmount,
             string CCTracks,
             string CCTransactionStatus,
-            decimal? CCTransactionIndex,
+            decimal CCTransactionIndex,
             string CoinCount,
-            decimal? EncryptionVer,
-            decimal? KeyVer,
+            decimal EncryptionVer,
+            decimal KeyVer,
             string UniqueRecordNumber,
             long UniqueRecordNumber2,
             string CreditCallCardEaseReference,
@@ -34,12 +145,14 @@ namespace Rtcc.Database
             string FirstSixDigits,
             string LastFourDigits,
             short mode,
-            short status)
+            short status,
+            Int64 CardHash)
         {
-            var adapter = new DataSet1TableAdapters.QueriesTableAdapter();
-            adapter.INS_LIVE_TRANSACTIONRECORD(
+            decimal transactionRecordID = 0;
+
+            var insertTask = database.InsLiveTransactionrecord(
                 TerminalSerNo,
-                ElectronicSerNo,
+                ElectronicSerNo ?? "",
                 TransactionType,
                 StartDateTime,
                 TotalCredit,
@@ -62,16 +175,22 @@ namespace Rtcc.Database
                 LastFourDigits,
                 UniqueRecordNumber2,
                 mode,
-                status);
-            object result = null;
+                status,
+                CardHash);
+
+            Task.WaitAll(insertTask);
 
             try
             {
                 LogDetail("Calling database SEL_TRANSRECID_FROM_UNIQUEREC with UniqueRecordNumber=" + UniqueRecordNumber.ToString());
-                result = adapter.SEL_TRANSRECID_FROM_UNIQUEREC(UniqueRecordNumber, UniqueRecordNumber2);
-                if (result != null)
-                    LogDetail("Database SEL_TRANSRECID_FROM_UNIQUEREC returned (" + result.ToString() + ")");
+                //result = adapter.SEL_TRANSRECID_FROM_UNIQUEREC(UniqueRecordNumber, UniqueRecordNumber2);
 
+                var task = database.SelTransrecidFromUniquerec(UniqueRecordNumber, UniqueRecordNumber2)
+                    .ContinueWith((t) => transactionRecordID = t.Result);
+
+                task.Wait();
+
+                LogDetail("Database SEL_TRANSRECID_FROM_UNIQUEREC returned (" + transactionRecordID.ToString() + ")");
             }
             catch (Exception e)
             {
@@ -79,10 +198,12 @@ namespace Rtcc.Database
                 throw;
             }
 
-            if (result == null)
+            if (0 == transactionRecordID)
+            {
                 throw new Exception("Error calling SEL_TRANSRECID_FROM_UNIQUEREC: returned null");
-            else
-                return (decimal)result;
+            }
+
+            return transactionRecordID;
         }
 
         public virtual void UpdateLiveTransactionRecord(
@@ -107,8 +228,10 @@ namespace Rtcc.Database
                       + ";CreditCallPAN=" + obscuredPan
                       + ";CCFee=" + ccFee.ToString()
                       + ")");
-                var adapter = new DataSet1TableAdapters.QueriesTableAdapter();
-                adapter.UPD_LIVE_TRANSACTIONRECORD(transactionRecordID, tracks, statusString, authCode, cardType, obscuredPan, batchNum, ttid, status, (int) ccFee);
+
+                var task = database.UpdLiveTransactionrecord(transactionRecordID, tracks, statusString, authCode, cardType, obscuredPan, batchNum, ttid, status, (int) ccFee);
+
+                task.Wait();
             }
             catch (Exception e)
             {
@@ -120,51 +243,39 @@ namespace Rtcc.Database
         public virtual void UpdateTransactionStatus(
             int transactionRecordID, TransactionStatus oldStatus, TransactionStatus newStatus, string newStatusStr)
         {
-            var adapter = new Database.DataSet1TableAdapters.QueriesTableAdapter();
-            adapter.UPD_TRANSACTIONRECORD_STATUS(transactionRecordID, newStatusStr, (short)newStatus, (short)oldStatus);
+            var task = database.UpdTransactionrecordStatus(transactionRecordID, newStatusStr, (short)newStatus, (short)oldStatus);
+            task.Wait();
         }
 
         public virtual CCProcessorInfo GetRtccProcessorInfo(string terminalSerialNumber)
         {
-            CCProcessorInfo info;
+            CCProcessorInfo info = null;
 
-            var adapter = new DataSet1TableAdapters.SEL_RTCC_PROCESSORTableAdapter();
-            var data = adapter.GetData(terminalSerialNumber);
-
-            // There should be one row returned
-            if (data.Rows.Count <= 0)
-                throw new Exception("Error getting processor information from database: No data returned");
-
-            // We get the data out of the first row
-            info = new CCProcessorInfo(
-                decimal.ToInt32(data[0].TerminalID),
-                data[0].TerminalSerNo,
-                data[0].CompanyName,
-                data[0].CCTerminalID,
-                data[0].CCTransactionKey,
-                data[0].CCClearingPlatform,
-                readVal(() => data[0].PoleSerNo, ""),
-                readVal(() => decimal.ToInt32(data[0].PoleID), 0),
-                data[0].TimeZoneOffset,
-                data[0].DST_Adjust,
-                "",//data[0].PhoneNumber,
-                "",
-                data[0].CCFee);//data[0].IP);
-
-            // Normalize the extra processor settings.
-            // TODO: Dynamically set these up via configuration.
-            switch (info.ClearingPlatform.ToLower())
+            try
             {
-                case "israel-premium":
-                    info.ProcessorSettings["MerchantNumber"] = data[0].MerchantNumber;
-                    info.ProcessorSettings["CashierNumber"] = data[0].CashierNumber;
-                    break;
-                case "fis-paydirect":
-                    info.ProcessorSettings["SettleMerchantCode"] = data[0].MerchantNumber;
-                    break;
-                case "monetra":
-                default:
-                    break;
+                var task = database.SelRtccProcessor(terminalSerialNumber)
+                    .ContinueWith((t) => info = t.Result);
+
+                task.Wait();
+
+            }
+            catch (AggregateException e)
+            {
+                var flattened = e.Flatten();
+                var inner = flattened.InnerExceptions;
+
+                if (inner[0] is System.InvalidOperationException)
+                {
+                    throw new Exception("Error getting processor information from database: No data returned");
+                }
+                else
+                {
+                    throw new Exception("Error getting processor information from database", inner[0]);
+                }
+            }
+            catch (Exception)
+            {
+                throw new Exception("Error getting processor information from database: unknown error");
             }
 
             return info;
@@ -184,8 +295,7 @@ namespace Rtcc.Database
             int ttid, 
             short status)
         {
-            var adapter = new Database.DataSet1TableAdapters.QueriesTableAdapter();
-            adapter.UPD_TRANSACTIONAUTHORIZATION(
+            var task = database.UpdTransactionauthorization(
                 transactionRecordID, 
                 settlementDateTime, 
                 reference, 
@@ -198,6 +308,8 @@ namespace Rtcc.Database
                 batchNum, 
                 ttid, 
                 status);
+
+            task.Wait();
         }
 
         private T readVal<T>(Func<T> get, T defaultVal)
@@ -212,7 +324,5 @@ namespace Rtcc.Database
                 return defaultVal;
             }
         }
-
-        
     }
 }

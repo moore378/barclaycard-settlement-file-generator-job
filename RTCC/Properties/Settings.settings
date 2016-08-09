@@ -5,19 +5,13 @@
     <Setting Name="ConnectionString" Type="(Connection string)" Scope="Application">
       <DesignTimeValue Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
 &lt;SerializableConnectionString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
-  &lt;ConnectionString&gt;Data Source=VAYU;Initial Catalog=SSPM-DB;Persist Security Info=True;Integrated Security=True;TrustServerCertificate=True&lt;/ConnectionString&gt;
+  &lt;ConnectionString&gt;Data Source=vayu;Initial Catalog=SSPM-DB;Persist Security Info=True;Integrated Security=True;TrustServerCertificate=True&lt;/ConnectionString&gt;
   &lt;ProviderName&gt;System.Data.SqlClient&lt;/ProviderName&gt;
 &lt;/SerializableConnectionString&gt;</DesignTimeValue>
-      <Value Profile="(Default)">Data Source=VAYU;Initial Catalog=SSPM-DB;Persist Security Info=True;Integrated Security=True;TrustServerCertificate=True</Value>
+      <Value Profile="(Default)">Data Source=vayu;Initial Catalog=SSPM-DB;Persist Security Info=True;Integrated Security=True;TrustServerCertificate=True</Value>
     </Setting>
     <Setting Name="ListenPort" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">3002</Value>
-    </Setting>
-    <Setting Name="MontraHostName" Type="System.String" Scope="User">
-      <Value Profile="(Default)">DB5</Value>
-    </Setting>
-    <Setting Name="MonetraPort" Type="System.UInt16" Scope="User">
-      <Value Profile="(Default)">8444</Value>
     </Setting>
     <Setting Name="DetailedLoggingEnabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
@@ -26,13 +20,19 @@
       <Value Profile="(Default)">Logs</Value>
     </Setting>
     <Setting Name="ReceiptServer" Type="System.String" Scope="User">
-      <Value Profile="(Default)">http://db5:1111/ValidateCard.svc/SubmitRequest</Value>
+      <Value Profile="(Default)">http://10.1.20.26:1111/ValidateCard.svc/SubmitRequest</Value>
     </Setting>
     <Setting Name="IsraelMerchantNumber" Type="System.String" Scope="User">
       <Value Profile="(Default)">0963185013</Value>
     </Setting>
     <Setting Name="IsraelCashierNumber" Type="System.String" Scope="User">
       <Value Profile="(Default)">01</Value>
+    </Setting>
+    <Setting Name="MonetraPort" Type="System.UInt16" Scope="User">
+      <Value Profile="(Default)">8665</Value>
+    </Setting>
+    <Setting Name="MontraHostName" Type="System.String" Scope="User">
+      <Value Profile="(Default)">DB5</Value>
     </Setting>
   </Settings>
 </SettingsFile>

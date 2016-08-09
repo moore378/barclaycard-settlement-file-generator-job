@@ -37,5 +37,6 @@ namespace Cctm.Database
         public DateTime? ReferenceDateTime; // datetime
         public Decimal? AuthCCTransactionIndex; // decimal
         public Decimal? AuthCCAmount; // money
+        public Int64? CCHash; // bigint
     }
 }

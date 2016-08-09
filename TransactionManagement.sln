@@ -14,26 +14,19 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TransactionManagementCommon", "TransactionManagmentCommon\TransactionManagementCommon.csproj", "{A8DC7A1F-25AF-4935-9A23-96C610F4DE95}"
 	ProjectSection(ProjectDependencies) = postProject
 		{5AE1B5BD-C0AE-46E2-8E55-6960FAF3A846} = {5AE1B5BD-C0AE-46E2-8E55-6960FAF3A846}
-		{C57D09F3-983C-4508-8E34-FAD3B081B79F} = {C57D09F3-983C-4508-8E34-FAD3B081B79F}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthorizationClientPlatforms", "AuthorizationClientPlatforms\AuthorizationClientPlatforms.csproj", "{5AE1B5BD-C0AE-46E2-8E55-6960FAF3A846}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CryptographicPlatforms", "CryptographicPlatforms\CryptographicPlatforms.csproj", "{C57D09F3-983C-4508-8E34-FAD3B081B79F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TransactionManagementUnitTests", "TransactionManagementCommonUnitTests\TransactionManagementUnitTests.csproj", "{C02DD423-FFC1-4D5B-A6A2-F92E77DAFC7C}"
 	ProjectSection(ProjectDependencies) = postProject
 		{5AE1B5BD-C0AE-46E2-8E55-6960FAF3A846} = {5AE1B5BD-C0AE-46E2-8E55-6960FAF3A846}
 		{A8DC7A1F-25AF-4935-9A23-96C610F4DE95} = {A8DC7A1F-25AF-4935-9A23-96C610F4DE95}
 		{A9102F53-8F96-4F3A-8FF8-FB5F0B5BC609} = {A9102F53-8F96-4F3A-8FF8-FB5F0B5BC609}
-		{C57D09F3-983C-4508-8E34-FAD3B081B79F} = {C57D09F3-983C-4508-8E34-FAD3B081B79F}
 		{EB6FE2F9-897D-41B8-96EC-E3F1035DA4B6} = {EB6FE2F9-897D-41B8-96EC-E3F1035DA4B6}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CCTM", "CCTM\CCTM.csproj", "{EB6FE2F9-897D-41B8-96EC-E3F1035DA4B6}"
-	ProjectSection(ProjectDependencies) = postProject
-		{C57D09F3-983C-4508-8E34-FAD3B081B79F} = {C57D09F3-983C-4508-8E34-FAD3B081B79F}
-	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{BA9EFA9B-8E6C-4680-AE58-37C8442E7DF0}"
 EndProject
@@ -99,16 +92,6 @@ Global
 		{5AE1B5BD-C0AE-46E2-8E55-6960FAF3A846}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{5AE1B5BD-C0AE-46E2-8E55-6960FAF3A846}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{5AE1B5BD-C0AE-46E2-8E55-6960FAF3A846}.Release|x86.ActiveCfg = Release|Any CPU
-		{C57D09F3-983C-4508-8E34-FAD3B081B79F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C57D09F3-983C-4508-8E34-FAD3B081B79F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C57D09F3-983C-4508-8E34-FAD3B081B79F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{C57D09F3-983C-4508-8E34-FAD3B081B79F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{C57D09F3-983C-4508-8E34-FAD3B081B79F}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{C57D09F3-983C-4508-8E34-FAD3B081B79F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C57D09F3-983C-4508-8E34-FAD3B081B79F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C57D09F3-983C-4508-8E34-FAD3B081B79F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{C57D09F3-983C-4508-8E34-FAD3B081B79F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{C57D09F3-983C-4508-8E34-FAD3B081B79F}.Release|x86.ActiveCfg = Release|Any CPU
 		{C02DD423-FFC1-4D5B-A6A2-F92E77DAFC7C}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{C02DD423-FFC1-4D5B-A6A2-F92E77DAFC7C}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
 		{C02DD423-FFC1-4D5B-A6A2-F92E77DAFC7C}.Debug|Mixed Platforms.Build.0 = Debug|x86

@@ -26,7 +26,7 @@ namespace Rtcc.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=VAYU;Initial Catalog=SSPM-DB;Persist Security Info=True;Integrated Se" +
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=vayu;Initial Catalog=SSPM-DB;Persist Security Info=True;Integrated Se" +
             "curity=True;TrustServerCertificate=True")]
         public string ConnectionString {
             get {
@@ -43,30 +43,6 @@ namespace Rtcc.Properties {
             }
             set {
                 this["ListenPort"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("DB5")]
-        public string MontraHostName {
-            get {
-                return ((string)(this["MontraHostName"]));
-            }
-            set {
-                this["MontraHostName"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("8444")]
-        public ushort MonetraPort {
-            get {
-                return ((ushort)(this["MonetraPort"]));
-            }
-            set {
-                this["MonetraPort"] = value;
             }
         }
         
@@ -96,7 +72,7 @@ namespace Rtcc.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://db5:1111/ValidateCard.svc/SubmitRequest")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://10.1.20.26:1111/ValidateCard.svc/SubmitRequest")]
         public string ReceiptServer {
             get {
                 return ((string)(this["ReceiptServer"]));
@@ -127,6 +103,30 @@ namespace Rtcc.Properties {
             }
             set {
                 this["IsraelCashierNumber"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("8665")]
+        public ushort MonetraPort {
+            get {
+                return ((ushort)(this["MonetraPort"]));
+            }
+            set {
+                this["MonetraPort"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("DB5")]
+        public string MontraHostName {
+            get {
+                return ((string)(this["MontraHostName"]));
+            }
+            set {
+                this["MontraHostName"] = value;
             }
         }
     }

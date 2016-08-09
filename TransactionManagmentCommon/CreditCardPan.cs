@@ -39,7 +39,7 @@ namespace TransactionManagementCommon
                 case ObscurationMethod.None:
                     return new CreditCardPan(panString, method);
                 case ObscurationMethod.Hash:
-                    return new CreditCardPan(CryptographicPlatforms.CreditCardHashing.HashPAN(panString), method);
+                    return new CreditCardPan(CryptographicPlatforms.CCCrypt.HashPAN(panString), method);
                 case ObscurationMethod.FirstSixLastFour:
                     // Get the first six and last four
                     return new CreditCardPan(FirstSixDigits + "..." + LastFourDigits, method);

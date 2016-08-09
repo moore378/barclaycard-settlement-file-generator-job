@@ -1,4 +1,4 @@
-version=../../../CCTM/Properties/AssemblyInfo.cs=^\[assembly: AssemblyVersion\("(\d+\.\d+\.\d+\.\d+)"\)\]$
+version=../../../CCTM/Properties/AssemblyInfo.cs=^\[assembly: AssemblyFileVersion\("(\d+\.\d+\.\d+\.\d+)"\)\]$
 filename=CCTM \1.zip
 copy-to=S:\TEMP - Will be deleted at regular intervals\CCTM
 mail-to=alex.schwarz@ipsgroupinc.com
@@ -6,7 +6,6 @@ notes-file=release-notes.txt
 release-notes.txt=git log -n5
 AuthorizationClientPlatforms.dll
 AutoDatabase.dll
-CCCrypto.dll
 CCTM.exe
 Common.dll
 CryptographicPlatforms.dll
@@ -16,6 +15,5 @@ MjhGeneral.dll
 msvcm80.dll
 msvcp80.dll
 Newtonsoft.Json.dll
-RsaUtils.dll
 Track.dll
 TransactionManagementCommon.dll

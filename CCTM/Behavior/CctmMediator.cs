@@ -34,10 +34,11 @@ namespace Cctm.Behavior
         public AsyncSemaphore throttle;
         private DetailedLogDelegate detailedLog;
         private static long totalStarted = 0;
-        private ICctmDatabase database;
+        // NOTE: Removed older data set model for database interfacing since
+        // it has been replaced fully by ICctmDatabase2.
         private Dictionary<string, Lazy<IAuthorizationPlatform>> platforms; // Holds all the supported authorization platforms.
         private CctmPerformanceCounters performanceCounters;
-        private static System.Security.Cryptography.MD5 hasher = System.Security.Cryptography.MD5.Create();
+        // Removed hasher to use the standard function.
 
         /// <summary>
         /// List of running or queued transaction processing tasks
@@ -52,11 +53,12 @@ namespace Cctm.Behavior
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="database"></param>
+        /// <param name="database2"></param>
         /// <param name="platforms"></param>
         /// <param name="statisticsChanged">Delegate signalled when there is a change in the statistics record.</param>
-        public CctmMediator(ICctmDatabase database,
-            ICctmDatabase2 cctmDatabase2,
+        // NOTE: Removed older data set model for database interfacing since
+        // it has been replaced fully by ICctmDatabase2.
+        public CctmMediator(ICctmDatabase2 cctmDatabase2,
             Dictionary<string, Lazy<IAuthorizationPlatform>> platforms,
             Action<IStatistics> statisticsChanged,
             Action<string> log,
@@ -69,7 +71,6 @@ namespace Cctm.Behavior
             this.database2 = cctmDatabase2;
             this.performanceCounters = performanceCounters;
             this.throttle = new AsyncSemaphore(maxSimultaneous);
-            this.database = database;
             this.platforms = platforms; // collection of authorization platforms.
             this.statistics = new CctmStatistics(statisticsChanged);
             this.statistics.Changed += new Action<IStatistics>((stats) => { if (StatisticsChanged != null) StatisticsChanged(stats); });
@@ -147,6 +148,7 @@ namespace Cctm.Behavior
                     }
 
                     CreditCardTracks tracks;
+                    Int64 hash = 0;
 
                     // Finalize doesnt have a track
                     if (mode != AuthorizeMode.Finalize)
@@ -194,7 +196,7 @@ namespace Cctm.Behavior
                         // Split track two into fields
                         if (dbTransactionRecord.CCClearingPlatform.ToUpper() != "ISRAEL-PREMIUM"
                             || !TrackFormat.ParseTrackTwoIsraelSpecial(tracks.TrackTwo, "Err: Israel track parse error", out creditCardFields))
-                                creditCardFields = TrackFormat.ParseTrackTwoIso7813(tracks.TrackTwo, "Err: Track parse error");
+                            creditCardFields = TrackFormat.ParseTrackTwoIso7813(tracks.TrackTwo, "Err: Track parse error");
 
                         // Validate the fields
                         creditCardFields.Validate("Err: Invalid Track Fields");
@@ -202,9 +204,22 @@ namespace Cctm.Behavior
                         // If this isn't a normal card, then we have an exceptional circumstance of this being a special card
                         if (creditCardFields.CardType != CardType.Normal && creditCardFields.CardType != CardType.IsraelSpecial)
                             throw new SpecialCardException();
+
+                        // Calculate the hash for the receipt server
+                        // Get the hash from the account number.
+                        hash = CCCrypt.HashPANToInt64(creditCardFields.Pan.ToString());
                     }
                     else
+                    {
                         tracks = new CreditCardTracks();
+
+                        // Calculate the hash for the receipt server
+                        // Get the hash as it was from the DB.
+                        if (dbTransactionRecord.CCHash.HasValue)
+                        {
+                            hash = dbTransactionRecord.CCHash.Value;
+                        }
+                    }
 
                     // Choose the authorization platform
                     IAuthorizationPlatform authorizationPlatform = ChooseAuthorizationPlatform(dbTransactionRecord, "Err: Clearing platform");
@@ -214,9 +229,6 @@ namespace Cctm.Behavior
 
                     // Perform the authorization
                     authorizationResponse = AuthorizeRequest(dbTransactionRecord, tracks, unencryptedStripe, creditCardFields, authorizationPlatform, dbTransactionRecord.UniqueRecordNumber, mode, dbTransactionRecord.AuthTTID.Transform(a => (int?)a));
-                    
-                    // Calculate the hash for the receipt server
-                    byte[] hashData = System.Security.Cryptography.MD5.Create().ComputeHash(Encoding.ASCII.GetBytes(";" + creditCardFields.Pan + "=" + creditCardFields.ExpDateYYMM + "?"));
 
                     // Decide the status according to the response and update the database
                     TransactionStatus newStatus = (TransactionStatus)dbTransactionRecord.Status;
@@ -253,15 +265,14 @@ namespace Cctm.Behavior
                     if ((authorizationResponse.resultCode == AuthorizationResultCode.Approved) || (authorizationResponse.resultCode == AuthorizationResultCode.Declined))
                     {
                         newTrackText = "CCTM2 - " + authorizationResponse.note;
-                        //database.UpdateTrack(transactionRecord.ID, newTrackText);
                     }
 
                     // Send the updated record information to the database
                     UpdatedTransactionRecord updatedRecord = new UpdatedTransactionRecord()
                     {
                         AuthorizationCode = authorizationResponse.authorizationCode,
-                        CardEaseReference = authorizationResponse.receiptReference ?? "", // Optional. Some processors do not support sending these for declines.
-                        CardScheme = authorizationResponse.cardType ?? "", // Optional. Some processors do not support sending these for declines.
+                        CardEaseReference = authorizationResponse.receiptReference, // Optional. Some processors do not support sending these for declines.
+                        CardScheme = authorizationResponse.cardType, // Optional. Some processors do not support sending these for declines.
                         ExpiryDate = (mode != AuthorizeMode.Finalize) ? creditCardFields.ExpDateYYMM : "",
                         FirstSix = (mode != AuthorizeMode.Finalize) ? creditCardFields.Pan.FirstSixDigits : "",
                         LastFour = (mode != AuthorizeMode.Finalize) ? creditCardFields.Pan.LastFourDigits : "",
@@ -290,17 +301,17 @@ namespace Cctm.Behavior
 	                                CCLastFour = updatedRecord.LastFour,
 	                                BatNum = updatedRecord.BatchNum,
 	                                TTID = updatedRecord.Ttid,
-	                                Status = (short)updatedRecord.Status
+	                                Status = (short)updatedRecord.Status,
+                                    CCHash = hash
                                 }); 
                             break;
                         case AuthorizeMode.Finalize: 
-                            //database.UpdateFinalizeRecord(transactionRecord, updatedRecord);
                             await database2.UpdTransactionrecordCctmFinalization(new DbUpdTransactionrecordcctmFinalizationParams
                                 {
                                     BatNum = authorizationResponse.BatchNum,
                                     CCTrackStatus = newTrackText,
                                     CCTransactionStatus = newStatus.ToText(),
-                                    CreditCallAuthCode = authorizationResponse.authorizationCode ?? "",
+                                    CreditCallAuthCode = authorizationResponse.authorizationCode,
                                     CreditCallCardEaseReference = authorizationResponse.receiptReference,
                                     OldStatus = (short)dbTransactionRecord.Status, 
                                     Status = (short)newStatus,
@@ -315,7 +326,7 @@ namespace Cctm.Behavior
                                 TransactionRecordID = dbTransactionRecord.TransactionRecordID,
                                 CreditCallCardEaseReference = updatedRecord.CardEaseReference,
                                 CCTrackStatus = updatedRecord.TrackText,
-                                CreditCallAuthCode = updatedRecord.AuthorizationCode ?? "",
+                                CreditCallAuthCode = updatedRecord.AuthorizationCode,
 	                            CreditCallPAN = updatedRecord.PAN,
 	                            CreditCallExpiryDate = updatedRecord.ExpiryDate,
 	                            CreditCallCardScheme = updatedRecord.CardScheme,
@@ -332,14 +343,12 @@ namespace Cctm.Behavior
                                 // as a negative number to trigger the 
                                 // database to update the total card and credit
                                 // charge values.
-                                CCFee = (short) (authorizationResponse.AdditionalCCFee * -100m)
-                            }); 
+                                CCFee = (short) (authorizationResponse.AdditionalCCFee * -100m),
+                                CCHash = hash
+                            });
                             break;
                     }
-                    /*if (!isPreAuth)
-                        database.UpdateTransactionRecordCctm(transactionRecord, updatedRecord);
-                    else
-                        database.UpdatePreauthRecord(transactionRecord, updatedRecord);*/
+
                     dbTransactionRecord.Status = (short)updatedRecord.Status;
                     UpdatedTransaction(dbTransactionRecord);
 
@@ -351,7 +360,8 @@ namespace Cctm.Behavior
                         + "; Notes: " + authorizationResponse.note
                         );
 
-                    if (authorizationResponse.resultCode == AuthorizationResultCode.Approved)
+                    if ((authorizationResponse.resultCode == AuthorizationResultCode.Approved)
+                        && (0 != hash)) // Only send to the receipt server if there is a hash value.
                     {
                         try
                         {
@@ -360,9 +370,7 @@ namespace Cctm.Behavior
                             //objTrans.CCHash = ;
                             //objTrans.TransactionRecordID = transactionRecordID.GetValueOrDefault().ToString();
                             //objClient.SubmitReqest(objTrans);
-
-                            string hash = String.Concat(hasher.ComputeHash(Encoding.ASCII.GetBytes(";" + creditCardFields.Pan + "=" + creditCardFields.ExpDateYYMM + "?")).Select(b => b.ToString("X2")));
-                            SendToReceiptServer(hash, dbTransactionRecord.TransactionRecordID.ToString(), "1");
+                            SendToReceiptServer(hash.ToString(), dbTransactionRecord.TransactionRecordID.ToString(), "1");
                         }
                         catch (Exception e)
                         {
@@ -659,7 +667,8 @@ namespace Cctm.Behavior
 
                     // Add it to the task list
                     DateTime queueTime = DateTime.Now;
-                    Task transactionTask = new Task(() => ProcessTransaction(transactionRecord, queueTime));
+                    // Use async / await lambda expression to allow the task to only complete when the method finishes.
+                    Task transactionTask = new Task(async () => await ProcessTransaction(transactionRecord, queueTime));
                     lock (runningTasks) { runningTasks.Add(transactionTask); }
                     // It'll need to be removed when it's done
                     transactionTask.ContinueWith((task) =>
@@ -677,7 +686,6 @@ namespace Cctm.Behavior
                         transactionQueue.Enqueue(transactionTask);
                         transactionQueueNotEmpty.Set();
                     }
-
                 }
             }
             catch (Exception exception)

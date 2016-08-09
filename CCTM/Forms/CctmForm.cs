@@ -22,8 +22,6 @@ using System.Windows.Forms;
 using System.Collections.Specialized;
 using System.Configuration;
 using System.Runtime.InteropServices;
-using CCCrypto;
-using RsaUtils;
 using System.IO;
 using System.Reflection;
 using AuthorizationClientPlatforms;
@@ -92,11 +90,12 @@ namespace Cctm
 
             listView1.Items.Clear();
             mediatorStatus = listView1.Items.Add("CCTM Main").SubItems.Add("-");
-            databaseStatus = listView1.Items.Add("Database").SubItems.Add("-");
             monetraStatus = listView1.Items.Add("Monetra").SubItems.Add("-");
             israelPremiumStatus = listView1.Items.Add("Israel Premium").SubItems.Add("-");
 
             // NOTE: Removed unused authorization platforms.
+            // NOTE: Also removed unused database entry since DB handling
+            // is part of CCTM Main.
         }
 
         /// <summary>
@@ -148,8 +147,9 @@ namespace Cctm
         /// </summary>
         private void prepareCctmServers()
         {
-            // Initialize the database
-            Lazy<ICctmDatabase> database = prepareDatabase();
+            // NOTE: Removed initialization of older database initialization
+            // that uses data sets since the DB interface is now handled by
+            // AutoDatabase and ICctmDatabase2.
 
             // Initialize the authorization suite, now in dictionary form.
             Dictionary<string, Lazy<IAuthorizationPlatform>> platforms = prepareAuthorizationSuite(testMode: false);
@@ -165,7 +165,7 @@ namespace Cctm
                     var databaseTracker = new DatabaseTracker(fileLog, extendedDatabaseLogging);
                     var cctmDatabase2 = dualAuthDatabaseBuilder.CreateInstance(connectionSource, databaseTracker);
                     // Create the mediator
-                    CctmMediator mediator = new CctmMediator(database.Value, cctmDatabase2, platforms, statisticsChanged, generalLog, fileLog, (x) => tickWatchDog(), detailedLog, maxSimultaneous, performanceCounters);
+                    CctmMediator mediator = new CctmMediator(cctmDatabase2, platforms, statisticsChanged, generalLog, fileLog, (x) => tickWatchDog(), detailedLog, maxSimultaneous, performanceCounters);
                     mediator.PollIntervalSeconds = PollIntervalSeconds;
                     // Set up the events for the mediator
                     mediator.StartingTransaction += StartingTransaction;
@@ -218,32 +218,9 @@ namespace Cctm
             return new AuthorizationClientPlatforms.AuthorizationPlatform(processor.Server, processor.Name, configuration);
         }
 
-        private Lazy<ICctmDatabase> prepareDatabase()
-        {
-            /* Create a factory for the database - here we decide the specific type of database object to 
-             * use, and the type of factory we want to use to create it. Using a ThreadedServerFactory here
-             * will means that when the factory is used it will create the server asynchronously - this is 
-             * applicable especially for situations where the server may take a while to connect and the 
-             * call shouldnt block. 
-             */
-            ServerFactory<ICctmDatabase> cctmDatabaseFactory = new ThreadedServerFactory<ICctmDatabase>(
-                "cctmDatabaseFactory",
-                factoryMethod: () =>
-                    Adapters.NewDatabaseAdapter());
-
-            /* Create a controller to manage the database. See "ServerController" for more information about
-             * why the Cctm uses a controller for these servers. The controller manages the state of the
-             * server, and provides status updates which we use here to update the GUI: Things like 
-             * "Initializing", "Ready" or "Error"
-             */
-            ServerController<ICctmDatabase> cctmDatabaseController = new ServerController<ICctmDatabase>(
-                serverFactory: cctmDatabaseFactory,
-                updatedStatus: (status) =>
-                    updateServerStatus(databaseStatus, status),
-                failedRestart: (exception, retryCount) => RestartFailAction.Retry);
-
-            return new Lazy<ICctmDatabase>(() => new ServerControllers.DatabaseControllerWrapper(cctmDatabaseController));
-        }
+        // NOTE: Remove prepareDatabase() class since it utilizes the older 
+        // data set model has been replaced by ICctmDatabase2. Database
+        // initialization is being done as part of prepareCctmServers().
 
         /// <summary>
         /// Initializes each of the processing platforms using ServerInitializer
@@ -329,6 +306,9 @@ namespace Cctm
         {
             if (!hidden)
                 eventLogForm.Value.log(message);
+
+            // Persist in log file too.
+            fileLog(message);
         }
 
         /// <summary>
@@ -625,7 +605,6 @@ namespace Cctm
             queuedTimeDisplay,
             processingTimeDisplay,
             mediatorStatus,
-            databaseStatus,
             monetraStatus,
             israelPremiumStatus;
             // NOTE: Removed unused authorization platforms.

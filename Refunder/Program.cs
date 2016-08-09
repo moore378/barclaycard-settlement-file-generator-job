@@ -7,7 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 using CryptographicPlatforms;
 using Common;
-using RsaUtils;
 
 namespace Refunder
 {
@@ -91,7 +90,7 @@ namespace Refunder
                     encryptedDecodedStripe = DatabaseFormats.DecodeDatabaseStripe(s);
                     string encryptedString = BytesToHexStr(encryptedDecodedStripe).ToUpper();
 
-                    RsaUtils.RsaUtility RsaUtl = new RsaUtility();
+                    RsaUtility RsaUtl = new RsaUtility();
                     string decryptedAsciiHexString = RsaUtl.RsaDecrypt(encryptedString, (ushort)pendingRefund.KeyVer);
 
                     //monetra Expects mmyy not yymm as expiry Date - need to manipulate

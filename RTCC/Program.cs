@@ -10,7 +10,7 @@ using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.ServiceProcess;
 
-using CryptographicPlatforms;
+//using CryptographicPlatforms;
 
 
 [assembly: InternalsVisibleTo("TransactionManagementUnitTests")]
