@@ -25,6 +25,7 @@ length = len(sys.argv)
 if length > 1:
     configuration = sys.argv[1]
 if length > 2:
+    # Allow the building of only one project
     component = sys.argv[2].lower()
 
 print( "Using configuration {} and component list of {}".format( configuration, component ) )
@@ -45,9 +46,12 @@ for fn in open( 'make-files.txt', 'r'):
         # These are the projects to package.
         projects.append( fn.lower() ) # convert to lower case
 
-# Build the project
+# First restore any packages
+subprocess.call( "nuget restore" )
+
+# Build the solution
 exec  = "msbuild " + solution + " /t:Clean;Rebuild /m /p:\"Platform=" + platform + "\" /p:Configuration=" + configuration + "\""
-print( exec )
+#print( exec )
 rc = subprocess.call( exec )
 
 # If for some reason the build fails, error out!

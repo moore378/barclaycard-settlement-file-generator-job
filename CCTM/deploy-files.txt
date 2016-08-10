@@ -1,4 +1,4 @@
-version=../../../CCTM/Properties/AssemblyInfo.cs=^\[assembly: AssemblyFileVersion\("(\d+\.\d+\.\d+\.\d+)"\)\]$
+version=../../../CCTM/Properties/AssemblyInfo.cs=^\[assembly: AssemblyFileVersion\("(\d+\.\d+\.\d+\.\d+)"\)\]
 filename=CCTM \1.zip
 copy-to=S:\TEMP - Will be deleted at regular intervals\CCTM
 mail-to=alex.schwarz@ipsgroupinc.com

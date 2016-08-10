@@ -75,7 +75,9 @@ if __name__ == '__main__':
         if copy_to != ".":
             shutil.copy(zipFileName, copy_to)
         body = open(notes_file, "r").read() if notes_file else ""
-        body = os.path.join(copy_to, zipFileName) + "\n\n" + body
+        # truncate the body to a small size if needed to ensure the body
+        # message can be composed.
+        body = os.path.join(copy_to, zipFileName) + "\n\n" + body[:1024]
         webbrowser.open("mailto:%s?subject=%s&body=%s" % (
             urllib.parse.quote(mail_to),
             urllib.parse.quote(zipFileName),

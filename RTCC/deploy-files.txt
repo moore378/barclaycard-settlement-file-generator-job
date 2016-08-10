@@ -1,4 +1,4 @@
-version=../../../RTCC/Properties/AssemblyInfo.cs=^\[assembly: AssemblyFileVersion\("(\d+\.\d+\.\d+\.\d+)"\)\]$
+version=../../../RTCC/Properties/AssemblyInfo.cs=^\[assembly: AssemblyFileVersion\("(\d+\.\d+\.\d+\.\d+)"\)\]
 filename=RTCC \1.zip
 copy-to=S:\TEMP - Will be deleted at regular intervals\RTCC
 mail-to=alex.schwarz@ipsgroupinc.com
