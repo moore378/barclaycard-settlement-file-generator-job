@@ -17,9 +17,6 @@
       <Value Profile="(Default)">Logs</Value>
     </Setting>
     <Setting Name="ReceiptServer" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="Setting" Type="System.String" Scope="User">
       <Value Profile="(Default)">http://10.1.20.26:1111/ValidateCard.svc/SubmitRequest</Value>
     </Setting>
     <Setting Name="IsraelMerchantNumber" Type="System.String" Scope="User">

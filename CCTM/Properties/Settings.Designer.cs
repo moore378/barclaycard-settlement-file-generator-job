@@ -60,25 +60,13 @@ namespace Cctm.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://10.1.20.26:1111/ValidateCard.svc/SubmitRequest")]
         public string ReceiptServer {
             get {
                 return ((string)(this["ReceiptServer"]));
             }
             set {
                 this["ReceiptServer"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://10.1.20.26:1111/ValidateCard.svc/SubmitRequest")]
-        public string Setting {
-            get {
-                return ((string)(this["Setting"]));
-            }
-            set {
-                this["Setting"] = value;
             }
         }
         
