@@ -201,6 +201,20 @@ namespace UnitTests
                 ResultCode = AuthorizationResultCode.Declined
             }
             );
+            data.Add(new AuthorizationRequestEntry()
+            {
+                CreditCard = new CreditCard("2223000048400011", null, "TEST CARD/MC", "1015432112345678"),
+                Amount = 4.90m,
+                ResultCode = AuthorizationResultCode.Approved
+            }
+            );
+            data.Add(new AuthorizationRequestEntry()
+            {
+                CreditCard = new CreditCard("2223520043560014", null, "TEST CARD/MC", "1015432112345678"),
+                Amount = 4.90m,
+                ResultCode = AuthorizationResultCode.Approved
+            }
+            );
             _authRequests["Monetra"] = data;
 
 

@@ -9,6 +9,10 @@ namespace Rtcc.Database
 {
     public class RtccDatabase : LoggingObject
     {
+        // 2016-08-26 ES-79 For this hotfix, utilize a different table 
+        // adapter to retrieve both the transaction record ID and
+        // duplicate flag. NOTE: Newer mainline code utilizes AutoDatabase
+        // so this cannot be merged over as-is.
         public virtual decimal InsertLiveTransactionRecord(
             string TerminalSerNo,
             string ElectronicSerNo,
@@ -36,8 +40,15 @@ namespace Rtcc.Database
             short mode,
             short status)
         {
-            var adapter = new DataSet1TableAdapters.QueriesTableAdapter();
-            adapter.INS_LIVE_TRANSACTIONRECORD(
+            decimal transactionRecordId = 0; // ID as returned by the database from the insertion.
+
+            DataSet1.INS_LIVE_TRANSACTIONRECORDRow row; // Store the result row returned back.
+
+            //System.Threading.Thread.Sleep(40000); // Dev-level testing to verify ES-79.
+
+            var adapter = new DataSet1TableAdapters.INS_LIVE_TRANSACTIONRECORDTableAdapter();
+
+            var result = adapter.GetData(
                 TerminalSerNo,
                 ElectronicSerNo,
                 TransactionType,
@@ -62,27 +73,41 @@ namespace Rtcc.Database
                 LastFourDigits,
                 UniqueRecordNumber2,
                 mode,
-                status);
-            object result = null;
+                status,
+                null, null, null, null, null, null);
 
             try
             {
-                LogDetail("Calling database SEL_TRANSRECID_FROM_UNIQUEREC with UniqueRecordNumber=" + UniqueRecordNumber.ToString());
-                result = adapter.SEL_TRANSRECID_FROM_UNIQUEREC(UniqueRecordNumber, UniqueRecordNumber2);
-                if (result != null)
-                    LogDetail("Database SEL_TRANSRECID_FROM_UNIQUEREC returned (" + result.ToString() + ")");
+                // Get the only row returned back by the stored procedure.
+                // Should be one row in the normal case of insertion
+                // and also in the duplicate record case.
+                row = (DataSet1.INS_LIVE_TRANSACTIONRECORDRow)result.Rows[0];
 
+                // If this is a duplicate transaction then stop processing.
+                // Somehow Session Manager added the transaction as an offline
+                // transaction and the transaction needs to be processed by
+                // CCTM instead.
+                if (1 == row.Dup)
+                {
+                    throw new Exception(String.Format("RTCC encounter duplicate transaction error for meter {0} and transaction record ID of {1}", TerminalSerNo, row.TransactionRecordID));
+                }
+                else
+                {
+                    // Return back the transaction record ID.
+                    transactionRecordId = row.TransactionRecordID;
+                }
             }
             catch (Exception e)
             {
-                LogError("Database SEL_TRANSRECID_FROM_UNIQUEREC error. \n" + e.ToString(), e);
+                LogError("Database error in inserting the transaction record. \n" + e.ToString(), e);
                 throw;
             }
 
-            if (result == null)
+            // Be consistent with throwing an error when not getting the transaction record ID.
+            if (0 == transactionRecordId)
                 throw new Exception("Error calling SEL_TRANSRECID_FROM_UNIQUEREC: returned null");
             else
-                return (decimal)result;
+                return transactionRecordId;
         }
 
         public virtual void UpdateLiveTransactionRecord(

@@ -98,7 +98,7 @@ namespace Rtcc.RtsaInterfacing
                 sizeRemaining -= bytesRead;
 
                 LogDetail("Received " + bytesRead + " bytes. " + (sizeRemaining > 0 ? "Waiting for " + sizeRemaining + " remaining bytes" : ""));
-                LogDetail("Rx: " + BitConverter.ToString(readBytes, targetIndex, bytesRead));
+                //LogDetail("Rx: " + BitConverter.ToString(readBytes, targetIndex, bytesRead)); // For now do not dump out the raw message.
 
                 targetIndex += bytesRead;
             }

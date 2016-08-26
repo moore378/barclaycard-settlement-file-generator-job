@@ -239,7 +239,9 @@ namespace Rtcc.Main
             }
             catch (ParseException exception) // If there is a problem parsing at one of the steps
             {
-                LogError("Parse error: " + exception.Message, exception);
+                LogError(String.Format("Parse error (meter {0}) : {1}", 
+                    (null == request ? "UNKNOWN" : request.TerminalSerialNumber), exception.Message),  // Log the meter serial number if it exists.
+                    exception);
                 if (status != null && transactionRecordID != null)
                     rtccDatabase.UpdateTransactionStatus(transactionRecordID.Value, status.Value, TransactionStatus.StripeError, exception.FailStatus);
                 performanceCounterSession.FailedSession(stopwatch.ElapsedTicks);
@@ -247,7 +249,9 @@ namespace Rtcc.Main
             }
             catch (Exception exception)
             {
-                LogError("Unhandled error during real-time transaction: " + exception.Message, exception);
+                LogError(String.Format("Unhandled error during real-time transaction (meter {0}): ", 
+                    (null == request ? "UNKNOWN" : request.TerminalSerialNumber), exception.Message),  // Log the meter serial number if it exists.
+                    exception);
                 performanceCounterSession.FailedSession(stopwatch.ElapsedTicks);
                 return false;
             }

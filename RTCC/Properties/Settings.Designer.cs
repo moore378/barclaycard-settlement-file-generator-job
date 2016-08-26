@@ -60,30 +60,6 @@ namespace Rtcc.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("8444")]
-        public ushort MonetraPort {
-            get {
-                return ((ushort)(this["MonetraPort"]));
-            }
-            set {
-                this["MonetraPort"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool DetailedLoggingEnabled {
-            get {
-                return ((bool)(this["DetailedLoggingEnabled"]));
-            }
-            set {
-                this["DetailedLoggingEnabled"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("Logs")]
         public string LogFolder {
             get {
@@ -127,6 +103,30 @@ namespace Rtcc.Properties {
             }
             set {
                 this["IsraelCashierNumber"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("8665")]
+        public ushort MonetraPort {
+            get {
+                return ((ushort)(this["MonetraPort"]));
+            }
+            set {
+                this["MonetraPort"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool DetailedLoggingEnabled {
+            get {
+                return ((bool)(this["DetailedLoggingEnabled"]));
+            }
+            set {
+                this["DetailedLoggingEnabled"] = value;
             }
         }
     }

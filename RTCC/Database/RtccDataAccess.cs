@@ -37,6 +37,9 @@ namespace Rtcc.Database
 }
 
 namespace Rtcc.Database.DataSet1TableAdapters {
+    partial class INS_LIVE_TRANSACTIONRECORDTableAdapter
+    {
+    }
     
     
     public partial class QueriesTableAdapter {

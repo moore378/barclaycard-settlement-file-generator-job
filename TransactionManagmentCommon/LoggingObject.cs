@@ -37,7 +37,9 @@ namespace TransactionManagementCommon
             }
         }
 
-        [Conditional("DetailedLoggingEnabled")]
+        // Promote LogDetail() to be a normal method to allow both debug
+        // and release builds to log similarly.
+        //[Conditional("DetailedLoggingEnabled")]
         protected void LogDetail(string message)
         {
             try
