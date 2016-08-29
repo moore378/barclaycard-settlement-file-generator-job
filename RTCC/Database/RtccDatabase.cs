@@ -11,12 +11,28 @@ using AutoDatabase;
 
 namespace Rtcc.Database
 {
+    /// <summary>
+    /// Used to store the result from calling InsLiveTransactionrecord
+    /// </summary>
+    public class DbInsLiveResult
+    {
+        /// <summary>
+        /// Transaction record ID.
+        /// </summary>
+        public decimal TransactionRecordID;
+
+        /// <summary>
+        /// If transaction record ID already existed before. Should be a boolean...
+        /// </summary>
+        public int Dup;
+    }
+
     [DatabaseInterface(StoredProcNameConverter = typeof(PascalCaseToUnderscoreConverter))]
     public interface IRtccDatabase
     {
         Task<CCProcessorInfo> SelRtccProcessor(string TerminalSerNo);
 
-        Task InsLiveTransactionrecord
+        Task<DbInsLiveResult> InsLiveTransactionrecord
             (
             string TerminalSerNo,
             string ElectronicSerNo,
@@ -150,6 +166,10 @@ namespace Rtcc.Database
         {
             decimal transactionRecordID = 0;
 
+            DbInsLiveResult row = null;
+
+            //System.Threading.Thread.Sleep(40000); // Dev-level testing to verify ES-79.
+
             var insertTask = database.InsLiveTransactionrecord(
                 TerminalSerNo,
                 ElectronicSerNo ?? "",
@@ -178,32 +198,44 @@ namespace Rtcc.Database
                 status,
                 CardHash);
 
+            insertTask.ContinueWith( (t) => { row = t.Result; });
+
             Task.WaitAll(insertTask);
 
             try
             {
-                LogDetail("Calling database SEL_TRANSRECID_FROM_UNIQUEREC with UniqueRecordNumber=" + UniqueRecordNumber.ToString());
-                //result = adapter.SEL_TRANSRECID_FROM_UNIQUEREC(UniqueRecordNumber, UniqueRecordNumber2);
-
-                var task = database.SelTransrecidFromUniquerec(UniqueRecordNumber, UniqueRecordNumber2)
-                    .ContinueWith((t) => transactionRecordID = t.Result);
-
-                task.Wait();
-
-                LogDetail("Database SEL_TRANSRECID_FROM_UNIQUEREC returned (" + transactionRecordID.ToString() + ")");
+                // Get the only row returned back by the stored procedure.
+                // Should be one row in the normal case of insertion
+                // and also in the duplicate record case.
+                if (null == row)
+                {
+                    throw new Exception("Unknown processing error with live transaction insertion");
+                }
+                // If this is a duplicate transaction then stop processing.
+                // Somehow Session Manager added the transaction as an offline
+                // transaction and the transaction needs to be processed by
+                // CCTM instead.
+                else if (1 == row.Dup)
+                {
+                    throw new Exception(String.Format("RTCC encounter duplicate transaction error for meter {0} and transaction record ID of {1}", TerminalSerNo, row.TransactionRecordID));
+                }
+                else
+                {
+                    // Return back the transaction record ID.
+                    transactionRecordID = row.TransactionRecordID;
+                }
             }
             catch (Exception e)
             {
-                LogError("Database SEL_TRANSRECID_FROM_UNIQUEREC error. \n" + e.ToString(), e);
+                LogError("Database error in inserting the transaction record. \n" + e.ToString(), e);
                 throw;
             }
 
+            // Be consistent with throwing an error when not getting the transaction record ID.
             if (0 == transactionRecordID)
-            {
                 throw new Exception("Error calling SEL_TRANSRECID_FROM_UNIQUEREC: returned null");
-            }
-
-            return transactionRecordID;
+            else
+                return transactionRecordID;
         }
 
         public virtual void UpdateLiveTransactionRecord(
