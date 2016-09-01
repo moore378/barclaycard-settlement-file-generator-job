@@ -204,14 +204,42 @@ namespace UnitTests
             );
             data.Add(new AuthorizationRequestEntry()
             {
-                CreditCard = new CreditCard("2223000048400011", null, "TEST CARD/MC", "1015432112345678"),
+                CreditCard = new CreditCard("2223000048400011", "2512", "US CARD/MC", "1011111199911111"),
                 Amount = 4.90m,
                 ResultCode = AuthorizationResultCode.Approved
             }
             );
             data.Add(new AuthorizationRequestEntry()
             {
-                CreditCard = new CreditCard("2223520043560014", null, "TEST CARD/MC", "1015432112345678"),
+                CreditCard = new CreditCard("2222400041240011", "2512", "BRAZIL CARD/MC", "1011111199911111"),
+                Amount = 4.90m,
+                ResultCode = AuthorizationResultCode.Approved
+            }
+            );
+            data.Add(new AuthorizationRequestEntry()
+            {
+                CreditCard = new CreditCard("2222420040560011", "2512", "BELGIUM CARD/MC", "1011111199911111"),
+                Amount = 4.90m,
+                ResultCode = AuthorizationResultCode.Approved
+            }
+            );
+            data.Add(new AuthorizationRequestEntry()
+            {
+                CreditCard = new CreditCard("2223000148400010", "2512", "US DEBIT/MC", "1011111199911111"),
+                Amount = 4.90m,
+                ResultCode = AuthorizationResultCode.Approved
+            }
+            );
+            data.Add(new AuthorizationRequestEntry()
+            {
+                CreditCard = new CreditCard("2222400061240016", "2512", "CANADA DEBIT/MC", "1011111199911111"),
+                Amount = 4.90m,
+                ResultCode = AuthorizationResultCode.Approved
+            }
+            );
+            data.Add(new AuthorizationRequestEntry()
+            {
+                CreditCard = new CreditCard("2222630061560019", "2512", "CHINA DEBIT/MC", "1011111199911111"),
                 Amount = 4.90m,
                 ResultCode = AuthorizationResultCode.Approved
             }
@@ -221,6 +249,13 @@ namespace UnitTests
 
             // Set up the data for FIS
             data = new List<AuthorizationRequestEntry>();
+            data.Add(new AuthorizationRequestEntry()
+            {
+                CreditCard = new CreditCard("5263227808124952", null, "TEST CARD/MC", "1011111199911111"),
+                Amount = 0.50m,
+                ResultCode = AuthorizationResultCode.Approved
+            }
+            );
             data.Add(new AuthorizationRequestEntry()
             {
                 CreditCard = new CreditCard("343434343434343", null, "TEST CARD/AE", "1015432112345678"),
