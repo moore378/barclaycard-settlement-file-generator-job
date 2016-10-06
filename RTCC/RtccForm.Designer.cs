@@ -30,11 +30,12 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RtccForm));
             this.textBox1 = new System.Windows.Forms.TextBox();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.statusStrip1 = new Rtcc.Forms.SafeStatusStrip();
+            this.toolStripStatusLabel1 = new Rtcc.Forms.SafeToolStripLabel();
             this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
             this.importantLoggingOnlyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.detailedLoggingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.noLoggingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -75,7 +76,8 @@
             this.toolStripDropDownButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.toolStripDropDownButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.importantLoggingOnlyToolStripMenuItem,
-            this.detailedLoggingToolStripMenuItem});
+            this.detailedLoggingToolStripMenuItem,
+            this.noLoggingToolStripMenuItem});
             this.toolStripDropDownButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton1.Image")));
             this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
@@ -98,6 +100,13 @@
             this.detailedLoggingToolStripMenuItem.Text = "Detailed logging";
             this.detailedLoggingToolStripMenuItem.Click += new System.EventHandler(this.detailedLoggingToolStripMenuItem_Click);
             // 
+            // noLoggingToolStripMenuItem
+            // 
+            this.noLoggingToolStripMenuItem.Name = "noLoggingToolStripMenuItem";
+            this.noLoggingToolStripMenuItem.Size = new System.Drawing.Size(202, 22);
+            this.noLoggingToolStripMenuItem.Text = "No logging";
+            this.noLoggingToolStripMenuItem.Click += new System.EventHandler(this.noLoggingToolStripMenuItem_Click);
+            // 
             // RtccForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -118,11 +127,12 @@
         #endregion
 
         private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.StatusStrip statusStrip1;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private Rtcc.Forms.SafeStatusStrip statusStrip1;
+        private Rtcc.Forms.SafeToolStripLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton1;
         private System.Windows.Forms.ToolStripMenuItem detailedLoggingToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem importantLoggingOnlyToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem noLoggingToolStripMenuItem;
     }
 }
 
