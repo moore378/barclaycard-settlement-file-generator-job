@@ -4,13 +4,28 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{4D8B9E8B-D8D5-475E-AF95-C39521E9A543}</ProjectGuid>
+    <ProjectGuid>{B865B51B-15CA-4A57-A934-417CD2741BD4}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MonetraUtility</RootNamespace>
-    <AssemblyName>MonetraUtility</AssemblyName>
+    <RootNamespace>RtccClient</RootNamespace>
+    <AssemblyName>RtccClient</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -33,6 +48,9 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CryptographicPlatforms">
+      <HintPath>..\Dependencies\CryptographicPlatforms.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -42,7 +60,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MonetraUtility.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -50,14 +67,39 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AuthorizationClientPlatforms\AuthorizationClientPlatforms.csproj">
-      <Project>{5ae1b5bd-c0ae-46e2-8e55-6960faf3a846}</Project>
-      <Name>AuthorizationClientPlatforms</Name>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{ba9efa9b-8e6c-4680-ae58-37c8442e7df0}</Project>
+      <Name>Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MjhGeneral\MjhGeneral.csproj">
-      <Project>{8681d9bc-c6aa-4feb-8121-6f3f0d2d292c}</Project>
-      <Name>MjhGeneral</Name>
+    <ProjectReference Include="..\RTCC\RTCC.csproj">
+      <Project>{a9102f53-8f96-4f3a-8ff8-fb5f0b5bc609}</Project>
+      <Name>RTCC</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TransactionManagementCommonUnitTests\TransactionManagementUnitTests.csproj">
+      <Project>{c02dd423-ffc1-4d5b-a6a2-f92e77dafc7c}</Project>
+      <Name>TransactionManagementUnitTests</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TransactionManagmentCommon\TransactionManagementCommon.csproj">
+      <Project>{a8dc7a1f-25af-4935-9a23-96c610f4de95}</Project>
+      <Name>TransactionManagementCommon</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

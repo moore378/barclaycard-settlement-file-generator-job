@@ -163,8 +163,7 @@ namespace UnitTests
 
     public class AuthorizationRequestEntry
     {
-        private string _meterId = "0201501"; // "0000042";
-        public string MeterId { get { return _meterId; } }
+        public string MeterId { get { return "0201501";  } }
 
         public CreditCard CreditCard { get; set; }
 
