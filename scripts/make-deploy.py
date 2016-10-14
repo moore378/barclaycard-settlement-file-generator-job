@@ -70,6 +70,13 @@ if __name__ == '__main__':
             if not zipf:
                 zipf = zipfile.ZipFile(zipFileName, 'w')
             zipf.write(fn)
+
+            # If there is a symbol file, add it in too
+            pdb = os.path.splitext(fn)[0] + ".pdb"
+            if (os.path.isfile(pdb)):
+               print("Zipping symb " + pdb)
+               zipf.write(pdb)
+
     if zipf:
         zipf.close()
         if copy_to != ".":
