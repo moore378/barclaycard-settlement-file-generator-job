@@ -56,7 +56,15 @@
     <Reference Include="CryptographicPlatforms">
       <HintPath>..\Dependencies\CryptographicPlatforms.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CompilerServices.AsyncTargetingPack.Net4, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\Microsoft.CompilerServices.AsyncTargetingPack.Net4.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="MjhGeneral, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\MjhGeneral.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core">
@@ -83,6 +91,10 @@
     <ProjectReference Include="..\AuthorizationProcessor\AuthorizationProcessor.csproj">
       <Project>{afd07aa0-1136-4475-882c-50069963332b}</Project>
       <Name>AuthorizationProcessor</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\BarclaycardSmartPayPlugin\BarclaycardSmartPayPlugin.csproj">
+      <Project>{ad333d97-c6e9-49af-a811-1d70d5728ea1}</Project>
+      <Name>BarclaycardSmartPayPlugin</Name>
     </ProjectReference>
     <ProjectReference Include="..\CCTM\CCTM.csproj">
       <Project>{EB6FE2F9-897D-41B8-96EC-E3F1035DA4B6}</Project>

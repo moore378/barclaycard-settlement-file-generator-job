@@ -383,8 +383,12 @@ namespace UnitTests
         [TestMethod]
         public void RtccMediator()
         {
-            string testName = "Monetra DB5"; // FIS PayDirect Test
-            string testData = "Monetra"; // FIS Certification
+            string testName = "Monetra DB5";    // FIS PayDirect Test   // Barclaycard SmartPay Test UK
+            string testData = "Monetra";        // FIS Certification    // Barclaycard SmartPay
+
+            testName = "Barclaycard SmartPay Test UK";
+            testData = "Barclaycard SmartPay";
+
 
             ClearingPlatform processorInfo = TestData.Processors[testName];
 
@@ -475,7 +479,9 @@ namespace UnitTests
             
             Dictionary<string, IAuthorizationPlatform> platforms = new Dictionary<string,IAuthorizationPlatform>();
 
-            switch (processorInfo.Name.ToLower())
+            string processor = processorInfo.Name.ToLower();
+
+            switch (processor)
             {
                 case "monetra":
                     // Create the monetra platform
@@ -486,16 +492,17 @@ namespace UnitTests
                     break;
 
                 case "fis-paydirect":
+                case "barclaycard-smartpay":
                     AuthorizationClientPlatformsSection acpSection = (AuthorizationClientPlatformsSection)System.Configuration.ConfigurationManager.GetSection("authorizationClientPlatforms");
 
                     AuthorizationProcessorsCollection apCollection = acpSection.AuthorizationProcessors;
 
-                    ProcessorElement fisPayDirect = apCollection["fis-paydirect"];
+                    ProcessorElement processorElement = apCollection[processor];
 
                     Dictionary<string, string> configuration = new Dictionary<string, string>();
-                    configuration["endpoint"] = fisPayDirect.Endpoint;
+                    configuration["endpoint"] = processorElement.Endpoint;
 
-                    platforms["fis-paydirect"] = new AuthorizationPlatform(System.Net.Dns.GetHostName(), fisPayDirect.Name, configuration);
+                    platforms[processor] = new AuthorizationPlatform(System.Net.Dns.GetHostName(), processorElement.Name, configuration);
                     break;
 
                 default:

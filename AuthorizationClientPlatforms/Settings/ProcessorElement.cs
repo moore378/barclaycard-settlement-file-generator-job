@@ -49,7 +49,7 @@ namespace AuthorizationClientPlatforms.Settings
             }
         }
 
-        [ConfigurationProperty("endpoint", IsRequired = true)]
+        [ConfigurationProperty("endpoint", IsRequired = false, DefaultValue = null)]
         public string Endpoint
         {
             get

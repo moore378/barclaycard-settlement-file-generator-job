@@ -49,11 +49,23 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoDatabase">
+      <HintPath>..\Dependencies\AutoDatabase.dll</HintPath>
+    </Reference>
     <Reference Include="CommandLine">
       <HintPath>..\packages\CommandLineParser.1.9.71\lib\net45\CommandLine.dll</HintPath>
     </Reference>
     <Reference Include="CryptographicPlatforms">
       <HintPath>..\Dependencies\CryptographicPlatforms.dll</HintPath>
+    </Reference>
+    <Reference Include="EasyIL">
+      <HintPath>..\Dependencies\EasyIL.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CompilerServices.AsyncTargetingPack.Net4">
+      <HintPath>..\Dependencies\Microsoft.CompilerServices.AsyncTargetingPack.Net4.dll</HintPath>
+    </Reference>
+    <Reference Include="MjhGeneral">
+      <HintPath>..\Dependencies\MjhGeneral.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -73,10 +85,6 @@
     <Compile Include="Tracker.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AutoDatabase\AutoDatabase.csproj">
-      <Project>{dba89e62-338a-4693-871d-7dda97419ca2}</Project>
-      <Name>AutoDatabase</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{ba9efa9b-8e6c-4680-ae58-37c8442e7df0}</Project>
       <Name>Common</Name>

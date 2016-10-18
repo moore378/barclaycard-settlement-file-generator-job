@@ -59,6 +59,12 @@
     <Reference Include="CryptographicPlatforms">
       <HintPath>..\Dependencies\CryptographicPlatforms.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CompilerServices.AsyncTargetingPack.Net4">
+      <HintPath>..\Dependencies\Microsoft.CompilerServices.AsyncTargetingPack.Net4.dll</HintPath>
+    </Reference>
+    <Reference Include="MjhGeneral">
+      <HintPath>..\Dependencies\MjhGeneral.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -94,6 +100,7 @@
     <Compile Include="CreditCardTrack.cs" />
     <Compile Include="CreditCardTrackFields.cs" />
     <Compile Include="CreditCardTracks.cs" />
+    <Compile Include="CreditCardType.cs" />
     <Compile Include="TrackFormat.cs" />
     <Compile Include="LoggingObject.cs" />
     <Compile Include="PreauthStatus.cs" />
