@@ -35,9 +35,6 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.CompilerServices.AsyncTargetingPack.Net4">
-      <HintPath>..\Dependencies\Microsoft.CompilerServices.AsyncTargetingPack.Net4.dll</HintPath>
-    </Reference>
     <Reference Include="MjhGeneral">
       <HintPath>..\Dependencies\MjhGeneral.dll</HintPath>
     </Reference>
