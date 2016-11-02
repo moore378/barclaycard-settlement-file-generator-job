@@ -386,13 +386,13 @@ namespace UnitTests
             string testName = "Monetra DB5";    // FIS PayDirect Test   // Barclaycard SmartPay Test UK
             string testData = "Monetra";        // FIS Certification    // Barclaycard SmartPay
 
-            testName = "Barclaycard SmartPay Test UK";
-            testData = "Barclaycard SmartPay";
+            //testName = "Barclaycard SmartPay Test UK";
+            //testData = "Barclaycard SmartPay";
 
 
             ClearingPlatform processorInfo = TestData.Processors[testName];
 
-            AuthorizationRequestEntry entry = TestData.AuthRequests[testData][0];
+            AuthorizationRequestEntry entry = TestData.AuthRequests[testData][1];
 
             //byte[] original = Convert.FromBase64String("50XIzZeEdzG07Er4meKc057l3sWg8Sax7Aug3H/l44m3+lGg4+Nu7ZLL3ZZm2ZPQslEdqirkW+modxQ8M7KyYbASjCjDrqE2DdqApMicH0ao5TEaUAV5+k1zK22b6UT1w8s1k0cA2dPp3pN3xW6PvVhG4cHlFmuoX12CSpODcWc=");
 
@@ -402,7 +402,7 @@ namespace UnitTests
             
 
             TransactionInfo info = new TransactionInfo(
-                amountDollars: 0.75m,
+                amountDollars: entry.Amount,
                 meterSerialNumber: entry.MeterId,
                 startDateTime: dtNow,
                 transactionIndex: 6,
@@ -469,7 +469,10 @@ namespace UnitTests
             interpreter.onResponse = dummyResponseReceived;
             // Create a dummy database
             //RtccDatabase dummyDatabase = new DummyDatabase();
+
+            // NOTE: set to null to utilize the real database. Otherwise use the UnitTestDatabase.
             RtccDatabase dummyDatabase = null; // new UnitTestDatabase(testName);
+
             // Create a dummy authorization platform
             AuthorizationClientPlatforms.IAuthorizationPlatform dummyPlatform = new DummyAuthorizationPlatform();
             // Create a dummy PayByCell
@@ -480,6 +483,8 @@ namespace UnitTests
             Dictionary<string, IAuthorizationPlatform> platforms = new Dictionary<string,IAuthorizationPlatform>();
 
             string processor = processorInfo.Name.ToLower();
+
+            //processor = "barclaycard-smartpay";
 
             switch (processor)
             {
@@ -517,7 +522,7 @@ namespace UnitTests
             // Simulate a blank request from the client (the dummy interpreter will pretend that this blank request contains useful information)
             rtsaConnection.SimulateMessageReceived(new byte[0]);
 
-            Assert.IsTrue(dummyResponse.Accepted == 1);
+            Assert.IsTrue((1 == dummyResponse.Accepted) == (entry.ResultCode == AuthorizationResultCode.Approved));
             //Assert.AreEqual(dummyResponse.ResponseCode, "DummyAuthCode");
         }
 

@@ -757,6 +757,7 @@ namespace Cctm.Behavior
 
             // Normalize the extra processor settings since they are 
             // overloaded and have different meanings based on the processor.
+            // TODO: Make this be some sort of ruleset instead.
             switch (transaction.CCClearingPlatform.ToLower())
             {
                 case "israel-premium":

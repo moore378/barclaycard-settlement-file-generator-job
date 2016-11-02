@@ -11,11 +11,8 @@ using AuthorizationClientPlatforms.Plugins;
 using AuthorizationClientPlatforms.Plugins.SmartPay;
 using AuthorizationClientPlatforms.Logging;
 
-
 using TransactionManagementCommon;
-
 using MjhGeneral;
-
 
 namespace AuthorizationClientPlatforms.Plugins
 {
@@ -52,15 +49,17 @@ namespace AuthorizationClientPlatforms.Plugins
             {
                 endpoint = configuration["endpoint"];
             }
-            else
+
+            // However if the configured endpoint is still bad...
+            if (String.IsNullOrEmpty(endpoint))
             {
                 // Use the default.
-                PaymentPortTypeClient client = new PaymentPortTypeClient();
-                endpoint = client.Endpoint.Address.Uri.AbsoluteUri;
+                PaymentPortTypeClient defaultClient = new PaymentPortTypeClient();
+                endpoint = defaultClient.Endpoint.Address.Uri.AbsoluteUri;
             }
 
             // Determine if this is a test port.
-            if ("https://pal-test.adyen.com/pal/servlet/soap/Payment" == endpoint)
+            if (-1 != endpoint.IndexOf("https://pal-test", StringComparison.CurrentCultureIgnoreCase))
             {
                 isTestMode = true;
             }
@@ -82,7 +81,6 @@ namespace AuthorizationClientPlatforms.Plugins
 
                 // Set up the URL based on the configuration.
                 client.Endpoint.Address = new System.ServiceModel.EndpointAddress(endpoint);
-
 
                 // Pass in the merchant credentials.
                 client.ClientCredentials.UserName.UserName = request.ProcessorSettings["MerchantID"];
