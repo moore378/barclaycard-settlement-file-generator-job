@@ -1,0 +1,18 @@
+version=../../../FisPayDirectProcessor/Properties/AssemblyInfo.cs=^\[assembly: AssemblyFileVersion\("(\d+\.\d+\.\d+\.\d+)"\)\]
+filename=BarclaycardSmartPayProcessor \1.zip
+copy-to=S:\TEMP - Will be deleted at regular intervals\BarclaycardSmartPayProcessor
+mail-to=alex.schwarz@ipsgroupinc.com
+notes-file=release-notes.txt
+release-notes.txt=git log -n5
+AuthorizationClientPlatforms.dll
+AuthorizationProcessor.dll
+BarclaycardSmartPayPlugin.dll
+BarclaycardSmartPayProcessor.exe
+Common.dll
+CryptographicPlatforms.dll
+Microsoft.Practices.EnterpriseLibrary.SemanticLogging.dll
+Microsoft.Practices.EnterpriseLibrary.SemanticLogging.TextFile.dll
+MjhGeneral.dll
+Newtonsoft.Json.dll
+Track.dll
+TransactionManagementCommon.dll
