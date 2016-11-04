@@ -10,8 +10,7 @@ using System.Runtime.ExceptionServices;
 using System.Threading;
 using System.ServiceProcess;
 
-//using CryptographicPlatforms;
-
+using MjhGeneral.ServiceProcess;
 
 [assembly: InternalsVisibleTo("TransactionManagementUnitTests")]
 
@@ -50,17 +49,65 @@ namespace Rtcc
             var rtccMain = new RtccMain(configs);
             rtccMain.Logged += RtccLogged;
 
-            if (args.Length == 1 && args[0] == "gui")
+            if (Environment.UserInteractive)
             {
-                Application.EnableVisualStyles();
-                Application.SetCompatibleTextRenderingDefault(false);
+                string mode = args.Length > 0 ? args[0] : null;
 
-                
-                var mainForm = new RtccForm(rtccMain, configs);
-                Application.Run(mainForm);
+                if (mode == "gui")
+                {
+                    string applicationName = Constants.ApplicationName;
+
+                    // If there is a parameter then that is the instance name to 
+                    // add to the end of application name.
+                    if (2 <= args.Length)
+                    {
+                        applicationName += " " + args[1];
+                    }
+
+                    Application.EnableVisualStyles();
+                    Application.SetCompatibleTextRenderingDefault(false);
+
+                    var mainForm = new RtccForm(applicationName, rtccMain, configs);
+                    Application.Run(mainForm);
+                }
+                else if (mode == "install")
+                {
+                    string instanceName = null;
+
+                    if (2 <= args.Length)
+                    {
+                        instanceName = args[1];
+                    }
+
+                    WindowsServiceInstaller.RuntimeInstall<RtccService>(instanceName);
+                }
+                else if (mode == "uninstall")
+                {
+                    string instanceName = null;
+
+                    if (2 <= args.Length)
+                    {
+                        instanceName = args[1];
+                    }
+
+                    WindowsServiceInstaller.RuntimeUninstall<RtccService>(instanceName);
+                }
             }
             else
             {
+                // NOTE: There's no need to pass in an instance name or an
+                // application name since the application is not writing
+                // to the EventLog... yet.
+                string instanceName = null;
+
+                // If there is a parameter then that is the instance name to 
+                // add to the end of application name.
+                if (1 == args.Length)
+                {
+                    instanceName = args[0];
+                }
+
+
                 ServiceBase.Run(new RtccService(rtccMain, configs));
             }
         }

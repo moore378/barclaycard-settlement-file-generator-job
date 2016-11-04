@@ -51,14 +51,14 @@ namespace Rtcc
         /// <summary>
         /// The main form of the project
         /// </summary>
-        internal RtccForm(RtccMain rtccMain, RtccConfigs configs)
+        internal RtccForm(string applicationName, RtccMain rtccMain, RtccConfigs configs)
         {
             InitializeComponent();
             this.configs = configs;
             this.rtccMain = rtccMain;
             this.rtccMain.Logged += RtccLogged;
             this.rtccMain.TransactionDone += TransactionDone;
-            Text += " - " + ProductVersion.ToString();
+            Text = applicationName + " - " + ProductVersion.ToString();
             toolStripStatusLabel1.Text = "Waiting...";
             LogDetail = configs.DetailedLogging;
         }
