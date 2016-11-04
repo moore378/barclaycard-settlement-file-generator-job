@@ -196,9 +196,8 @@ namespace Rtcc.Database
                 UniqueRecordNumber2,
                 mode,
                 status,
-                CardHash);
-
-            insertTask.ContinueWith( (t) => { row = t.Result; });
+                CardHash)
+                .ContinueWith( (t) => { row = t.Result; });
 
             Task.WaitAll(insertTask);
 

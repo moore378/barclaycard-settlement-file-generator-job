@@ -83,6 +83,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dummy\DummyRtsaConnection.cs" />
+    <Compile Include="Forms\SafeStatusStrip.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Forms\SafeToolStripLabel.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="RtccPerformanceCounters.cs" />
     <Compile Include="ProjectInstaller.cs">
       <SubType>Component</SubType>

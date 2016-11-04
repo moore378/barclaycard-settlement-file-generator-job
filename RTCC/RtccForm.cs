@@ -33,18 +33,45 @@ namespace Rtcc
         int total = 0;
         int totalFail = 0;
 
-        bool logDetail = false;
+        LogModeType logMode = LogModeType.Detail;
         private RtccConfigs configs;
-        private bool LogDetail
+
+        private LogModeType LogMode
         {
-            get { return logDetail; }
+            get { return logMode; }
             set
             {
-                logDetail = value;
-                configs.DetailedLogging = value;
-                importantLoggingOnlyToolStripMenuItem.Checked = !logDetail;
-                detailedLoggingToolStripMenuItem.Checked = logDetail;
-                toolStripDropDownButton1.Text = logDetail ? "Detailed logging enabled" : "Important logging only";
+                logMode = value;
+
+                configs.DetailedLogging = (LogModeType.Detail == value);
+
+                // Only check one valid option.
+                switch (logMode)
+                {
+                    case LogModeType.Detail:
+                        toolStripDropDownButton1.Text = "Detailed logging enabled";
+
+                        detailedLoggingToolStripMenuItem.Checked = true;
+                        importantLoggingOnlyToolStripMenuItem.Checked = false;
+                        noLoggingToolStripMenuItem.Checked = false;
+                        break;
+
+                    case LogModeType.Important:
+                        toolStripDropDownButton1.Text = "Important logging only";
+
+                        detailedLoggingToolStripMenuItem.Checked = false;
+                        importantLoggingOnlyToolStripMenuItem.Checked = true;
+                        noLoggingToolStripMenuItem.Checked = false;
+                        break;
+
+                    default:
+                        toolStripDropDownButton1.Text = "No logging temporarily";
+
+                        detailedLoggingToolStripMenuItem.Checked = false;
+                        importantLoggingOnlyToolStripMenuItem.Checked = false;
+                        noLoggingToolStripMenuItem.Checked = true;
+                        break;
+                }
             }
         }
 
@@ -60,13 +87,16 @@ namespace Rtcc
             this.rtccMain.TransactionDone += TransactionDone;
             Text += " - " + ProductVersion.ToString();
             toolStripStatusLabel1.Text = "Waiting...";
-            LogDetail = configs.DetailedLogging;
+
+            LogMode = configs.DetailedLogging ? LogModeType.Detail : LogModeType.Important;
         }
 
         private void RtccLogged(object sender, LogEventArgs args)
         {
             // Log to screen
-            if (logDetail || args.Level > LogLevel.Detail)
+            if ((LogModeType.None != LogMode)
+                && ((LogModeType.Detail == LogMode)
+                || (args.Level > LogLevel.Detail)))
             {
                 string text = DateTime.Now.ToString() + ":: " + args.Message;
                 if (args.Level == LogLevel.Error)
@@ -75,10 +105,32 @@ namespace Rtcc
                 if (args.Exception != null)
                     text += args.Exception.ToString() + Environment.NewLine;
 
+                // STM-25 Only keep the last thousand lines. If not then the 
+                // log will grow continuously and consume memory.
+                Action append = () =>
+                    {
+                        int keepLinesCount = 1000;
+
+                        textBox1.AppendText(text);
+
+                        if ((LogModeType.Important == LogMode)
+                            && (textBox1.Lines.Length > keepLinesCount))
+                        {
+                            textBox1.Lines = textBox1.Lines.Skip(textBox1.Lines.Length - keepLinesCount).ToArray();
+
+                            textBox1.SelectionStart = textBox1.Text.Length;
+                            textBox1.ScrollToCaret();
+                        }
+                    };
+
                 if (textBox1.IsHandleCreated || textBox1.InvokeRequired)
-                    textBox1.Invoke(new Action(() => { textBox1.AppendText(text); }));
+                {
+                    textBox1.Invoke(append);
+                }
                 else
-                    textBox1.AppendText(text);
+                {
+                    append.Invoke();
+                }
             }
         }
 
@@ -91,11 +143,6 @@ namespace Rtcc
             toolStripStatusLabel1.Text = totalFail + " failed of " + total + " total";
         }
 
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
-        {
-            //LogDetail = checkBox1.Checked;
-        }
-
         private void RtccForm_Load(object sender, EventArgs e)
         {
             rtccMain.StartListening();
@@ -103,12 +150,26 @@ namespace Rtcc
 
         private void importantLoggingOnlyToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            LogDetail = false;
+            LogMode = LogModeType.Important;
         }
 
         private void detailedLoggingToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            LogDetail = true;
+            LogMode = LogModeType.Detail;
+        }
+
+        // STM-25 Add option for "pausing" the logging. This then allows
+        // users to scroll through the log window.
+        private void noLoggingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LogMode = LogModeType.None;
+        }
+
+        enum LogModeType
+        {
+            None,
+            Important,
+            Detail
         }
     }
 }

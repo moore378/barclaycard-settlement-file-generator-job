@@ -8,6 +8,8 @@ using Common;
 using System.IO;
 using System.Diagnostics;
 
+using System.Threading;
+
 namespace Rtcc.RtsaInterfacing
 {
     /// <summary>
@@ -15,6 +17,10 @@ namespace Rtcc.RtsaInterfacing
     /// </summary>
     public class RtccRequestInterpreter : LoggingObject
     {
+        // STM-25; XmlSerializer need to be cached or else creating new instances will generate memory leaks each time.
+        private static ThreadLocal<XmlSerializer> authRequestSerializer = new ThreadLocal<XmlSerializer>(() => new XmlSerializer(typeof(ClientAuthRequestXML)));
+        private static ThreadLocal<XmlSerializer> authResponseSerializer = new ThreadLocal<XmlSerializer>(() => new XmlSerializer(typeof(ClientAuthResponseXML)));
+
         /// <summary>
         /// This is called when a message is received by the messenger
         /// </summary>
@@ -26,8 +32,7 @@ namespace Rtcc.RtsaInterfacing
             try
             {
                 // Read the authorization request from the stream
-                XmlSerializer ser = new XmlSerializer(typeof(ClientAuthRequestXML));
-                ClientAuthRequestXML requestFromXML = (ClientAuthRequestXML)ser.Deserialize(new MemoryStream(message));
+                ClientAuthRequestXML requestFromXML = (ClientAuthRequestXML)authRequestSerializer.Value.Deserialize(new MemoryStream(message));
 
                 byte[] decodedEncryptedTrack;
 
@@ -66,7 +71,6 @@ namespace Rtcc.RtsaInterfacing
         public virtual RawDataMessage SerializeResponse(ClientAuthResponse reply)
         {
             // Serialize the reply
-            XmlSerializer ser = new XmlSerializer(typeof(ClientAuthResponseXML));
             MemoryStream memStream = new MemoryStream();
             ClientAuthResponseXML responseXMLObject = new ClientAuthResponseXML();
             responseXMLObject.Accepted = reply.Accepted;
@@ -74,7 +78,7 @@ namespace Rtcc.RtsaInterfacing
             responseXMLObject.ReceiptReference = reply.ReceiptReference;
             responseXMLObject.ResponseCode = reply.ResponseCode;
 
-            ser.Serialize(memStream, responseXMLObject);
+            authResponseSerializer.Value.Serialize(memStream, responseXMLObject);
 
             //int size = (int)memStream.Position;
             //byte[] data = new byte[size];

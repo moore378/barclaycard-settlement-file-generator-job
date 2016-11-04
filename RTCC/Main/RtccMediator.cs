@@ -118,7 +118,7 @@ namespace Rtcc.Main
                 catch (ParseException)
                 {
                     // Send "decline" to meter
-                    SendReplyToClient(new ClientAuthResponse() { Accepted = 0, AmountDollars = 0, ResponseCode="Parse error"});
+                    SendReplyToClient(new ClientAuthResponse() { Accepted = 0, AmountDollars = 0, ResponseCode = "Parse error" });
                     throw;
                 }
 
@@ -259,6 +259,10 @@ namespace Rtcc.Main
                 performanceCounterSession.FailedSession(stopwatch.ElapsedTicks);
                 return false;
             }
+            finally
+            {
+                stopwatch.Stop();
+            }
         }
 
         /// <summary>
@@ -301,15 +305,16 @@ namespace Rtcc.Main
 
                 req.ContentLength = sXML.Length;
 
-                System.IO.StreamWriter sw = new System.IO.StreamWriter(req.GetRequestStream());
-                
-                sw.Write(sXML);
+                using (System.IO.StreamWriter sw = new System.IO.StreamWriter(req.GetRequestStream()))
+                {
+                    sw.Write(sXML);
+                }
 
-                sw.Close();
-
-                HttpWebResponse webResponse = (HttpWebResponse)req.GetResponse();
-
-                Stream str = webResponse.GetResponseStream();
+                using (HttpWebResponse webResponse = (HttpWebResponse)req.GetResponse())
+                using (Stream str = webResponse.GetResponseStream())
+                {
+                    // Nothing to do.
+                }
             }
             catch (Exception e)
             {

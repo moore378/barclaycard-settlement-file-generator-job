@@ -19,6 +19,11 @@ using Rtcc.PayByCell;
 using AuthorizationClientPlatforms.Settings;
 
 using System.Threading;
+using System.Net;
+using System.Net.Sockets;
+using System.IO;
+
+using Rtcc.RtsaInterfacing;
 
 namespace UnitTests
 {
@@ -378,6 +383,101 @@ namespace UnitTests
         private void dummyResponseReceived(ClientAuthResponse response)
         {
             this.dummyResponse = response;
+        }
+
+        [TestMethod]
+        public void RtccConnection()
+        {
+            string testName = "Monetra DB5"; // Monetra DB5
+            string testData = "Monetra"; // Monetra
+
+            ClearingPlatform processorInfo = TestData.Processors[testName];
+
+            AuthorizationRequestEntry entry = TestData.AuthRequests[testData][0];
+
+            DateTime dtNow = DateTime.Now; // DateTime.SpecifyKind(DateTime.Parse("2016-04-19T11:07:09+00:00").ToUniversalTime(), DateTimeKind.Unspecified);
+
+            // Generate the track data.
+
+
+            TransactionInfo info = new TransactionInfo(
+                amountDollars: 0.75m,
+                meterSerialNumber: entry.MeterId,
+                startDateTime: dtNow,
+                transactionIndex: 6,
+                refDateTime: dtNow);
+
+            // After all that work to add the starting and ending sentinels... remove them for this track format.
+            string tracksUnformatted = entry.CreditCard.Track1.Substring(1, entry.CreditCard.Track1.Length - 2).PadRight(88, '\0')
+                + entry.CreditCard.Track2.Substring(1, entry.CreditCard.Track2.Length - 2).PadRight(40, '\0');
+
+            byte[] encryptedData = ipsEncryptStripe(tracksUnformatted, info, 1);
+
+            byte[] encodedBytes = System.Text.Encoding.ASCII.GetBytes(tracksUnformatted);
+
+            string encodedBase64 = Convert.ToBase64String(encodedBytes);
+
+            ClientAuthRequestXML request = new ClientAuthRequestXML()
+            {
+                StructureVersion = "03",
+                meterID = info.MeterSerialNumber,
+                LocalStartDateTime = dtNow,
+                requestType = 0,
+                ccTransactionIndex = (int)info.TransactionIndex,
+                encryptionMethod = (int)EncryptionMethod.IpsEncryption,
+                keyVer = 1,
+                uniqueRecNo = TestData.GenerateUniqueId(),
+                amount = info.AmountDollars.ToString(),
+                transactionDesc = "",
+                invoice = TestData.GenerateUniqueId(),
+                ccTrackBase64 = encodedBase64,
+                purchasedTime = 0,
+                UniqueNumber2 = long.Parse(TestData.GenerateUniqueId()), 
+                Flags = 0
+            };
+
+            byte[] tempBuf = new byte[4000];
+            XmlSerializer authRequestSerializer = new XmlSerializer(typeof(ClientAuthRequestXML));
+
+            MemoryStream packetData = new MemoryStream(tempBuf);
+            // Skip the length (come back to it later
+            packetData.Seek(4, SeekOrigin.Begin);
+            // Write all the fields
+            authRequestSerializer.Serialize(packetData, request);
+            // Count bytes in xml
+            int count = (int)(packetData.Position - 4);
+            byte[] countBytes = BitConverter.GetBytes(count);
+            // Write the count back to the beginning
+            packetData.Seek(0, SeekOrigin.Begin);
+            packetData.Write(countBytes, 0, countBytes.Length);
+            // Send the data
+            packetData.Seek(0, SeekOrigin.Begin);
+
+            packetData.Close();
+
+            TcpClient client = new TcpClient();
+
+            client.Connect("localhost", 3002);
+
+            NetworkStream stream = client.GetStream();
+
+            // Send the message to the connected TcpServer. 
+            stream.Write(tempBuf, 0, count + 4);
+
+
+            // Buffer to store the response bytes.
+            byte[] data = new byte[256];
+
+            // String to store the response ASCII representation.
+            String responseData = String.Empty;
+
+            // Read the length
+            int read = stream.Read(data, 0, 4);
+
+            int length = BitConverter.ToInt32(data, 0);
+
+
+            Assert.IsTrue(1 == 1);
         }
 
         [TestMethod]
