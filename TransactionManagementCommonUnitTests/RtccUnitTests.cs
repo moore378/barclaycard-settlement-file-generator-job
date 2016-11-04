@@ -383,10 +383,10 @@ namespace UnitTests
         [TestMethod]
         public void RtccMediator()
         {
-            string testName = "Monetra DB5";    // FIS PayDirect Test   // Barclaycard SmartPay Test UK
+            string testName = "Monetra DB5";    // FIS PayDirect Test   // Barclaycard SmartPay IntelligentParkingSolutions UK
             string testData = "Monetra";        // FIS Certification    // Barclaycard SmartPay
 
-            //testName = "Barclaycard SmartPay Test UK";
+            //testName = "Barclaycard SmartPay IntelligentParkingSolutions UK";
             //testData = "Barclaycard SmartPay";
 
 

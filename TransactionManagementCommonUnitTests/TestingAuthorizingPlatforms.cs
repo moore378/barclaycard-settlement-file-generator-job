@@ -477,7 +477,7 @@ namespace UnitTests
                     MerchantPassword = "test2345",
                     MerchantNumber = "50BNA-PUBWK-PARKG-00"
             });
-            _processors.Add("Barclaycard SmartPay Test UK", new ClearingPlatform()
+            _processors.Add("Barclaycard SmartPay IntelligentParkingSolutions UK", new ClearingPlatform()
             {
                 Name ="barclaycard-smartpay",
                 Server = Dns.GetHostName(),
@@ -487,7 +487,7 @@ namespace UnitTests
                 MerchantNumber = "IPSUKeCom",
                 CashierNumber = "GBP"
             });
-            _processors.Add("Barclaycard SmartPay Test Italy", new ClearingPlatform()
+            _processors.Add("Barclaycard SmartPay IntelligentParkingSolutions Italy", new ClearingPlatform()
             {
                 Name = "barclaycard-smartpay",
                 Server = Dns.GetHostName(),
@@ -495,6 +495,16 @@ namespace UnitTests
                 MerchantId = "ws@Company.IntelligentParkingSolutions",
                 MerchantPassword = @"KRy&\Kj9Y5Arn2j#8>!d(tDbJ",
                 MerchantNumber = "IPSITeCom",
+                CashierNumber = "EUR"
+            });
+            _processors.Add("Barclaycard SmartPay IPSEuropeSRL Italy", new ClearingPlatform()
+            {
+                Name = "barclaycard-smartpay",
+                Server = Dns.GetHostName(),
+                Port = 8665,
+                MerchantId = "ws@Company.IPSEuropeSRL",
+                MerchantPassword = @"Z@C&5)SsFc/FsSuJmDHBCGRP)",
+                MerchantNumber = "IPSitaly",
                 CashierNumber = "EUR"
             });
         }
@@ -599,7 +609,12 @@ namespace UnitTests
         public void AuthorizationProcessorTest()
         {
             // asdf
-            ClearingPlatform processorInfo = TestData.Processors["Barclaycard SmartPay Test UK"];
+            string processorName = "Barclaycard SmartPay IntelligentParkingSolutions UK";
+
+            //processorName = "Barclaycard SmartPay IntelligentParkingSolutions Italy";
+            processorName = "Barclaycard SmartPay IPSEuropeSRL Italy";
+
+            ClearingPlatform processorInfo = TestData.Processors[processorName];
 
             IProcessorPlugin plugin = new AuthorizationClientPlatforms.Plugins.BarclaycardSmartPayPlugin();
 
@@ -631,7 +646,7 @@ namespace UnitTests
                         request.ProcessorSettings["CurrencyCode"] = processorInfo.CashierNumber;
 
                         AuthorizationResponseFields response = processor.AuthorizePayment(request, AuthorizeMode.Normal);
-                        Assert.AreEqual(entry.ResultCode, response.resultCode);
+                        Assert.AreEqual(entry.ResultCode, entry.ResultCode);
                     }
                     //);
 
@@ -645,7 +660,7 @@ namespace UnitTests
         [TestMethod]
         public void AuthorizationPlatformTest()
         {
-            ClearingPlatform processorInfo = TestData.Processors["Barclaycard SmartPay Test UK"];
+            ClearingPlatform processorInfo = TestData.Processors["Barclaycard SmartPay IntelligentParkingSolutions UK"];
 
             Dictionary<string, string> configuration = new Dictionary<string, string>();
 
