@@ -757,6 +757,7 @@ namespace Cctm.Behavior
 
             // Normalize the extra processor settings since they are 
             // overloaded and have different meanings based on the processor.
+            // TODO: Make this be some sort of ruleset instead.
             switch (transaction.CCClearingPlatform.ToLower())
             {
                 case "israel-premium":
@@ -765,6 +766,10 @@ namespace Cctm.Behavior
                     break;
                 case "fis-paydirect":
                     authorizationRequest.ProcessorSettings["SettleMerchantCode"] = transaction.MerchantNumber;
+                    break;
+                case "barclaycard-smartpay":
+                    authorizationRequest.ProcessorSettings["MerchantAccount"] = transaction.MerchantNumber;
+                    authorizationRequest.ProcessorSettings["CurrencyCode"] = transaction.CashierNumber;
                     break;
                 case "monetra":
                     // Falls through on purpose.

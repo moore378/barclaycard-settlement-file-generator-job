@@ -12,6 +12,9 @@ using System.Net;
 using AuthorizationClientPlatforms.Settings;
 using System.Configuration;
 
+using MjhGeneral;
+using TransactionManagementCommon;
+
 namespace UnitTests
 {
     public class ClearingPlatform
@@ -39,10 +42,18 @@ namespace UnitTests
         public string MerchantPassword { get; set; }
 
         /// <summary>
-        /// Settlement Merchant Code
-        /// FIS requires a different merchant code for settlement.
+        /// FIS PayDirect - Settlement Merchant Code for 
+        ///     FIS requires a different merchant code for settlement.
+        /// Barclaycard SmartPay - Merchant Account
+        ///     This is where the charges are posted to.
         /// </summary>
-        public string SettleMerchantCode { get; set; }
+        public string MerchantNumber { get; set; }
+
+        /// <summary>
+        /// Barclaycard SmartPay - Currency Code
+        ///    Defining that the amount is in GBP or EUR.
+        /// </summary>
+        public string CashierNumber { get;set; }
     }
 
     public class CreditCard
@@ -71,6 +82,13 @@ namespace UnitTests
             // Nothing to do.
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="account"></param>
+        /// <param name="expiry">YYMM</param>
+        /// <param name="name"></param>
+        /// <param name="discretionary"></param>
         public CreditCard(string account, string expiry, string name, string discretionary)
         {
             _account = account;
@@ -163,7 +181,8 @@ namespace UnitTests
 
     public class AuthorizationRequestEntry
     {
-        public string MeterId { get { return "0201501";  } }
+        private string _meterId = "0201501"; //0201349";// "0201501"; // "0000042";
+        public string MeterId { get { return _meterId; } }
 
         public CreditCard CreditCard { get; set; }
 
@@ -337,6 +356,85 @@ namespace UnitTests
             }
             );
             _authRequests["FIS Extra"] = data;
+
+
+
+            // Can only be this future date.
+            string barclaycardExpiry = "1808";
+
+            // Set up the data for Barclaycard
+            data = new List<AuthorizationRequestEntry>();
+            data.Add(new AuthorizationRequestEntry()
+            {
+                CreditCard = new CreditCard("5555444433331111", barclaycardExpiry, "SMARTPAY CARD/MC", "1011111199911111"),
+                Amount = 0.50m,
+                ResultCode = AuthorizationResultCode.Approved
+            }
+            );
+            data.Add(new AuthorizationRequestEntry()
+            {
+                CreditCard = new CreditCard("370000000000002", barclaycardExpiry, "SMARTPAY CARD/AE", "1015432112345678"),
+                Amount = 0.50m,
+                ResultCode = AuthorizationResultCode.Declined
+            }
+            );
+            data.Add(new AuthorizationRequestEntry()
+            {
+                CreditCard = new CreditCard("4646464646464644", barclaycardExpiry, "SMARTPAY CARD/VS", "1015432112345678"),
+                Amount = 1.00m,
+                ResultCode = AuthorizationResultCode.Approved
+            }
+            );
+            data.Add(new AuthorizationRequestEntry()
+            {
+                CreditCard = new CreditCard("5500000000000004", barclaycardExpiry, "SMARTPAY DEBIT/MC", "1015432112345678"),
+                Amount = 0.50m,
+                ResultCode = AuthorizationResultCode.Approved
+            }
+            );
+            data.Add(new AuthorizationRequestEntry()
+            {
+                CreditCard = new CreditCard("36006666333344", barclaycardExpiry, "SMARTPAY CARD/DN", "1015432112345678"),
+                Amount = 1.00m,
+                ResultCode = AuthorizationResultCode.Declined
+            }
+            );
+            data.Add(new AuthorizationRequestEntry()
+            {
+                CreditCard = new CreditCard("4400000000000008", barclaycardExpiry, "SMARTPAY DEBIT/VS", "1015432112345678"),
+                Amount = 0.50m,
+                ResultCode = AuthorizationResultCode.Approved
+            }
+            );
+            data.Add(new AuthorizationRequestEntry()
+            {
+                CreditCard = new CreditCard("6731012345678906", barclaycardExpiry, "SMARTPAY CARD/ME", "1015432112345678"),
+                Amount = 0.50m,
+                ResultCode = AuthorizationResultCode.Declined
+            }
+            );
+            data.Add(new AuthorizationRequestEntry()
+            {
+                CreditCard = new CreditCard("6759649826438453", barclaycardExpiry, "SMARTPAY CARD/MEUK", "1015432112345678"),
+                Amount = 0.50m,
+                ResultCode = AuthorizationResultCode.Declined
+            }
+            );
+            data.Add(new AuthorizationRequestEntry()
+            {
+                CreditCard = new CreditCard("6222023602899998371", barclaycardExpiry, "SMARTPAY DEBIT/CUP", "1015432112345678"),
+                Amount = 0.50m,
+                ResultCode = AuthorizationResultCode.Declined
+            }
+            );
+            data.Add(new AuthorizationRequestEntry()
+            {
+                CreditCard = new CreditCard("5309900599078555", barclaycardExpiry, "TEST CARD/CUP", "1015432112345678"),
+                Amount = 0.50m,
+                ResultCode = AuthorizationResultCode.Declined
+            }
+            );
+            _authRequests["Barclaycard SmartPay"] = data;
         }
 
         static TestData()
@@ -371,14 +469,44 @@ namespace UnitTests
                     MerchantPassword = "test123"
                 });
             _processors.Add("FIS PayDirect Test", new ClearingPlatform()
-                {
+            {
                     Name = "fis-paydirect",
                     Server = Dns.GetHostName(),
                     Port = 8665,
                     MerchantId = "50BNA-PUBWK-PARKG-G",
                     MerchantPassword = "test2345",
-                    SettleMerchantCode = "50BNA-PUBWK-PARKG-00"
-                });
+                    MerchantNumber = "50BNA-PUBWK-PARKG-00"
+            });
+            _processors.Add("Barclaycard SmartPay IntelligentParkingSolutions UK", new ClearingPlatform()
+            {
+                Name ="barclaycard-smartpay",
+                Server = Dns.GetHostName(),
+                Port = 8665,
+                MerchantId ="ws@Company.IntelligentParkingSolutions",
+                MerchantPassword = @"KRy&\Kj9Y5Arn2j#8>!d(tDbJ",
+                MerchantNumber = "IPSUKeCom",
+                CashierNumber = "GBP"
+            });
+            _processors.Add("Barclaycard SmartPay IntelligentParkingSolutions Italy", new ClearingPlatform()
+            {
+                Name = "barclaycard-smartpay",
+                Server = Dns.GetHostName(),
+                Port = 8665,
+                MerchantId = "ws@Company.IntelligentParkingSolutions",
+                MerchantPassword = @"KRy&\Kj9Y5Arn2j#8>!d(tDbJ",
+                MerchantNumber = "IPSITeCom",
+                CashierNumber = "EUR"
+            });
+            _processors.Add("Barclaycard SmartPay IPSEuropeSRL Italy", new ClearingPlatform()
+            {
+                Name = "barclaycard-smartpay",
+                Server = Dns.GetHostName(),
+                Port = 8665,
+                MerchantId = "ws@Company.IPSEuropeSRL",
+                MerchantPassword = @"Z@C&5)SsFc/FsSuJmDHBCGRP)",
+                MerchantNumber = "IPSitaly",
+                CashierNumber = "EUR"
+            });
         }
 
         public static Dictionary<string, ClearingPlatform> Processors
@@ -405,7 +533,6 @@ namespace UnitTests
 
             return uniqueId;
         }
-
     }
 
     [TestClass]
@@ -448,6 +575,139 @@ namespace UnitTests
         }
     }
 
+    public class CreditCardTypeResult
+    {
+        public CreditCardType CreditCardType;
+        public string AccountNumber;
+    }
+
+    [TestClass]
+    public class TestingBarclaycardSmartPay
+    {
+        [TestMethod]
+        public void ValidateDetermineCardType()
+        {
+            CreditCardTypeResult[] tests = new CreditCardTypeResult[]
+            {
+                new CreditCardTypeResult() { CreditCardType = CreditCardType.Visa, AccountNumber = "4444333322221111" },
+                new CreditCardTypeResult() { CreditCardType = CreditCardType.MasterCard, AccountNumber = "5555444433331111" },
+                new CreditCardTypeResult() { CreditCardType = CreditCardType.AmericanExpress, AccountNumber = "370000000000002" },
+                new CreditCardTypeResult() { CreditCardType = CreditCardType.Discover, AccountNumber = "6011000990139424" },
+            };
+
+            foreach (var entry in tests)
+            {
+                CreditCardType creditCardType = CreditCardPan.DetermineCreditCardType(entry.AccountNumber);
+
+                Assert.AreEqual(creditCardType, entry.CreditCardType);
+
+                string scheme = creditCardType.GetDescription();
+            }
+        }
+
+        [TestMethod]
+        public void AuthorizationProcessorTest()
+        {
+            // asdf
+            string processorName = "Barclaycard SmartPay IntelligentParkingSolutions UK";
+
+            //processorName = "Barclaycard SmartPay IntelligentParkingSolutions Italy";
+            processorName = "Barclaycard SmartPay IPSEuropeSRL Italy";
+
+            ClearingPlatform processorInfo = TestData.Processors[processorName];
+
+            IProcessorPlugin plugin = new AuthorizationClientPlatforms.Plugins.BarclaycardSmartPayPlugin();
+
+            AuthorizationProcessor processor = new AuthorizationProcessor(plugin);
+
+            Dictionary<string, string> configuration = new Dictionary<string, string>();
+
+            configuration["endpoint"] = "https://pal-test.barclaycardsmartpay.com/pal/servlet/soap/Payment";
+
+            processor.Initialize(configuration);
+
+            List<Task> taskList = new List<Task>();
+
+            //for (int i = 0; i < 10; i++)
+            {
+                foreach (AuthorizationRequestEntry entry in TestData.AuthRequests["Barclaycard SmartPay"])
+                {
+                    string uniqueId = TestData.GenerateUniqueId();
+
+                    //var task = Task.Factory.StartNew(() =>
+                    {
+                        AuthorizationRequest request = new AuthorizationRequest(entry.MeterId,
+                                    DateTime.Now, processorInfo.MerchantId, processorInfo.MerchantPassword,
+                                    entry.CreditCard.AccountNumber,
+                                    String.Format("{0:00}{1:00}", entry.CreditCard.ExpiryMonth, entry.CreditCard.ExpiryYear), 
+                                    entry.Amount, "", "", "", entry.CreditCard.Track2,
+                                    entry.CreditCard.FullTracks, uniqueId, "", null);
+                        request.ProcessorSettings["MerchantAccount"] = processorInfo.MerchantNumber;
+                        request.ProcessorSettings["CurrencyCode"] = processorInfo.CashierNumber;
+
+                        AuthorizationResponseFields response = processor.AuthorizePayment(request, AuthorizeMode.Normal);
+                        Assert.AreEqual(entry.ResultCode, entry.ResultCode);
+                    }
+                    //);
+
+                    //taskList.Add(task);
+                    //break;
+                }
+            }
+            Task.WaitAll(taskList.ToArray());
+        }
+
+        [TestMethod]
+        public void AuthorizationPlatformTest()
+        {
+            ClearingPlatform processorInfo = TestData.Processors["Barclaycard SmartPay IntelligentParkingSolutions UK"];
+
+            Dictionary<string, string> configuration = new Dictionary<string, string>();
+
+            AuthorizationClientPlatformsSection acpSection = (AuthorizationClientPlatformsSection)ConfigurationManager.GetSection("authorizationClientPlatforms");
+
+            AuthorizationProcessorsCollection apCollection = acpSection.AuthorizationProcessors;
+
+            ProcessorElement barclaycardSmartPay = apCollection["barclaycard-smartpay"];
+
+            configuration["endpoint"] = barclaycardSmartPay.Endpoint;
+
+            string server = Dns.GetHostName();
+            string processor = barclaycardSmartPay.Name;
+
+            IAuthorizationPlatform platform = new AuthorizationPlatform(server, processor, configuration);
+
+            List<Task> taskList = new List<Task>();
+
+            foreach (AuthorizationRequestEntry entry in TestData.AuthRequests["Barclaycard SmartPay"])
+            {
+                //var task = Task.Factory.StartNew(() =>
+                {
+                    string uniqueId = TestData.GenerateUniqueId();
+
+                    AuthorizationRequest request = new AuthorizationRequest(entry.MeterId,
+                                DateTime.Now, processorInfo.MerchantId, processorInfo.MerchantPassword,
+                                entry.CreditCard.AccountNumber,
+                                String.Format("{0:00}{1:00}", entry.CreditCard.ExpiryMonth, entry.CreditCard.ExpiryYear),
+                                entry.Amount, "", "", "", entry.CreditCard.Track2,
+                                entry.CreditCard.FullTracks, uniqueId, "", null);
+                    request.ProcessorSettings["MerchantAccount"] = processorInfo.MerchantNumber;
+                    request.ProcessorSettings["CurrencyCode"] = processorInfo.CashierNumber;
+
+                    AuthorizationResponseFields response = platform.Authorize(request, AuthorizeMode.Normal);
+                    Assert.AreEqual(entry.ResultCode, response.resultCode);
+                }
+                //);
+
+                //taskList.Add(task);
+
+                //break;
+            }
+
+            Task.WaitAll(taskList.ToArray());
+        }
+    }
+
     [TestClass]
     public class TestingFisPayDirect
     {
@@ -481,7 +741,7 @@ namespace UnitTests
                                     DateTime.Now, processorInfo.MerchantId, processorInfo.MerchantPassword, "", "",
                                     entry.Amount, "", "", "", entry.CreditCard.Track2,
                                     entry.CreditCard.FullTracks, uniqueId, "", null);
-                        request.ProcessorSettings["SettleMerchantCode"] = processorInfo.SettleMerchantCode;
+                        request.ProcessorSettings["SettleMerchantCode"] = processorInfo.MerchantNumber;
 
                         AuthorizationResponseFields response = processor.AuthorizePayment(request, AuthorizeMode.Normal);
                         Assert.AreEqual(entry.ResultCode, response.resultCode);
@@ -529,7 +789,7 @@ namespace UnitTests
                                 DateTime.Now, processorInfo.MerchantId, processorInfo.MerchantPassword, "", "",
                                 entry.Amount, "", "", "", entry.CreditCard.Track2,
                                 entry.CreditCard.FullTracks, uniqueId, "", null);
-                    request.ProcessorSettings["SettleMerchantCode"] = processorInfo.SettleMerchantCode;
+                    request.ProcessorSettings["SettleMerchantCode"] = processorInfo.MerchantNumber;
 
                     AuthorizationResponseFields response = platform.Authorize(request, AuthorizeMode.Normal);
                     Assert.AreEqual(entry.ResultCode, response.resultCode);

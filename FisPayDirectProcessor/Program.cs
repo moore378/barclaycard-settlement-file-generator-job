@@ -21,8 +21,6 @@ using Microsoft.Practices.EnterpriseLibrary.SemanticLogging.Sinks;
 using AuthorizationClientPlatforms;
 using AuthorizationClientPlatforms.Logging;
 
-
-
 namespace FisPayDirectProcessor
 {
     class Program

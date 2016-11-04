@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B1AA76DD-BB9D-4642-9362-4E9D910D8EFD}</ProjectGuid>
+    <ProjectGuid>{32AA0FBA-2266-4794-BD7F-75E327242687}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FisPayDirectProcessor</RootNamespace>
-    <AssemblyName>FisPayDirectProcessor</AssemblyName>
+    <RootNamespace>BarclaycardSmartPayProcessor</RootNamespace>
+    <AssemblyName>BarclaycardSmartPayProcessor</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -41,6 +41,9 @@
       <HintPath>..\packages\EnterpriseLibrary.SemanticLogging.TextFile.2.0.1406.1\lib\net45\Microsoft.Practices.EnterpriseLibrary.SemanticLogging.TextFile.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="MjhGeneral">
+      <HintPath>..\Dependencies\MjhGeneral.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -58,14 +61,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BarclaycardSmartPayService.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Constants.cs" />
-    <Compile Include="FisPayDirectService.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Program.cs" />
-    <Compile Include="ProjectInstaller.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -81,9 +81,9 @@
       <Project>{afd07aa0-1136-4475-882c-50069963332b}</Project>
       <Name>AuthorizationProcessor</Name>
     </ProjectReference>
-    <ProjectReference Include="..\FisPayDirectPlugin\FisPayDirectPlugin.csproj">
-      <Project>{6d6cc9b7-491a-4fc1-bb3b-63e238bbde95}</Project>
-      <Name>FisPayDirectPlugin</Name>
+    <ProjectReference Include="..\BarclaycardSmartPayPlugin\BarclaycardSmartPayPlugin.csproj">
+      <Project>{ad333d97-c6e9-49af-a811-1d70d5728ea1}</Project>
+      <Name>BarclaycardSmartPayPlugin</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

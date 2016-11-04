@@ -12,6 +12,16 @@ namespace TransactionManagementCommon
         private string panString;
         private ObscurationMethod obscured;
 
+        private static BinRange[] binRanges;
+
+        /// <summary>
+        /// Static constructor to initialize resources used for static methods.
+        /// </summary>
+        static CreditCardPan()
+        {
+            // Create BIN ranges for the different credit card schemes.
+            CreateBinRanges();
+        }
 
         internal CreditCardPan(string panString, ObscurationMethod obscured)
         {
@@ -95,5 +105,112 @@ namespace TransactionManagementCommon
         {
             return panString;
         }
+
+        /// <summary>
+        /// Determine the credit card type for the given PAN.
+        /// </summary>
+        /// <param name="panString">PAN</param>
+        /// <returns>Credit card type</returns>
+        public static CreditCardType DetermineCreditCardType(string panString)
+        {
+            CreditCardType creditCardType = CreditCardType.Unknown;
+
+            // Loop through each card
+            foreach (BinRange entry in binRanges)
+            {
+                // Only when the BIN length matches.
+                if (entry.Length == panString.Length)
+                {
+                    // Verify the starting and ending BIN ranges.
+                    if ((0 <= String.Compare(panString, 0, entry.BinStart, 0, entry.BinStart.Length))
+                        && (0 >= String.Compare(panString, 0, entry.BinStop, 0, entry.BinStop.Length)))
+                    {
+                        // On a match, stop looking for more.
+                        creditCardType = entry.CreditCardType;
+                        break;
+                    }
+                }
+            }
+
+            return creditCardType;
+        }
+
+        #region BIN Range Helpers
+
+        private static void CreateBinRanges()
+        {
+            binRanges = new BinRange[]
+            {
+                //            BinStart,     BinStop,    Length, CardType
+                // Visa
+                new BinRange( "4",                      16,     CreditCardType.Visa ),
+
+                // MasterCard
+                new BinRange( "51",         "55",       16,     CreditCardType.MasterCard ),    // (classic)
+                new BinRange( "222100",     "272099",   16,     CreditCardType.MasterCard ),    // Added 2016
+
+                // Discover
+                new BinRange( "6011",                   16,     CreditCardType.Discover ),
+                new BinRange( "650",        "659",      16,     CreditCardType.Discover ),
+                new BinRange( "644",        "649",      16,     CreditCardType.Discover ),      // (New 2009 range)
+                new BinRange( "62212600",   "62292599", 16,     CreditCardType.Discover ),      // (China Union Pay)
+                new BinRange( "62400000",   "62699999", 16,     CreditCardType.Discover ),      // (China Union Pay 2009)
+                new BinRange( "62820000",   "62889999", 16,     CreditCardType.Discover ),      // (China Union Pay 2009)
+                new BinRange( "36",                     14,     CreditCardType.Discover ),      // (formerly Mastercard Diners) 10/16/2009
+                new BinRange( "300",        "305",      16,     CreditCardType.Discover ),      // (formerly Diners Intl) 10/16/2009
+                new BinRange( "3095",       "3095",     16,     CreditCardType.Discover ),      // (formerly Diners Intl) 10/16/2009
+                new BinRange( "380",        "399",      16,     CreditCardType.Discover ),      // (formerly Diners Intl) 10/16/2009
+                new BinRange( "3528",       "3589",     16,     CreditCardType.Discover ),      // (formerly JCB Intl)    10/16/2009
+
+                // Amex
+                new BinRange( "37",                 15,     CreditCardType.AmericanExpress ),
+                new BinRange( "34",                 15,     CreditCardType.AmericanExpress )
+            };
+        }
+
+        /// <summary>
+        /// BIN Range identifier
+        /// </summary>
+        internal struct BinRange
+        {
+            public string BinStart { get; set; }
+
+            public string BinStop { get; set; }
+
+            public int Length { get; set; }
+
+            public CreditCardType CreditCardType { get; set; }
+
+            /// <summary>
+            /// Constructor that accepts only a single BIN number and not a range.
+            /// </summary>
+            /// <param name="binStart">BIN</param>
+            /// <param name="length">BIN length</param>
+            /// <param name="cardType">Credit card type</param>
+            /// <remarks>the ending bin will be equal to the starting bin</remarks>
+            public BinRange(string binStart, int length, CreditCardType creditCardType)
+                : this(binStart, binStart, length, creditCardType)
+            {
+                // Nothing on purpose.
+            }
+
+            /// <summary>
+            /// Constructor that accepts a bin range.
+            /// </summary>
+            /// <param name="binStart">Starting BIN</param>
+            /// <param name="binStop">Ending BIN</param>
+            /// <param name="length">BIN length</param>
+            /// <param name="creditCardType">Credit card type</param>
+            public BinRange(string binStart, string binStop, int length, CreditCardType creditCardType)
+                : this()
+            {
+                BinStart = binStart;
+                BinStop = binStop;
+                Length = length;
+                CreditCardType = creditCardType;
+            }
+        }
+
+        #endregion
     }
 }

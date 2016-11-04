@@ -90,8 +90,6 @@ namespace Cctm
 
             listView1.Items.Clear();
             mediatorStatus = listView1.Items.Add("CCTM Main").SubItems.Add("-");
-            monetraStatus = listView1.Items.Add("Monetra").SubItems.Add("-");
-            israelPremiumStatus = listView1.Items.Add("Israel Premium").SubItems.Add("-");
 
             // NOTE: Removed unused authorization platforms.
             // NOTE: Also removed unused database entry since DB handling
@@ -103,9 +101,19 @@ namespace Cctm
         /// </summary>
         private void loadSettings()
         {
+            string monetraHostName = "Monetra_HostName";
+            string monetraServerSocket = "Monetra_ServerSocket";
+
             // Monetra
-            Monetra_HostName = configuration.AppSettings.Settings["Monetra_HostName"].Value;
-            Monetra_ServerSocket = Convert.ToUInt16(configuration.AppSettings.Settings["Monetra_ServerSocket"].Value);
+            if (null != configuration.AppSettings.Settings[monetraHostName])
+            {
+                Monetra_HostName = configuration.AppSettings.Settings[monetraHostName].Value;
+            }
+
+            if (null != configuration.AppSettings.Settings[monetraServerSocket])
+            {
+                Monetra_ServerSocket = Convert.ToUInt16(configuration.AppSettings.Settings[monetraServerSocket].Value);
+            }
 
             PollIntervalSeconds = Convert.ToUInt16(configuration.AppSettings.Settings["Poll_Interval_Seconds"].Value);
                         
@@ -210,10 +218,7 @@ namespace Cctm
         /// <returns></returns>
         private IAuthorizationPlatform prepareAuthorizationProcessorServer(ProcessorElement processor, bool testMode)
         {
-            Dictionary<string, string> configuration = new Dictionary<string, string>();
-
-            // TODO: anything that is not Name and Description needs to be added to the configuration dictionary.
-            configuration["endpoint"] = processor.Endpoint;
+            Dictionary<string, string> configuration = processor.GetConfiguration();
 
             return new AuthorizationClientPlatforms.AuthorizationPlatform(processor.Server, processor.Name, configuration);
         }
@@ -247,24 +252,35 @@ namespace Cctm
                     failedRestart: (exception, retryCount) => RestartFailAction.Retry
                     );
 
-            // Monetra
-            platforms["monetra"] = authorizationPlatformFactory.CreateControllerWrapper(
-                "MontraFactory",
-                // How do we create the monetra server?
-                factoryMethod: () => prepareMonetraServer(testMode),
-                // What does it use to update the monetra server status?
-                statusUpdate: (status) => updateServerStatus(monetraStatus, status)
-                );
-
-            // Israel Premium
-            platforms["israel-premium"] = authorizationPlatformFactory.CreateControllerWrapper(
-                "IsraelPremium",
-                // How do we create the Israel premium server?
-                factoryMethod: () => prepareIsraelServer(testMode),
-                // What does it use to update the server status?
-                statusUpdate: (status) => updateServerStatus(israelPremiumStatus, status)
+            // Only set up monetra if it's configured.
+            if (0 != Monetra_ServerSocket)
+            {
+                // Monetra
+                platforms["monetra"] = authorizationPlatformFactory.CreateControllerWrapper(
+                    "MontraFactory",
+                    // How do we create the monetra server?
+                    factoryMethod: () => prepareMonetraServer(testMode),
+                    // What does it use to update the monetra server status?
+                    statusUpdate: (status) => updateServerStatus(monetraStatus, status)
                     );
 
+                monetraStatus = listView1.Items.Add("Monetra").SubItems.Add("-");
+            }
+
+            // Only setup Israel Premium if it's configured.
+            if (!String.IsNullOrEmpty(Properties.Settings.Default.IsraelMerchantNumber))
+            {
+                // Israel Premium
+                platforms["israel-premium"] = authorizationPlatformFactory.CreateControllerWrapper(
+                    "IsraelPremium",
+                    // How do we create the Israel premium server?
+                    factoryMethod: () => prepareIsraelServer(testMode),
+                    // What does it use to update the server status?
+                    statusUpdate: (status) => updateServerStatus(israelPremiumStatus, status)
+                        );
+
+                israelPremiumStatus = listView1.Items.Add("Israel Premium").SubItems.Add("-");
+            }
 
             // Programmatically add new processors via configuration.
             AuthorizationClientPlatformsSection acpSection = (AuthorizationClientPlatformsSection)ConfigurationManager.GetSection("authorizationClientPlatforms");

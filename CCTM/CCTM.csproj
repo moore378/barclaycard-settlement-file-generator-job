@@ -66,8 +66,14 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoDatabase">
+      <HintPath>..\Dependencies\AutoDatabase.dll</HintPath>
+    </Reference>
     <Reference Include="CryptographicPlatforms">
       <HintPath>..\Dependencies\CryptographicPlatforms.dll</HintPath>
+    </Reference>
+    <Reference Include="MjhGeneral">
+      <HintPath>..\Dependencies\MjhGeneral.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -167,7 +173,9 @@
     <EmbeddedResource Include="Forms\WaitForFinishForm.resx">
       <DependentUpon>WaitForFinishForm.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -226,17 +234,9 @@
       <Project>{5AE1B5BD-C0AE-46E2-8E55-6960FAF3A846}</Project>
       <Name>AuthorizationClientPlatforms</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AutoDatabase\AutoDatabase.csproj">
-      <Project>{dba89e62-338a-4693-871d-7dda97419ca2}</Project>
-      <Name>AutoDatabase</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{BA9EFA9B-8E6C-4680-AE58-37C8442E7DF0}</Project>
       <Name>Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MjhGeneral\MjhGeneral.csproj">
-      <Project>{8681d9bc-c6aa-4feb-8121-6f3f0d2d292c}</Project>
-      <Name>MjhGeneral</Name>
     </ProjectReference>
     <ProjectReference Include="..\TransactionManagmentCommon\TransactionManagementCommon.csproj">
       <Project>{A8DC7A1F-25AF-4935-9A23-96C610F4DE95}</Project>

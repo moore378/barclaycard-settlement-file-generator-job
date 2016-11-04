@@ -33,6 +33,9 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MjhGeneral">
+      <HintPath>..\Dependencies\MjhGeneral.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -53,10 +56,6 @@
     <ProjectReference Include="..\AuthorizationClientPlatforms\AuthorizationClientPlatforms.csproj">
       <Project>{5ae1b5bd-c0ae-46e2-8e55-6960faf3a846}</Project>
       <Name>AuthorizationClientPlatforms</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MjhGeneral\MjhGeneral.csproj">
-      <Project>{8681d9bc-c6aa-4feb-8121-6f3f0d2d292c}</Project>
-      <Name>MjhGeneral</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

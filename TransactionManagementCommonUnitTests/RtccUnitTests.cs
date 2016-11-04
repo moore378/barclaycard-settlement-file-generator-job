@@ -483,12 +483,16 @@ namespace UnitTests
         [TestMethod]
         public void RtccMediator()
         {
-            string testName = "Monetra DB5"; // FIS PayDirect Test
-            string testData = "Monetra"; // FIS Certification
+            string testName = "Monetra DB5";    // FIS PayDirect Test   // Barclaycard SmartPay IntelligentParkingSolutions UK
+            string testData = "Monetra";        // FIS Certification    // Barclaycard SmartPay
+
+            //testName = "Barclaycard SmartPay IntelligentParkingSolutions UK";
+            //testData = "Barclaycard SmartPay";
+
 
             ClearingPlatform processorInfo = TestData.Processors[testName];
 
-            AuthorizationRequestEntry entry = TestData.AuthRequests[testData][0];
+            AuthorizationRequestEntry entry = TestData.AuthRequests[testData][1];
 
             //byte[] original = Convert.FromBase64String("50XIzZeEdzG07Er4meKc057l3sWg8Sax7Aug3H/l44m3+lGg4+Nu7ZLL3ZZm2ZPQslEdqirkW+modxQ8M7KyYbASjCjDrqE2DdqApMicH0ao5TEaUAV5+k1zK22b6UT1w8s1k0cA2dPp3pN3xW6PvVhG4cHlFmuoX12CSpODcWc=");
 
@@ -498,7 +502,7 @@ namespace UnitTests
             
 
             TransactionInfo info = new TransactionInfo(
-                amountDollars: 0.75m,
+                amountDollars: entry.Amount,
                 meterSerialNumber: entry.MeterId,
                 startDateTime: dtNow,
                 transactionIndex: 6,
@@ -565,7 +569,10 @@ namespace UnitTests
             interpreter.onResponse = dummyResponseReceived;
             // Create a dummy database
             //RtccDatabase dummyDatabase = new DummyDatabase();
+
+            // NOTE: set to null to utilize the real database. Otherwise use the UnitTestDatabase.
             RtccDatabase dummyDatabase = null; // new UnitTestDatabase(testName);
+
             // Create a dummy authorization platform
             AuthorizationClientPlatforms.IAuthorizationPlatform dummyPlatform = new DummyAuthorizationPlatform();
             // Create a dummy PayByCell
@@ -575,7 +582,11 @@ namespace UnitTests
             
             Dictionary<string, IAuthorizationPlatform> platforms = new Dictionary<string,IAuthorizationPlatform>();
 
-            switch (processorInfo.Name.ToLower())
+            string processor = processorInfo.Name.ToLower();
+
+            //processor = "barclaycard-smartpay";
+
+            switch (processor)
             {
                 case "monetra":
                     // Create the monetra platform
@@ -586,16 +597,17 @@ namespace UnitTests
                     break;
 
                 case "fis-paydirect":
+                case "barclaycard-smartpay":
                     AuthorizationClientPlatformsSection acpSection = (AuthorizationClientPlatformsSection)System.Configuration.ConfigurationManager.GetSection("authorizationClientPlatforms");
 
                     AuthorizationProcessorsCollection apCollection = acpSection.AuthorizationProcessors;
 
-                    ProcessorElement fisPayDirect = apCollection["fis-paydirect"];
+                    ProcessorElement processorElement = apCollection[processor];
 
                     Dictionary<string, string> configuration = new Dictionary<string, string>();
-                    configuration["endpoint"] = fisPayDirect.Endpoint;
+                    configuration["endpoint"] = processorElement.Endpoint;
 
-                    platforms["fis-paydirect"] = new AuthorizationPlatform(System.Net.Dns.GetHostName(), fisPayDirect.Name, configuration);
+                    platforms[processor] = new AuthorizationPlatform(System.Net.Dns.GetHostName(), processorElement.Name, configuration);
                     break;
 
                 default:
@@ -610,7 +622,7 @@ namespace UnitTests
             // Simulate a blank request from the client (the dummy interpreter will pretend that this blank request contains useful information)
             rtsaConnection.SimulateMessageReceived(new byte[0]);
 
-            Assert.IsTrue(dummyResponse.Accepted == 1);
+            Assert.IsTrue((1 == dummyResponse.Accepted) == (entry.ResultCode == AuthorizationResultCode.Approved));
             //Assert.AreEqual(dummyResponse.ResponseCode, "DummyAuthCode");
         }
 

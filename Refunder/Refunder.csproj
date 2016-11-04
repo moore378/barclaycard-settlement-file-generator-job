@@ -49,6 +49,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoDatabase">
+      <HintPath>..\Dependencies\AutoDatabase.dll</HintPath>
+    </Reference>
     <Reference Include="CommandLine">
       <HintPath>..\packages\CommandLineParser.1.9.71\lib\net45\CommandLine.dll</HintPath>
     </Reference>
@@ -73,10 +76,6 @@
     <Compile Include="Tracker.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AutoDatabase\AutoDatabase.csproj">
-      <Project>{dba89e62-338a-4693-871d-7dda97419ca2}</Project>
-      <Name>AutoDatabase</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{ba9efa9b-8e6c-4680-ae58-37c8442e7df0}</Project>
       <Name>Common</Name>

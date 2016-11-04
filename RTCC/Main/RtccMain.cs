@@ -50,24 +50,6 @@ namespace Rtcc.Main
                 // Create a collection of authorization platforms.
                 Dictionary<string, IAuthorizationPlatform> platforms = new Dictionary<string, IAuthorizationPlatform>(StringComparer.CurrentCultureIgnoreCase);
 
-                LogDetail("Connecting to Monetra server");
-
-                // Use this authorizer for Monetra
-                var monetraFactory = new SimpleServerFactory<IAuthorizationPlatform>(() =>
-                {
-                    LogImportant("Starting new connection to monetra. " + GetTimeWithMiliseconds());
-                    // Create the monetra client
-                    MonetraClient _monetraClient = new MonetraDotNetNativeClient(configs.MonetraHostName, configs.MonetraPort, MonetraLog);
-                    // The logic that uses the client to make authorizations
-                    IAuthorizationPlatform _monetraAuthorizer = new Monetra(_monetraClient, MonetraLog);
-                    return _monetraAuthorizer;
-                });
-                var controller = new ServerController<IAuthorizationPlatform>(
-                    serverFactory: monetraFactory,
-                    updatedStatus: (status) => { },
-                    failedRestart: (error, tries) => { Thread.Sleep(5000); return RestartFailAction.Retry; }
-                );
-
                 var authorizationFailAction = new ServerController<IAuthorizationPlatform>.ExceptionHandler((excep, tries) =>
                 {
                     LogError("Authorization server error. Queueing restart. " + GetTimeWithMiliseconds(), excep);
@@ -80,46 +62,71 @@ namespace Rtcc.Main
                         return OperationFailAction.AbortAndRestart;
                 });
 
-                // Wrap the controller
-                IAuthorizationPlatform monetraAuthorizer = new DynamicAuthorizationPlatform(
-                    (request, preAuth) => controller.Perform(
-                        (platform) => platform.Authorize(request, preAuth),
-                        authorizationFailAction
-                        ));
+                // Only connect to Monetra if it is configured.
+                if (0 != configs.MonetraPort)
+                {
+                    LogDetail("Connecting to Monetra server");
 
-                // Add to the list of platforms.
-                platforms["monetra"] = monetraAuthorizer;
-
-                var israelPremiumFactory = new SimpleServerFactory<IAuthorizationPlatform>(() =>
+                    // Use this authorizer for Monetra
+                    var monetraFactory = new SimpleServerFactory<IAuthorizationPlatform>(() =>
                     {
-                        LogImportant("Starting new connection to Israel Premium. " + GetTimeWithMiliseconds());
-                        try
-                        {
-                            return new AuthorizationClientPlatforms.IsraelPremium(Properties.Settings.Default.IsraelMerchantNumber, Properties.Settings.Default.IsraelCashierNumber); 
-                        }
-                        catch (Exception e)
-                        {
-                            LogImportant(e.Message);
-                            LogDetail(e.ToString());
-                            throw;
-                        }
+                        LogImportant("Starting new connection to monetra. " + GetTimeWithMiliseconds());
+                        // Create the monetra client
+                        MonetraClient _monetraClient = new MonetraDotNetNativeClient(configs.MonetraHostName, configs.MonetraPort, MonetraLog);
+                        // The logic that uses the client to make authorizations
+                        IAuthorizationPlatform _monetraAuthorizer = new Monetra(_monetraClient, MonetraLog);
+                        return _monetraAuthorizer;
                     });
+                    var controller = new ServerController<IAuthorizationPlatform>(
+                        serverFactory: monetraFactory,
+                        updatedStatus: (status) => { },
+                        failedRestart: (error, tries) => { Thread.Sleep(5000); return RestartFailAction.Retry; }
+                    );
 
-                var israelController = new ServerController<IAuthorizationPlatform>(
-                    serverFactory: israelPremiumFactory, 
-                    updatedStatus: (status) => { },
-                    failedRestart: (error, tries) => { Thread.Sleep(5000); return RestartFailAction.Retry; }
-                );
+                    // Wrap the controller
+                    IAuthorizationPlatform monetraAuthorizer = new DynamicAuthorizationPlatform(
+                        (request, preAuth) => controller.Perform(
+                            (platform) => platform.Authorize(request, preAuth),
+                            authorizationFailAction
+                            ));
 
+                    // Add to the list of platforms.
+                    platforms["monetra"] = monetraAuthorizer;
+                }
 
-                IAuthorizationPlatform israelPremium = new DynamicAuthorizationPlatform(
-                    (request, preAuth) => israelController.Perform(
-                        (platform) => platform.Authorize(request, preAuth),
-                        authorizationFailAction
-                        ));
+                // Only connect to the Israel Premium interface if it is configured.
+                if (!String.IsNullOrEmpty(Properties.Settings.Default.IsraelMerchantNumber))
+                {
+                    var israelPremiumFactory = new SimpleServerFactory<IAuthorizationPlatform>(() =>
+                        {
+                            LogImportant("Starting new connection to Israel Premium. " + GetTimeWithMiliseconds());
+                            try
+                            {
+                                return new AuthorizationClientPlatforms.IsraelPremium(Properties.Settings.Default.IsraelMerchantNumber, Properties.Settings.Default.IsraelCashierNumber);
+                            }
+                            catch (Exception e)
+                            {
+                                LogImportant(e.Message);
+                                LogDetail(e.ToString());
+                                throw;
+                            }
+                        });
 
-                // Add to the list of platforms.
-                platforms["israel-premium"] = israelPremium;
+                    var israelController = new ServerController<IAuthorizationPlatform>(
+                        serverFactory: israelPremiumFactory,
+                        updatedStatus: (status) => { },
+                        failedRestart: (error, tries) => { Thread.Sleep(5000); return RestartFailAction.Retry; }
+                    );
+
+                    IAuthorizationPlatform israelPremium = new DynamicAuthorizationPlatform(
+                        (request, preAuth) => israelController.Perform(
+                            (platform) => platform.Authorize(request, preAuth),
+                            authorizationFailAction
+                            ));
+
+                    // Add to the list of platforms.
+                    platforms["israel-premium"] = israelPremium;
+                }
 
                 // Programmatically add new processors such as FIS PayDirect via configuration.
                 AuthorizationClientPlatformsSection acpSection = (AuthorizationClientPlatformsSection)ConfigurationManager.GetSection("authorizationClientPlatforms");
@@ -132,10 +139,8 @@ namespace Rtcc.Main
                         LogImportant(String.Format("Starting new connection to {0}. {1}", entry.Description, GetTimeWithMiliseconds()));
                         try
                         {
-                            Dictionary<string, string> configuration = new Dictionary<string, string>();
-
-                            // TODO: anything that is not Name and Description needs to be added to the configuration dictionary.
-                            configuration["endpoint"] = entry.Endpoint;
+                            // Get all of the configuration elements for the processor.
+                            Dictionary<string, string> configuration = entry.GetConfiguration();
 
                             return new AuthorizationClientPlatforms.AuthorizationPlatform(entry.Server, entry.Name, configuration);
                         }

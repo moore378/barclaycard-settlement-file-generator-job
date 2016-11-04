@@ -6,7 +6,7 @@
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{A9102F53-8F96-4F3A-8FF8-FB5F0B5BC609}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Rtcc</RootNamespace>
     <AssemblyName>RTCC</AssemblyName>
@@ -51,9 +51,19 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoDatabase">
+      <HintPath>..\Dependencies\AutoDatabase.dll</HintPath>
+    </Reference>
     <Reference Include="CryptographicPlatforms">
       <HintPath>..\Dependencies\CryptographicPlatforms.dll</HintPath>
+    </Reference>
+    <Reference Include="MjhGeneral, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\MjhGeneral.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -82,6 +92,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Constants.cs" />
     <Compile Include="Dummy\DummyRtsaConnection.cs" />
     <Compile Include="Forms\SafeStatusStrip.cs">
       <SubType>Component</SubType>
@@ -219,10 +230,6 @@
     <ProjectReference Include="..\AuthorizationClientPlatforms\AuthorizationClientPlatforms.csproj">
       <Project>{5AE1B5BD-C0AE-46E2-8E55-6960FAF3A846}</Project>
       <Name>AuthorizationClientPlatforms</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\AutoDatabase\AutoDatabase.csproj">
-      <Project>{dba89e62-338a-4693-871d-7dda97419ca2}</Project>
-      <Name>AutoDatabase</Name>
     </ProjectReference>
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{BA9EFA9B-8E6C-4680-AE58-37C8442E7DF0}</Project>

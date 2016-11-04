@@ -37,7 +37,18 @@ namespace AuthorizationClientPlatforms.Plugins
         public void ModuleInitialize(Dictionary<string, string> configuration)
         {
             // Only need the endpoint.
-            _endpoint = configuration["endpoint"];
+            if (configuration.ContainsKey("endpoint"))
+            {
+                _endpoint = configuration["endpoint"];
+            }
+
+            // However if the configured endpoint is still bad...
+            if (String.IsNullOrEmpty(_endpoint))
+            {
+                // Use the default.
+                ApiServiceClient defaultClient = new ApiServiceClient();
+                _endpoint = defaultClient.Endpoint.Address.Uri.AbsoluteUri;
+            }
 
             IpsTmsEventSource.Log.LogInformational(String.Format("Looking at endpoint of {0}", _endpoint));
         }

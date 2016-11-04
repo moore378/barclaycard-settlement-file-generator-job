@@ -7,9 +7,13 @@ using System.Linq;
 using System.ServiceProcess;
 using System.Text;
 using Rtcc.Main;
+using System.IO;
+
+using MjhGeneral.ServiceProcess;
 
 namespace Rtcc
 {
+    [WindowsService(Name = Constants.ApplicationName, Description = Constants.Description)]
     partial class RtccService : ServiceBase
     {
         private RtccMain rtccMain;
@@ -17,10 +21,13 @@ namespace Rtcc
 
         public RtccService()
         {
+            // Make sure the service runs in the same directory as the executable.
+            Directory.SetCurrentDirectory(AppDomain.CurrentDomain.BaseDirectory);
+
             InitializeComponent();
         }
 
-        public RtccService(RtccMain rtccMain, RtccConfigs configs)
+        public RtccService(RtccMain rtccMain, RtccConfigs configs):this()
         {
             this.rtccMain = rtccMain;
             this.configs = configs;
@@ -34,6 +41,8 @@ namespace Rtcc
 
         protected override void OnStop()
         {
+            // Force a close...
+            rtccMain = null;
         }
     }
 }

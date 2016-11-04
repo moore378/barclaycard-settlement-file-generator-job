@@ -143,6 +143,9 @@ namespace Rtcc.Database
                     case "fis-paydirect":
                         ProcessorSettings["SettleMerchantCode"] = value;
                         break;
+                    case "barclaycard-smartpay":
+                        ProcessorSettings["MerchantAccount"] = value;
+                        break;
                     default:
                         break;
                 }
@@ -158,6 +161,9 @@ namespace Rtcc.Database
                 {
                     case "israel-premium":
                         ProcessorSettings["CashierNumber"] = value;
+                        break;
+                    case "barclaycard-smartpay":
+                        ProcessorSettings["CurrencyCode"] = value;
                         break;
                     default:
                         break;
