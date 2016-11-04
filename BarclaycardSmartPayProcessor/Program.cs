@@ -111,7 +111,7 @@ namespace BarclaycardSmartPayProcessor
             }
             else
             {
-                Debugger.Launch();
+                //Debugger.Launch();
 
                 // Initialize the logging system.
                 LogInitialize();

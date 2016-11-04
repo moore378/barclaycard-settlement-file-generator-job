@@ -35,7 +35,7 @@ namespace Rtcc
 
         protected override void OnStart(string[] args)
         {
-            Debugger.Launch();
+            //Debugger.Launch();
             rtccMain.StartListening();
         }
 
