@@ -96,7 +96,7 @@ namespace AuthorizationClientPlatforms.Plugins
                         currency = request.ProcessorSettings["CurrencyCode"],
                         value = (long) (request.AmountDollars * 100)
                     },
-                    reference = "TEST-PAYMENT " + DateTime.Now.ToString(),
+                    reference = request.IDString,
                     card = new Card()
                     {
                         holderName = "Not Applicable", // Enforce no card holder name.

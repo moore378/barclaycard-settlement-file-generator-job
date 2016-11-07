@@ -506,8 +506,8 @@ namespace UnitTests
                 Name = "barclaycard-smartpay",
                 Server = Dns.GetHostName(),
                 Port = 8665,
-                MerchantId = "ws@Company.IPSEuropeSRL",
-                MerchantPassword = @"Z@C&5)SsFc/FsSuJmDHBCGRP)",
+                MerchantId = "ws_623363@Company.IPSEuropeSRL",
+                MerchantPassword = @"6uf737q2gIqJS5R2L^Nd)(qGQ",
                 MerchantNumber = "IPSitaly",
                 CashierNumber = "EUR"
             });
@@ -616,7 +616,7 @@ namespace UnitTests
             string processorName = "Barclaycard SmartPay IntelligentParkingSolutions UK";
 
             //processorName = "Barclaycard SmartPay IntelligentParkingSolutions Italy";
-            //processorName = "Barclaycard SmartPay IPSEuropeSRL Italy";
+            processorName = "Barclaycard SmartPay IPSEuropeSRL Italy";
 
             ClearingPlatform processorInfo = TestData.Processors[processorName];
 
@@ -641,7 +641,7 @@ namespace UnitTests
                     //var task = Task.Factory.StartNew(() =>
                     if (entry.ResultCode == AuthorizationResultCode.Approved)
                     {
-                        entry.Amount = 3.50m;
+                        entry.Amount = 1.00m;
 
                         AuthorizationRequest request = new AuthorizationRequest(entry.MeterId,
                                     DateTime.Now, processorInfo.MerchantId, processorInfo.MerchantPassword,
