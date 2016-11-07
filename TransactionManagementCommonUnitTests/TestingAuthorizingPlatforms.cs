@@ -392,6 +392,7 @@ namespace UnitTests
                 ResultCode = AuthorizationResultCode.Approved
             }
             );
+            // Meter not in BIN range?
             data.Add(new AuthorizationRequestEntry()
             {
                 CreditCard = new CreditCard("36006666333344", barclaycardExpiry, "SMARTPAY CARD/DN", "1015432112345678"),
@@ -406,6 +407,7 @@ namespace UnitTests
                 ResultCode = AuthorizationResultCode.Approved
             }
             );
+            // Meter not in BIN range?
             data.Add(new AuthorizationRequestEntry()
             {
                 CreditCard = new CreditCard("6731012345678906", barclaycardExpiry, "SMARTPAY CARD/ME", "1015432112345678"),
@@ -413,6 +415,7 @@ namespace UnitTests
                 ResultCode = AuthorizationResultCode.Declined
             }
             );
+            // Meter not in BIN range?
             data.Add(new AuthorizationRequestEntry()
             {
                 CreditCard = new CreditCard("6759649826438453", barclaycardExpiry, "SMARTPAY CARD/MEUK", "1015432112345678"),
@@ -420,6 +423,7 @@ namespace UnitTests
                 ResultCode = AuthorizationResultCode.Declined
             }
             );
+            // Meter not in BIN range?
             data.Add(new AuthorizationRequestEntry()
             {
                 CreditCard = new CreditCard("6222023602899998371", barclaycardExpiry, "SMARTPAY DEBIT/CUP", "1015432112345678"),
@@ -612,7 +616,7 @@ namespace UnitTests
             string processorName = "Barclaycard SmartPay IntelligentParkingSolutions UK";
 
             //processorName = "Barclaycard SmartPay IntelligentParkingSolutions Italy";
-            processorName = "Barclaycard SmartPay IPSEuropeSRL Italy";
+            //processorName = "Barclaycard SmartPay IPSEuropeSRL Italy";
 
             ClearingPlatform processorInfo = TestData.Processors[processorName];
 
@@ -635,7 +639,10 @@ namespace UnitTests
                     string uniqueId = TestData.GenerateUniqueId();
 
                     //var task = Task.Factory.StartNew(() =>
+                    if (entry.ResultCode == AuthorizationResultCode.Approved)
                     {
+                        entry.Amount = 3.50m;
+
                         AuthorizationRequest request = new AuthorizationRequest(entry.MeterId,
                                     DateTime.Now, processorInfo.MerchantId, processorInfo.MerchantPassword,
                                     entry.CreditCard.AccountNumber,
@@ -646,7 +653,7 @@ namespace UnitTests
                         request.ProcessorSettings["CurrencyCode"] = processorInfo.CashierNumber;
 
                         AuthorizationResponseFields response = processor.AuthorizePayment(request, AuthorizeMode.Normal);
-                        Assert.AreEqual(entry.ResultCode, entry.ResultCode);
+                        Assert.AreEqual(response.resultCode, entry.ResultCode);
                     }
                     //);
 

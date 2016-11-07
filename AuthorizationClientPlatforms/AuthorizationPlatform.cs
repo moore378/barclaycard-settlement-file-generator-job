@@ -46,11 +46,11 @@ namespace AuthorizationClientPlatforms
             // The service is not running at all. Need to return this back as a "timeout"
             catch (EndpointNotFoundException e)
             {
-                throw new AuthorizerProcessingException("Not connected to FIS PayDirect processor", e, true);
+                throw new AuthorizerProcessingException("Not connected to authorization processor", e, true);
             }
             catch (System.ServiceModel.CommunicationException e)
             {
-                throw new AuthorizerProcessingException("Break down in FIS PayDirect processor communications", e, true);
+                throw new AuthorizerProcessingException("Break down in authorization processor communications", e, true);
             }
             catch (Exception e)
             {

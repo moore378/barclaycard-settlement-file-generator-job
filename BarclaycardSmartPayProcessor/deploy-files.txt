@@ -1,4 +1,4 @@
-version=../../../FisPayDirectProcessor/Properties/AssemblyInfo.cs=^\[assembly: AssemblyFileVersion\("(\d+\.\d+\.\d+\.\d+)"\)\]
+version=../../../FisPayDirectProcessor/Properties/AssemblyInfo.cs=^\[assembly: AssemblyFileVersion\("(\d+\.\d+\.\d+\.[0-9a-z]+)"\)\]
 filename=BarclaycardSmartPayProcessor \1.zip
 copy-to=S:\TEMP - Will be deleted at regular intervals\BarclaycardSmartPayProcessor
 mail-to=alex.schwarz@ipsgroupinc.com

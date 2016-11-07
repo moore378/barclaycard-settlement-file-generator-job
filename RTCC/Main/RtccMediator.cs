@@ -160,6 +160,8 @@ namespace Rtcc.Main
                     request.AmountDollars += processorInfo.CCFee;
                 }
 
+                //LogDetail("T2:>>>" + tracks.TrackTwo.ToString()); //alex 11062016 PCI VIOLATION 
+
                 // Perform the authorization
                 AuthorizationResponseFields authorizationResponse = AuthorizeRequest(transactionRecordID, request, tracks, unencryptedStripe, creditCardFields, processorInfo, request.UniqueRecordNumber, isPreauth, platform);
 

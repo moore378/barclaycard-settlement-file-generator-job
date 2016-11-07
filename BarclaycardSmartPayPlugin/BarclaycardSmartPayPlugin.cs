@@ -94,7 +94,7 @@ namespace AuthorizationClientPlatforms.Plugins
                     amount = new Amount()
                     {
                         currency = request.ProcessorSettings["CurrencyCode"],
-                        value = 199
+                        value = (long) (request.AmountDollars * 100)
                     },
                     reference = "TEST-PAYMENT " + DateTime.Now.ToString(),
                     card = new Card()
