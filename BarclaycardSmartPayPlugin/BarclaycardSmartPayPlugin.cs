@@ -24,8 +24,38 @@ namespace AuthorizationClientPlatforms.Plugins
 
         private static bool isTestMode;
 
+        private static bool mapToTestAccount;
+
         // Only allow TLS 1.1 and higher.
         private static System.Net.SecurityProtocolType _protocolsAccepted = System.Net.SecurityProtocolType.Tls11 | System.Net.SecurityProtocolType.Tls12;
+
+        private static CreditCard[] testCards = new CreditCard[]
+        {
+            new CreditCard()
+            {
+                CreditCardType = CreditCardType.Visa,
+                Pan = "4646464646464644",
+                ExpiryDateMMYY = "0818"
+            },
+            new CreditCard()
+            {
+                CreditCardType = CreditCardType.AmericanExpress,
+                Pan = "370000000000002",
+                ExpiryDateMMYY = "0818"
+            },
+            new CreditCard()
+            {
+                CreditCardType = CreditCardType.MasterCard,
+                Pan = "5555444433331111",
+                ExpiryDateMMYY = "0818"
+            },
+            new CreditCard()
+            {
+                CreditCardType = CreditCardType.Discover,
+                Pan = "36006666333344",
+                ExpiryDateMMYY = "0818"
+            }
+        };
 
         public BarclaycardSmartPayPlugin()
         {
@@ -62,13 +92,21 @@ namespace AuthorizationClientPlatforms.Plugins
             if (-1 != endpoint.IndexOf("https://pal-test", StringComparison.CurrentCultureIgnoreCase))
             {
                 isTestMode = true;
+                mapToTestAccount = true;
             }
 
-            IpsTmsEventSource.Log.LogInformational(String.Format("Looking at endpoint of {0} and test mode of {1}", endpoint, isTestMode));
+            // MapToTestAccount
+            if (configuration.ContainsKey("maptotestaccount"))
+            {
+                mapToTestAccount = bool.Parse(configuration["maptotestaccount"]);
+            }
+
+            IpsTmsEventSource.Log.LogInformational(String.Format("Looking at endpoint of {0}, test mode of {1}, map to test account {2}", endpoint, isTestMode, mapToTestAccount));
         }
 
         public void ModuleShutdown()
         {
+            // Nothing on purpose.
         }
 
         public AuthorizationResponseFields AuthorizePayment(AuthorizationRequest request, AuthorizeMode mode)
@@ -88,6 +126,33 @@ namespace AuthorizationClientPlatforms.Plugins
 
                 CreditCardType creditCardType = CreditCardPan.DetermineCreditCardType(request.Pan);
 
+                CreditCard requestCard;
+
+                if ((isTestMode)
+                    && (mapToTestAccount))
+                {
+                    requestCard = testCards.Where(t => t.CreditCardType == creditCardType).SingleOrDefault();
+
+                    // If nothing matches, then use the first test card defined.
+                    if (null == requestCard)
+                    {
+                        requestCard = testCards[0];
+                    }
+
+                    // Use the right credit card type now that it's a test card.
+                    creditCardType = requestCard.CreditCardType;
+                }
+                else
+                {
+                    // Use the card from the request.
+                    requestCard = new CreditCard()
+                    {
+                        CreditCardType = creditCardType,
+                        Pan = request.Pan,
+                        ExpiryDateMMYY = request.ExpiryDateMMYY
+                    };
+                }
+
                 PaymentRequest parameters = new PaymentRequest()
                 {
                     merchantAccount = request.ProcessorSettings["MerchantAccount"],
@@ -100,9 +165,9 @@ namespace AuthorizationClientPlatforms.Plugins
                     card = new Card()
                     {
                         holderName = "Not Applicable", // Enforce no card holder name.
-                        expiryMonth = request.ExpiryDateMMYY.Substring(0, 2),
-                        expiryYear = "20" + request.ExpiryDateMMYY.Substring(2, 2),
-                        number = request.Pan
+                        expiryMonth = requestCard.ExpiryDateMMYY.Substring(0, 2),
+                        expiryYear = "20" + requestCard.ExpiryDateMMYY.Substring(2, 2),
+                        number = requestCard.Pan
                     }
                 };
 
@@ -145,6 +210,13 @@ namespace AuthorizationClientPlatforms.Plugins
             }
 
             return response;
+        }
+
+        class CreditCard
+        {
+            public CreditCardType CreditCardType;
+            public string Pan;
+            public string ExpiryDateMMYY;
         }
     }
 }

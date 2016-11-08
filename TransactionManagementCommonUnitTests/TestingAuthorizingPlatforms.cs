@@ -506,8 +506,8 @@ namespace UnitTests
                 Name = "barclaycard-smartpay",
                 Server = Dns.GetHostName(),
                 Port = 8665,
-                MerchantId = "ws_623363@Company.IPSEuropeSRL",
-                MerchantPassword = @"6uf737q2gIqJS5R2L^Nd)(qGQ",
+                MerchantId = "ws_724810@Company.IPSEuropeSRL",
+                MerchantPassword = @"MDs>MnBqkLcD6EpHmfrGYgQ6r",
                 MerchantNumber = "IPSitaly",
                 CashierNumber = "EUR"
             });
@@ -627,6 +627,7 @@ namespace UnitTests
             Dictionary<string, string> configuration = new Dictionary<string, string>();
 
             configuration["endpoint"] = "https://pal-test.barclaycardsmartpay.com/pal/servlet/soap/Payment";
+            configuration["maptotestaccount"] = "false";
 
             processor.Initialize(configuration);
 
