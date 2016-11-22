@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="c3255da8-ae5b-42db-8daf-559124940c22" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost/SmartPayNotification/SmartPayNotificationService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="SmartPayNotificationService.disco" MetadataType="Disco" ID="25360a84-7788-4459-b662-9f0126463227" SourceId="1" SourceUrl="http://rmoore-thinkc.ipsgroupinc.com/SmartPayNotification/SmartPayNotificationService.svc?disco" />
+    <MetadataFile FileName="SmartPayNotificationService.xsd" MetadataType="Schema" ID="6804ae91-ad04-494a-b867-10ada1308810" SourceId="1" SourceUrl="http://rmoore-thinkc.ipsgroupinc.com/SmartPayNotification/SmartPayNotificationService.svc?xsd=xsd0" />
+    <MetadataFile FileName="SmartPayNotificationService1.xsd" MetadataType="Schema" ID="999d343b-170b-428a-8b7e-037b428cb7ec" SourceId="1" SourceUrl="http://rmoore-thinkc.ipsgroupinc.com/SmartPayNotification/SmartPayNotificationService.svc?xsd=xsd1" />
+    <MetadataFile FileName="SmartPayNotificationService.wsdl" MetadataType="Wsdl" ID="33c76451-b6d6-44e6-872b-32c209329ad9" SourceId="1" SourceUrl="http://rmoore-thinkc.ipsgroupinc.com/SmartPayNotification/SmartPayNotificationService.svc?wsdl" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>
