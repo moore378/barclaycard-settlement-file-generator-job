@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BarclacardSmartPayNotificationService", "BarclacardSmartPayNotificationService\BarclacardSmartPayNotificationService.csproj", "{BEEECE6E-A270-43FC-96B8-182028D21609}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BarclaycardSmartPayNotificationService", "BarclacardSmartPayNotificationService\BarclaycardSmartPayNotificationService.csproj", "{BEEECE6E-A270-43FC-96B8-182028D21609}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceLogger", "ServiceLogger\ServiceLogger.csproj", "{16A60204-7D2B-4CE2-AED5-A972CC514A9F}"
 EndProject

@@ -2,7 +2,7 @@
 using System.ServiceModel;
 using System.ServiceModel.Web;
 
-namespace BarclacardSmartPayNotificationService
+namespace BarclaycardSmartPayNotificationService
 {
     /// <summary>
     /// Interface defining SmartPayNotification Response service contract

@@ -1,6 +1,6 @@
 ﻿using System.ServiceModel.Channels;
 
-namespace BarclacardSmartPayNotificationService
+namespace BarclaycardSmartPayNotificationService
 {
     /// <summary>
     /// SmartPayNotificationContentTypeWrapper is a custome WebContentType used to convert

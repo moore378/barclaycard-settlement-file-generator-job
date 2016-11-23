@@ -3,7 +3,7 @@ using System.Xml.Linq;
 using ServiceLogger;
 using System.IO;
 
-namespace BarclacardSmartPayNotificationService
+namespace BarclaycardSmartPayNotificationService
 {
     public class SmartPayNotificationService : ISmartPayNotificationService
     {
