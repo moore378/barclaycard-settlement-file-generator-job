@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{56A38516-44AC-4401-BF1E-AEE52259A521}"
 EndProject
@@ -53,6 +53,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BarclaycardSmartPayProcessor", "BarclaycardSmartPayProcessor\BarclaycardSmartPayProcessor.csproj", "{32AA0FBA-2266-4794-BD7F-75E327242687}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RtccClient", "RtccClient\RtccClient.csproj", "{B865B51B-15CA-4A57-A934-417CD2741BD4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BarclaycardSmartPayNotificationService", "BarclaycardSmartPayNotificationService\BarclaycardSmartPayNotificationService.csproj", "{BEEECE6E-A270-43FC-96B8-182028D21609}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -204,14 +206,12 @@ Global
 		{B1AA76DD-BB9D-4642-9362-4E9D910D8EFD}.Release|Mixed Platforms.Build.0 = Release|x86
 		{B1AA76DD-BB9D-4642-9362-4E9D910D8EFD}.Release|x86.ActiveCfg = Release|x86
 		{B1AA76DD-BB9D-4642-9362-4E9D910D8EFD}.Release|x86.Build.0 = Release|x86
-		{4D8B9E8B-D8D5-475E-AF95-C39521E9A543}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4D8B9E8B-D8D5-475E-AF95-C39521E9A543}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D8B9E8B-D8D5-475E-AF95-C39521E9A543}.Debug|Any CPU.ActiveCfg = Debug|x86
 		{4D8B9E8B-D8D5-475E-AF95-C39521E9A543}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
 		{4D8B9E8B-D8D5-475E-AF95-C39521E9A543}.Debug|Mixed Platforms.Build.0 = Debug|x86
 		{4D8B9E8B-D8D5-475E-AF95-C39521E9A543}.Debug|x86.ActiveCfg = Debug|x86
 		{4D8B9E8B-D8D5-475E-AF95-C39521E9A543}.Debug|x86.Build.0 = Debug|x86
-		{4D8B9E8B-D8D5-475E-AF95-C39521E9A543}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4D8B9E8B-D8D5-475E-AF95-C39521E9A543}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D8B9E8B-D8D5-475E-AF95-C39521E9A543}.Release|Any CPU.ActiveCfg = Release|x86
 		{4D8B9E8B-D8D5-475E-AF95-C39521E9A543}.Release|Mixed Platforms.ActiveCfg = Release|x86
 		{4D8B9E8B-D8D5-475E-AF95-C39521E9A543}.Release|Mixed Platforms.Build.0 = Release|x86
 		{4D8B9E8B-D8D5-475E-AF95-C39521E9A543}.Release|x86.ActiveCfg = Release|x86
@@ -246,6 +246,16 @@ Global
 		{B865B51B-15CA-4A57-A934-417CD2741BD4}.Release|Mixed Platforms.Build.0 = Release|x86
 		{B865B51B-15CA-4A57-A934-417CD2741BD4}.Release|x86.ActiveCfg = Release|x86
 		{B865B51B-15CA-4A57-A934-417CD2741BD4}.Release|x86.Build.0 = Release|x86
+		{BEEECE6E-A270-43FC-96B8-182028D21609}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEEECE6E-A270-43FC-96B8-182028D21609}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEEECE6E-A270-43FC-96B8-182028D21609}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{BEEECE6E-A270-43FC-96B8-182028D21609}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{BEEECE6E-A270-43FC-96B8-182028D21609}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BEEECE6E-A270-43FC-96B8-182028D21609}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEEECE6E-A270-43FC-96B8-182028D21609}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEEECE6E-A270-43FC-96B8-182028D21609}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{BEEECE6E-A270-43FC-96B8-182028D21609}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{BEEECE6E-A270-43FC-96B8-182028D21609}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

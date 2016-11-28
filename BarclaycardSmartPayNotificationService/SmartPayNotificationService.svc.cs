@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Xml.Linq;
-using ServiceLogger;
 using System.IO;
+using AuthorizationClientPlatforms.Logging;
 
 namespace BarclaycardSmartPayNotificationService
 {
@@ -21,13 +21,14 @@ namespace BarclaycardSmartPayNotificationService
                 StreamReader reader = new StreamReader(notification);
                 string res = reader.ReadToEnd();
 
-                Logger.Instance.LogInformational(res);
+                IpsTmsEventSource.Log.LogInformational(res);
 
                 return Response().ToString();
             }
             catch (Exception ex)
             {
-                Logger.Instance.LogException(ex);
+                IpsTmsEventSource.Log.LogError(ex.Message);
+
                 // Note, since XML is not being returned, Barclaycard will try again later to send notification.
                 return null;
             }

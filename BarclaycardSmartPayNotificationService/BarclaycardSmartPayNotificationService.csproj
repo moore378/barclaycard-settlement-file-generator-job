@@ -73,9 +73,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ServiceLogger\ServiceLogger.csproj">
-      <Project>{16a60204-7d2b-4ce2-aed5-a972cc514a9f}</Project>
-      <Name>ServiceLogger</Name>
+    <ProjectReference Include="..\AuthorizationClientPlatforms\AuthorizationClientPlatforms.csproj">
+      <Project>{5ae1b5bd-c0ae-46e2-8e55-6960faf3a846}</Project>
+      <Name>AuthorizationClientPlatforms</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
