@@ -1,12 +1,14 @@
 ﻿using System;
+using System.CodeDom;
 using System.Xml.Linq;
 using System.IO;
-using AuthorizationClientPlatforms.Logging;
+//using AuthorizationClientPlatforms.Logging;
 
 namespace BarclaycardSmartPayNotificationService
 {
     public class SmartPayNotificationService : ISmartPayNotificationService
     {
+        
         /// <summary>
         /// SendNotification is the service name to be used by Barclaycard to send their card response.
         /// The Stream object type is used to handle any type (XML/JSON/text/etc), convert it to a string
@@ -21,19 +23,24 @@ namespace BarclaycardSmartPayNotificationService
                 StreamReader reader = new StreamReader(notification);
                 string res = reader.ReadToEnd();
 
-                IpsTmsEventSource.Log.LogInformational(res);
+                IPSLogger.Instance.LogInformational(res);
 
                 return Response().ToString();
             }
             catch (Exception ex)
             {
-                IpsTmsEventSource.Log.LogError(ex.Message);
+                IPSLogger.Instance.LogException(ex);
 
                 // Note, since XML is not being returned, Barclaycard will try again later to send notification.
                 return null;
             }
             
-        }   
+        }
+
+        public string GetDate(string value)
+        {
+            return "test" + value;
+        }
 
         /// <summary>
         /// The purpose of this method is to provide the acceptable XML response to Barclaycard.

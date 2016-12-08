@@ -23,5 +23,9 @@ namespace BarclaycardSmartPayNotificationService
             RequestFormat = WebMessageFormat.Json, 
             ResponseFormat = WebMessageFormat.Xml)]
         string SendNotification(Stream notification);
+
+        [OperationContract]
+        [WebGet(UriTemplate = "GetDate/{value}")]
+        string GetDate(string value);
     }
 }
