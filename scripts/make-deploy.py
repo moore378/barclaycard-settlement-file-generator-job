@@ -7,6 +7,11 @@ import sys
 import urllib.parse
 import os
 
+def zipdir(path, ziph):
+    # ziph is zipfile handle
+    for root, dirs, files in os.walk(path):
+        for file in files:
+            ziph.write(os.path.join(root, file))
 
 if __name__ == '__main__':
     zipf = None
@@ -44,6 +49,20 @@ if __name__ == '__main__':
             elif variableName == "copy-to":
                 copy_to = args
                 print("copy-to=" + copy_to)
+            elif variableName == "publish":
+                publish = args
+                print("Zipping Published Files")
+                if not zipf:
+                    zipf = zipfile.ZipFile(zipFileName, 'w')
+
+                cwd = os.getcwd()
+                configuration = "Debug"
+                if cwd.find("Release") > 0:
+                    configuration = "Release"
+
+                os.chdir(os.path.expanduser("..\\..\\obj\\" + configuration + "\\Package\\PackageTmp"))
+                zipdir(".\\", zipf)
+                os.chdir(os.path.expanduser(cwd))
             elif variableName == "notes-file":
                 notes_file = args
                 print("notes-file=" + notes_file)
