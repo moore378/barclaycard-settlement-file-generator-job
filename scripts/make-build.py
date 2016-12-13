@@ -50,7 +50,7 @@ for fn in open( 'make-files.txt', 'r'):
 subprocess.call( "nuget restore" )
 
 # Build the solution
-exec  = "msbuild " + solution + " /t:Clean;Rebuild /m /p:\"Platform=" + platform + "\" /p:Configuration=" + configuration + "\""
+exec  = "msbuild " + solution + " /t:Clean;Rebuild /m /p:DeployOnBuild=true /p:PublishProfile=Local.pubxml /p:\"Platform=" + platform + "\" /p:Configuration=" + configuration + "\""
 #print( exec )
 rc = subprocess.call( exec )
 
